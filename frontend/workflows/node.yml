@@ -1,0 +1,31 @@
+name: Node.js Continuous Integration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup Node.js v16 with Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: "yarn"
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Build
+      run: yarn build
+    - name: Test
+      run: yarn test
+    - name: Upload built files as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build
+        path: dist
+        retention-days: 7

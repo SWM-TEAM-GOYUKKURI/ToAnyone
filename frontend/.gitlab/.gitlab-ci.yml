@@ -1,0 +1,39 @@
+default:
+  image: node:16-bullseye-slim
+
+include:
+  - remote: "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/gitlab/ci/templates/Jobs/SAST.latest.gitlab-ci.yml"
+  - remote: "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/gitlab/ci/templates/Jobs/Secret-Detection.latest.gitlab-ci.yml"
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+stages:
+  - test
+  - build
+
+Build:
+  stage: build
+  before_script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+  script:
+    - yarn build
+  artifacts:
+    expire_in: 3 days
+    expose_as: "build"
+    paths: ["dist"]
+
+Test:
+  stage: test
+  before_script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+  script:
+    - yarn test
