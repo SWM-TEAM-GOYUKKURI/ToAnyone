@@ -1,0 +1,39 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "frontend/**" ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ "frontend/**" ]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: "frontend"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup Node.js v16 with Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: "yarn"
+        cache-dependency-path: "frontend/yarn.lock"
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Build
+      run: yarn build
+    - name: Test
+      run: yarn test
+    - name: Upload built files as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build
+        path: "frontend/dist"
+        retention-days: 7
