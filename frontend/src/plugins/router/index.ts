@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import MainPage from "@/pages/MainPage.vue";
-import LoginPage from "@/pages/signin/LoginPage.vue";
-import LogoutPage from "@/pages/signin/LogoutPage.vue";
-import ProfilePage from "@/pages/user/ProfilePage.vue";
-import ProfileEditPage from "@/pages/user/ProfileEditPage.vue";
-import LetterWritePage from "@/pages/letter/LetterWritePage.vue";
-import LetterViewPage from "@/pages/letter/LetterViewPage.vue";
+import MainPage from "@/pages/app/MainPage.vue";
+import LoginPage from "@/pages/app/signin/LoginPage.vue";
+import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
+import ProfilePage from "@/pages/app/user/ProfilePage.vue";
+import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
+import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
+import LetterViewPage from "@/pages/app/letter/LetterViewPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
