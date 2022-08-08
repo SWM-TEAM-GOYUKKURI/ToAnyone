@@ -1,14 +1,14 @@
 import { createStore } from "vuex";
 import IUserInfo from "@/interfaces/IUserInfo";
 
-interface StoreState {
+export interface StoreState {
   loginInfo: {
     isLoggedIn: boolean,
     user: IUserInfo | null,
   },
 }
 
-export default createStore<StoreState>({
+const store = createStore<StoreState>({
   state: {
     loginInfo: {
       isLoggedIn: false,
@@ -29,3 +29,5 @@ export default createStore<StoreState>({
     },
   },
 });
+
+export default store;
