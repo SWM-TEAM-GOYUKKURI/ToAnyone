@@ -1,7 +1,7 @@
 import { GoogleAuthOptions } from "./interfaces";
 
 const options: GoogleAuthOptions = {
-  clientId: "TO_BE_FILLED",
+  clientId: process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID,
 };
 
 export default options;
