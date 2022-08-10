@@ -6,3 +6,14 @@ declare module "@vue/runtime-core" {
     $store: Store<StoreState>,
   }
 }
+
+declare global {
+  interface Window {
+    google: {
+      accounts: {
+        id: Record<string, any>,
+        oauth2: Record<string, any>,
+      }
+    }
+  }
+}
