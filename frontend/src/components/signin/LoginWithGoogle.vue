@@ -1,38 +1,34 @@
 <template>
-  <div class="button-login" @click="onLoginButtonClick">
-    {{ buttonText }}
-  </div>
+  <div id="login-google" ref="googleLoginButton" />
 </template>
 
 <script lang="ts">
-import type { Vue3GoogleOAuth2Component } from "@/plugins/signin/google-oauth2/interfaces";
-import { inject } from "vue";
 import { Vue } from "vue-class-component";
+import waitFor from "@/util/script-waiter";
 
 export default class LoginWithGoogle extends Vue {
-  private Vue3GoogleOauth = inject<Vue3GoogleOAuth2Component>("Vue3GoogleOauth");
-
-  get buttonText(): string {
-    if(this.Vue3GoogleOauth) {
-      if(this.Vue3GoogleOauth.isInit) {
-        return "Google 계정으로 로그인";
-      }
-    }
-
-    return "Google 로그인 초기화 중...";
+  get googleClientId(): string {
+    return process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID;
   }
 
-  async onLoginButtonClick() {
-    let googleAuthUser;
-    try {
-      googleAuthUser = await this.$gAuth.signIn();
-    } catch {
-      // TODO: catch initialization error
-    }
+  async mounted() {
+    const foundGoogle = await waitFor("google");
 
-    if(!googleAuthUser) {
-      // TODO: handle improper object
+    if(foundGoogle) {
+      window.google.accounts.id.initialize({
+        client_id: this.googleClientId,
+        callback: this.loginCallback,
+      });
+
+      window.google.accounts.id.renderButton(this.$refs.googleLoginButton, {
+        theme: "outline",
+        size: "large",
+      });
     }
+  }
+
+  async loginCallback() {
+    // to be filled
   }
 }
 </script>
