@@ -5,8 +5,9 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import waitFor from "@/util/script-waiter";
+import { GoogleAuthResponse } from "@/plugins/signin/google/interfaces";
 
-export default class LoginWithGoogle extends Vue {
+export default class SignInWithGoogle extends Vue {
   get googleClientId(): string {
     return process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID;
   }
@@ -27,7 +28,7 @@ export default class LoginWithGoogle extends Vue {
     }
   }
 
-  async loginCallback() {
+  async loginCallback(data: GoogleAuthResponse) {
     // to be filled
   }
 }

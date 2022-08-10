@@ -1,17 +1,17 @@
 <template>
   <div>
-    <login-with-google />
+    <sign-in-with-google />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import LoginWithGoogle from "@/components/signin/LoginWithGoogle.vue";
+import SignInWithGoogle from "@/components/signin/SignInWithGoogle.vue";
 import "@/plugins/signin/google/index";
 
 @Options({
   components: {
-    LoginWithGoogle,
+    SignInWithGoogle,
   },
 })
 export default class LoginPage extends Vue {
