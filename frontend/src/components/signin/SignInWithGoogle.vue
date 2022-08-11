@@ -4,18 +4,19 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
-import waitFor from "@/util/script-waiter";
+import { Prop, Watch } from "vue-property-decorator";
 import { GoogleAuthResponse } from "@/plugins/signin/google/interfaces";
 
 export default class SignInWithGoogle extends Vue {
+  @Prop({ type: Boolean, default: false }) loaded!: boolean;
+
   get googleClientId(): string {
     return process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID;
   }
 
-  async mounted() {
-    const foundGoogle = await waitFor("google");
-
-    if(foundGoogle) {
+  @Watch("loaded")
+  onScriptLoadStateChange() {
+    if(this.loaded) {
       window.google.accounts.id.initialize({
         client_id: this.googleClientId,
         callback: this.loginCallback,
