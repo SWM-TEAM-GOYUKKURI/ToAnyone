@@ -26,5 +26,9 @@ export default class LoginPage extends Vue {
   created() {
     googleSigninScript.load();
   }
+
+  unmounted() {
+    googleSigninScript.unload();
+  }
 }
 </script>
