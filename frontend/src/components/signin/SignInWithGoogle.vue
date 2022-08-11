@@ -36,13 +36,3 @@ export default class SignInWithGoogle extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-/* 임시 버튼 스타일 */
-.button-login {
-  display: inline-block;
-  padding: 0.5em;
-  background-color: rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-}
-</style>
