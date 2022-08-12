@@ -5,6 +5,8 @@ import router from "./plugins/router";
 import store from "./plugins/store";
 import "./plugins/service-worker/register";
 
+import "normalize.css";
+
 const app = createApp(App);
 app.use(store);
 app.use(router);
