@@ -16,7 +16,7 @@ export default class SignInWithGoogle extends Vue {
 
   @Watch("loaded")
   onScriptLoadStateChange() {
-    if(this.loaded) {
+    if(this.loaded && window.google) {
       window.google.accounts.id.initialize({
         client_id: this.googleClientId,
         callback: this.loginCallback,

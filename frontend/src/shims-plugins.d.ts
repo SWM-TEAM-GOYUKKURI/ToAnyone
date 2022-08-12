@@ -9,7 +9,7 @@ declare module "@vue/runtime-core" {
 
 declare global {
   interface Window {
-    google: {
+    google?: {
       accounts: {
         id: Record<string, any>,
         oauth2: Record<string, any>,

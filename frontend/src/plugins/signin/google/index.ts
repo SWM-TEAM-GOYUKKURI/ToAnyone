@@ -25,6 +25,8 @@ function unload() {
   gsiScript.removeAttribute("src");
   gsiScript.removeEventListener("load", scriptLoadHandler);
   gsiScript.remove();
+  window.google = undefined;
+
   loadState.value = false;
 }
 
