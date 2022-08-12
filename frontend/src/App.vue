@@ -7,6 +7,8 @@
 import { Options, Vue } from "vue-class-component";
 import RouteLoginStateGuard from "@/components/RouteLoginStateGuard.vue";
 
+import "@/styles/main.scss";
+
 @Options({
   components: {
     RouteLoginStateGuard,
