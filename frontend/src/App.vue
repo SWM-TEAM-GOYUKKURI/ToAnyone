@@ -1,5 +1,4 @@
 <template>
-  <route-login-state-guard />
   <router-view />
 </template>
 
