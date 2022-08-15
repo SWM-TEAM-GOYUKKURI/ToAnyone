@@ -70,7 +70,7 @@ export default class LoginPage extends Vue {
       cursor: pointer;
 
       &:not(.no-styling) {
-        background-color: rgba(0, 0, 0, 0.25);
+        background-color: $color-tertiary;
       }
     }
   }
