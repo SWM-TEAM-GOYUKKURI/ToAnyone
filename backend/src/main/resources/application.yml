@@ -1,0 +1,48 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+      format_sql: true
+    hibernate:
+      ddl-auto: update
+  logging:
+    level:
+      org:
+        hibernate: trace
+
+
+---
+spring:
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+
+  h2:
+    console:
+      enabled: true
+
+
+swagger:
+  host: localhost:8080
+  protocol: http
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+
+
+swagger:
+  host: dev-api.toanyone.im
+  protocol: https
+
