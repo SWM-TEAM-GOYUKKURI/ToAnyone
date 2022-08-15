@@ -6,7 +6,7 @@ import store from "./plugins/store";
 import "./plugins/service-worker/register";
 
 import "normalize.css";
-import "./styles/global.scss";
+import "./styles/main.scss";
 
 const app = createApp(App);
 app.use(store);
