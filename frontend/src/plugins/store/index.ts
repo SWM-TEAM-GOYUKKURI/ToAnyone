@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import IUserInfo from "@/interfaces/IUserInfo";
 
 export interface StoreState {
@@ -28,6 +29,11 @@ const store = createStore<StoreState>({
       state.loginInfo.user = payload ?? null;
     },
   },
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage,
+    }),
+  ],
 });
 
 export default store;
