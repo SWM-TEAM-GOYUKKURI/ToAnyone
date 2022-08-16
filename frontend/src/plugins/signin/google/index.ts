@@ -1,6 +1,12 @@
 import { reactive } from "vue";
 import waitFor from "@/util/script-waiter";
 
+export interface GoogleAuthResponse {
+  clientId: string,
+  credential: string,
+  select_by: string,
+}
+
 const loadState = reactive({ value: false });
 const gsiScript = document.createElement("script");
 
