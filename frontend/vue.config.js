@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
@@ -17,6 +18,11 @@ module.exports = defineConfig({
           return `@import "@/styles/global.scss"; ${content}`;
         },
       },
+    },
+  },
+  pluginOptions: {
+    vuetify: {
+      // DO NOT remove `pluginOptions.vuetify` even if it's empty
     },
   },
 });
