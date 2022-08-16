@@ -33,6 +33,11 @@ function unload() {
   gsiScript.remove();
   window.google = undefined;
 
+  // Cleanup autoloaded resources
+  document.getElementById("googleidentityservice_button_styles")?.remove();
+  document.getElementById("googleidentityservice")?.remove();
+  document.getElementById("g_a11y_announcement")?.remove();
+
   loadState.value = false;
 }
 
