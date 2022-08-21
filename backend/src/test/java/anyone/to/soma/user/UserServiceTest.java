@@ -1,6 +1,7 @@
 package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.user.dto.LoginResponse;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ class UserServiceTest {
 
     @Test
     void signInUser() {
-        String createdJWT = userService.signInUser(JWT);
-        DecodedJWT decodedJWT = jwtProvider.decodeJWT(createdJWT);
-        assertThat(decodedJWT.getSubject()).isEqualTo(EMAIL);
+        LoginResponse response = userService.signInUser(JWT);
+        DecodedJWT decodedJWT = jwtProvider.decodeJWT(response.getToken());
+        assertThat(decodedJWT.getSubject()).isEqualTo(response.getEmail());
     }
 }

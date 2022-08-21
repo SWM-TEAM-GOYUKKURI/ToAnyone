@@ -1,5 +1,6 @@
 package anyone.to.soma.user;
 
+import anyone.to.soma.user.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login/google")
-    public ResponseEntity<String> doGoogleLogin(HttpServletRequest request) {
+    public ResponseEntity<LoginResponse> doGoogleLogin(HttpServletRequest request) {
         String token = request.getHeader("credential");
         if (token.isBlank()) {
             throw new IllegalArgumentException();

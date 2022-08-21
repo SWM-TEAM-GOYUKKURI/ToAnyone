@@ -1,6 +1,7 @@
 package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.user.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +13,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
 
-
     @Transactional
-    public String signInUser(String token) {
+    public LoginResponse signInUser(String token) {
         User decodedUser = jwtProvider.googleOAuthJwtToUser(token);
         String id = decodedUser.getId();
 
@@ -23,7 +23,8 @@ public class UserService {
         }
 
         User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        return jwtProvider.createAccessToken(user.getEmail());
+        String accessToken = jwtProvider.createAccessToken(user.getEmail());
+        return new LoginResponse(user.getName(), user.getEmail(), accessToken);
     }
 
 
