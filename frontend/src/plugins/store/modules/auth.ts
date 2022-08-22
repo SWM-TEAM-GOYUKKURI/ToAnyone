@@ -1,13 +1,14 @@
 import { Module } from "vuex";
+import { RootStoreState } from "..";
 import { IUserBasicInfo } from "@/interfaces/IUserInfo";
 
-interface AuthStoreState {
+export interface AuthStoreState {
   isLoggedIn: boolean,
   token: string | null,
   userBasicInfo: IUserBasicInfo | null,
 }
 
-const authStore: Module<AuthStoreState, unknown> = {
+const authStore: Module<AuthStoreState, RootStoreState> = {
   namespaced: true,
   state: {
     isLoggedIn: false,

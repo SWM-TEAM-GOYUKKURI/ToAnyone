@@ -1,14 +1,15 @@
 import { Module } from "vuex";
+import { RootStoreState } from "..";
 import { IUserInfo } from "@/interfaces/IUserInfo";
 
-interface UserspaceStoreState {
+export interface UserspaceStoreState {
   user: IUserInfo | null,
   settings: {
     // to be filled
   },
 }
 
-const userspaceStore: Module<UserspaceStoreState, unknown> = {
+const userspaceStore: Module<UserspaceStoreState, RootStoreState> = {
   namespaced: true,
   state: {
     user: null,

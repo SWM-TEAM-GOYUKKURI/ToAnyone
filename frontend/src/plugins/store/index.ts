@@ -1,9 +1,14 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import authModule from "./modules/auth";
-import userspaceModule from "./modules/userspace";
+import authModule, { AuthStoreState } from "./modules/auth";
+import userspaceModule, { UserspaceStoreState } from "./modules/userspace";
 
-const store = createStore({
+export interface RootStoreState {
+  auth: AuthStoreState,
+  user: UserspaceStoreState,
+}
+
+const store = createStore<RootStoreState>({
   modules: {
     auth: authModule,
     user: userspaceModule,
