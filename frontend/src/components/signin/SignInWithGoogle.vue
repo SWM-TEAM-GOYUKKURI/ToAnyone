@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import { GoogleAuthResponse } from "@/plugins/signin/google/interfaces";
+import { GoogleAuthResponse } from "@/plugins/signin/google";
 
 export default class SignInWithGoogle extends Vue {
   @Prop({ type: Boolean, default: false }) loaded!: boolean;
