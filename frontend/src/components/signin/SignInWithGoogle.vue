@@ -1,5 +1,5 @@
 <template>
-  <div id="login-google" ref="googleLoginButton" />
+  <div id="login-google" class="button-login no-styling" ref="googleLoginButton" />
 </template>
 
 <script lang="ts">
@@ -23,8 +23,10 @@ export default class SignInWithGoogle extends Vue {
       });
 
       window.google.accounts.id.renderButton(this.$refs.googleLoginButton, {
+        type: "standard",
+        width: 400,
         theme: "outline",
-        size: "large",
+        text: "signin_with",
       });
     }
   }
