@@ -1,11 +1,11 @@
 <template>
-  <div id="login-google" ref="googleLoginButton" />
+  <div id="login-google" class="button-login no-styling" ref="googleLoginButton" />
 </template>
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import { GoogleAuthResponse } from "@/plugins/signin/google/interfaces";
+import { GoogleAuthResponse } from "@/plugins/signin/google";
 
 export default class SignInWithGoogle extends Vue {
   @Prop({ type: Boolean, default: false }) loaded!: boolean;
@@ -23,8 +23,10 @@ export default class SignInWithGoogle extends Vue {
       });
 
       window.google.accounts.id.renderButton(this.$refs.googleLoginButton, {
+        type: "standard",
+        width: 400,
         theme: "outline",
-        size: "large",
+        text: "signin_with",
       });
     }
   }

@@ -1,6 +1,12 @@
 import { reactive } from "vue";
 import waitFor from "@/util/script-waiter";
 
+export interface GoogleAuthResponse {
+  clientId: string,
+  credential: string,
+  select_by: string,
+}
+
 const loadState = reactive({ value: false });
 const gsiScript = document.createElement("script");
 
@@ -26,6 +32,11 @@ function unload() {
   gsiScript.removeEventListener("load", scriptLoadHandler);
   gsiScript.remove();
   window.google = undefined;
+
+  // Cleanup autoloaded resources
+  document.getElementById("googleidentityservice_button_styles")?.remove();
+  document.getElementById("googleidentityservice")?.remove();
+  document.getElementById("g_a11y_announcement")?.remove();
 
   loadState.value = false;
 }
