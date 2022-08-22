@@ -37,7 +37,7 @@ export default class SignInWithGoogle extends Vue {
     try {
       const response = (await bePOST("/login/google", {}, {
         credential: data.credential,
-      }, true)) as {
+      })) as {
         name: string,
         email: string,
         token: string,
