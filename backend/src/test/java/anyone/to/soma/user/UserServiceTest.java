@@ -23,7 +23,7 @@ class UserServiceTest {
 
     @Test
     void signInUser() {
-        LoginResponse response = userService.signInUser(JWT);
+        LoginResponse response = userService.signInGoogleAuthUser(JWT);
         DecodedJWT decodedJWT = jwtProvider.decodeJWT(response.getToken());
         assertThat(decodedJWT.getSubject()).isEqualTo(response.getEmail());
     }

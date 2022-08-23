@@ -14,15 +14,15 @@ public class UserService {
     private final JWTProvider jwtProvider;
 
     @Transactional
-    public LoginResponse signInUser(String token) {
+    public LoginResponse signInGoogleAuthUser(String token) {
         User decodedUser = jwtProvider.googleOAuthJwtToUser(token);
-        String id = decodedUser.getId();
+        String uniqueId = decodedUser.getUniqueId();
 
-        if (!userRepository.existsById(id)) {
-            id = userRepository.save(decodedUser).getId();
+        if (!userRepository.existsUserByUniqueId(uniqueId)) {
+            uniqueId = userRepository.save(decodedUser).getUniqueId();
         }
 
-        User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
         return new LoginResponse(user.getName(), user.getEmail(), accessToken);
     }
