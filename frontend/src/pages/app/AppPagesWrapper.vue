@@ -19,3 +19,9 @@ export default class AppPagesWrapper extends Vue {
 
 }
 </script>
+
+<style lang="scss" scoped>
+#app-wrapper {
+  margin-top: $app-navbar-height;
+}
+</style>
