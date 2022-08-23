@@ -1,6 +1,9 @@
 <template>
   <nav id="app-navbar">
     <div class="app-navbar__left">
+      <a v-show="isCurrentRouteNotHome"
+         @click="$router.back()"
+         class="app-navbar__go-back animation-button"><v-icon>mdi-chevron-left</v-icon></a>
       <div class="app-navbar__title">To. Anyone</div>
     </div>
 
@@ -21,6 +24,10 @@ import AppNavbarProfileMenu from "./AppNavbarProfileMenu.vue";
 })
 export default class AppNavbar extends Vue {
   private tempProfileImage = "https://picsum.photos/seed/toanyone/300";
+
+  get isCurrentRouteNotHome(): boolean {
+    return this.$route.name !== "main";
+  }
 }
 </script>
 
@@ -49,6 +56,12 @@ export default class AppNavbar extends Vue {
     &__title {
       font-size: 2em;
       font-weight: 900;
+    }
+
+    &__go-back {
+      cursor: pointer;
+      font-size: 2em;
+      margin-right: 0.5em;
     }
   }
 }
