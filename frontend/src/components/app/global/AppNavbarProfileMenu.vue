@@ -1,5 +1,5 @@
 <template>
-  <div class="app-navbar__profile-menu">
+  <div class="app-navbar__profile-menu animation-button">
     <img class="app-navbar__profile-menu__profile-image" :src="profileImageUrl" />
     <div class="app-navbar__profile-menu__nickname">{{ $store.state.auth.userBasicInfo.nickname }}</div>
   </div>
@@ -25,15 +25,6 @@ export default class AppNavbarProfileMenu extends Vue {
   background-color: rgba($color-foreground, 0.2);
   border-radius: 999em;
   box-shadow: 0 0.33em 0.75em rgba(24, 24, 24, 0.5);
-  transition: transform 0.25s cubic-bezier(0, 0, 0, 1);
-
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
 
   &__profile-image {
     aspect-ratio: 1;

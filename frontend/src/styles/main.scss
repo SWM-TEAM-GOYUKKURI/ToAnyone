@@ -18,3 +18,16 @@ html, body {
   // height: 100%;
   height: auto;
 }
+
+/* Often-used transitions */
+.animation-button {
+  transition: transform 0.25s cubic-bezier(0, 0, 0, 1);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
