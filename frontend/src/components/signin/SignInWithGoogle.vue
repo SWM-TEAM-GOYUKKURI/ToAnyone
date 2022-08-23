@@ -43,7 +43,6 @@ export default class SignInWithGoogle extends Vue {
         token: string,
       };
 
-      // TODO: test needs from below
       const user: IUserBasicInfo = {
         nickname: response.name,
       };
