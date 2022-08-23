@@ -1,6 +1,5 @@
 <template>
-  <nav>
-  </nav>
+  <app-navbar />
 
   <div id="app-wrapper">
     <router-view />
@@ -8,8 +7,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { Options, Vue } from "vue-class-component";
+import AppNavbar from "@/components/app/global/AppNavbar.vue";
 
+@Options({
+  components: {
+    AppNavbar,
+  },
+})
 export default class AppPagesWrapper extends Vue {
 
 }
