@@ -2,7 +2,11 @@
   <app-navbar />
 
   <div id="app-wrapper">
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <v-fade-transition>
+        <component :is="Component" />
+      </v-fade-transition>
+    </router-view>
   </div>
 </template>
 
