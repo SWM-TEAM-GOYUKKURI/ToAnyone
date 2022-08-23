@@ -5,6 +5,7 @@ html, body {
   height: 100%;
   overflow-x: none;
   overflow-y: auto;
+  word-break: keep-all;
 
   &, * {
     user-select: none;
@@ -14,5 +15,6 @@ html, body {
 
 #app {
   width: 100%;
-  height: 100%;
+  // height: 100%;
+  height: auto;
 }
