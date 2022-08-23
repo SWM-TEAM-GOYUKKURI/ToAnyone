@@ -12,8 +12,8 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import googleSigninScript from "@/plugins/signin/google/index";
-import SignInWithGoogle from "@/components/signin/SignInWithGoogle.vue";
-import SignInWithKakao from "@/components/signin/SignInWithKakao.vue";
+import SignInWithGoogle from "@/components/app/signin/SignInWithGoogle.vue";
+import SignInWithKakao from "@/components/app/signin/SignInWithKakao.vue";
 
 @Options({
   components: {
