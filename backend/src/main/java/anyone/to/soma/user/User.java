@@ -3,9 +3,9 @@ package anyone.to.soma.user;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,15 +13,34 @@ import javax.persistence.Id;
 public class User {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String email;
 
     private String name;
 
-    public User(String id, String email, String name) {
+    @Enumerated(EnumType.STRING)
+    private LoginType loginType;
+
+    @Nullable
+    private String uniqueId;
+
+    private final int receiveCount = 0;
+
+    public User(String email, String name, LoginType loginType, String uniqueId) {
+        this(null, email, name, loginType, uniqueId);
+    }
+
+    public User(String email, String name) {
+        this(null, email, name, LoginType.COMMON, null);
+    }
+
+    private User(Long id, String email, String name, LoginType loginType, String uniqueId) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.loginType = loginType;
+        this.uniqueId = uniqueId;
     }
 }
