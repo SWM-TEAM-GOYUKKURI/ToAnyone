@@ -26,7 +26,11 @@ public class User {
     @Nullable
     private String uniqueId;
 
-    private final int receiveCount = 0;
+    private int receiveCount = 0;
+
+    public void receiveLetter() {
+        receiveCount++;
+    }
 
     public User(String email, String name, LoginType loginType, String uniqueId) {
         this(null, email, name, loginType, uniqueId);
@@ -43,4 +47,6 @@ public class User {
         this.loginType = loginType;
         this.uniqueId = uniqueId;
     }
+
+
 }
