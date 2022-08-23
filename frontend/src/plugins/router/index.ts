@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import AppPagesWrapper from "@/pages/app/AppPagesWrapper.vue";
 import MainPage from "@/pages/app/MainPage.vue";
 import LoginPage from "@/pages/app/signin/LoginPage.vue";
 import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
@@ -10,8 +11,41 @@ import LetterViewPage from "@/pages/app/letter/LetterViewPage.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "main",
-    component: MainPage,
+    name: "app-wrapper",
+    component: AppPagesWrapper,
+    children: [
+      /* Main */
+      {
+        path: "/",
+        name: "main",
+        component: MainPage,
+      },
+
+      /* Profile */
+      {
+        path: "profile",
+        name: "profile",
+        component: ProfilePage,
+      },
+      {
+        path: "profile/edit",
+        name: "profile-edit",
+        component: ProfileEditPage,
+      },
+
+      /* Letter */
+      {
+        path: "letter/write",
+        name: "letter-write",
+        component: LetterWritePage,
+      },
+      {
+        path: "letter/view",
+        name: "letter-view",
+        component: LetterViewPage,
+        props: true,
+      },
+    ],
   },
 
   /* Login / Logout */
@@ -24,31 +58,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/logout",
     name: "logout",
     component: LogoutPage,
-  },
-
-  /* Profile */
-  {
-    path: "/profile",
-    name: "profile",
-    component: ProfilePage,
-  },
-  {
-    path: "/profile/edit",
-    name: "profile-edit",
-    component: ProfileEditPage,
-  },
-
-  /* Letter */
-  {
-    path: "/letter/write",
-    name: "letter-write",
-    component: LetterWritePage,
-  },
-  {
-    path: "/letter/view",
-    name: "letter-view",
-    component: LetterViewPage,
-    props: true,
   },
 ];
 
