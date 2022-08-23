@@ -1,10 +1,16 @@
 <template>
   <nav id="app-navbar">
     <div class="app-navbar__left">
-      <a v-show="isCurrentRouteNotHome"
-         @click="$router.back()"
-         class="app-navbar__go-back animation-button"><v-icon>mdi-chevron-left</v-icon></a>
-      <div class="app-navbar__title">To. Anyone</div>
+      <v-slide-x-transition group
+                            leave-absolute
+                            origin="center center">
+        <a v-show="isCurrentRouteNotHome"
+           key="1"
+           @click="$router.back()"
+           class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
+        <div class="app-navbar__title"
+             key="2">To. Anyone</div>
+      </v-slide-x-transition>
     </div>
 
     <div class="app-navbar__right">
