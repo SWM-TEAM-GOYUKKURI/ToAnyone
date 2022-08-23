@@ -46,3 +46,7 @@ swagger:
   host: dev-api.toanyone.im
   protocol: https
 
+
+request:
+  origins: https://localhost:3000, https://code.miku.cloud:8443, https://dev.toanyone.im
+
