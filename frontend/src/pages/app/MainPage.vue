@@ -8,6 +8,8 @@
       <router-link :to="{ name: 'letter-write' }"
                    class="temp-write-letter-button animation-button">익명 편지 쓰기 <v-icon>mdi-chevron-right</v-icon></router-link>
     </div>
+
+    <div style="margin-top: 5rem">개발 중입니다.</div>
   </div>
 </template>
 
