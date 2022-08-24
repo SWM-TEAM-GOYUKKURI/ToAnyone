@@ -3,7 +3,7 @@
 
   <div id="app-wrapper">
     <router-view v-slot="{ Component }">
-      <v-fade-transition>
+      <v-fade-transition leave-absolute>
         <component :is="Component" />
       </v-fade-transition>
     </router-view>
