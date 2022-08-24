@@ -29,19 +29,14 @@ public class LetterService {
     }
 
     private User findRandomReceiver(Long senderId) {
-        List<User> userList = userRepository.findUsersByMinReceieveCount();
-
-        Optional<User> sender = userList.stream().filter(s -> s.getId().equals(senderId)).findFirst();
-        sender.ifPresent(userList::remove);
+        List<User> userList = userRepository.findUsersByMinReceiveCount(senderId);
 
         if (userList.isEmpty()) {
             throw new IllegalArgumentException("편지를 보낼 사람이 없습니다.");
         }
 
         Random random = new Random();
-        User user = userList.get(random.nextInt(userList.size()));
-
-        return user;
+        return userList.get(random.nextInt(userList.size()));
 
     }
 }

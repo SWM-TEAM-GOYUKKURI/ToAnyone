@@ -4,6 +4,7 @@ import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.base.IntegrationTest;
 import anyone.to.soma.user.dto.LoginResponse;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,7 +35,13 @@ class UserServiceTest extends IntegrationTest {
 
     @Test
     void findMinReceiveCountTest() {
-        List<User> usersByMinReceieveCount = userRepository.findUsersByMinReceieveCount();
-        System.out.println(usersByMinReceieveCount);
+        List<User> usersByMinReceieveCount = userRepository.findUsersByMinReceiveCount(user.getId());
+        assertThat(usersByMinReceieveCount.size()).isEqualTo(1);
+        assertThat(usersByMinReceieveCount.get(0).getReceiveCount()).isEqualTo(1);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAllInBatch();
     }
 }
