@@ -1,5 +1,7 @@
 package anyone.to.soma.letter;
 
+import anyone.to.soma.exception.ApplicationException;
+import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.letter.dto.InboxLetterResponse;
 import anyone.to.soma.letter.dto.LetterRequest;
 import anyone.to.soma.user.User;
@@ -20,13 +22,13 @@ public class LetterService {
 
     @Transactional(readOnly = true)
     public InboxLetterResponse retrieveInboxSingleLetter(Long letterId) {
-        Letter letter = letterRepository.findById(letterId).orElseThrow(IllegalArgumentException::new);
+        Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
         return InboxLetterResponse.of(letter, letter.getReceiver().getName());
     }
 
     public List<InboxLetterResponse> retrieveInboxAllLetters(Long receiverId) {
         List<Letter> letter = letterRepository.findLettersByReceiverId(receiverId);
-        User receiver = userRepository.findById(receiverId).orElseThrow(IllegalArgumentException::new);
+        User receiver = userRepository.findById(receiverId).orElseThrow(NoSuchRecordException::new);
         return InboxLetterResponse.listOf(letter, receiver.getName());
     }
 
@@ -44,7 +46,7 @@ public class LetterService {
         List<User> userList = userRepository.findUsersByMinReceiveCount(senderId);
 
         if (userList.isEmpty()) {
-            throw new IllegalArgumentException("편지를 보낼 사람이 없습니다.");
+            throw new ApplicationException("편지를 보낼 사람이 없습니다.");
         }
 
         Random random = new Random();

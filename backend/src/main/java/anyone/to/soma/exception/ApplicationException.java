@@ -11,6 +11,11 @@ public class ApplicationException extends RuntimeException{
         this.httpStatus = httpStatus;
     }
 
+    public ApplicationException(String message) {
+        super(message);
+        this.httpStatus = HttpStatus.NOT_FOUND;
+    }
+
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
