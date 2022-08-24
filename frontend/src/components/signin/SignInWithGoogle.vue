@@ -6,6 +6,8 @@
 import { Vue } from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import { GoogleAuthResponse } from "@/plugins/signin/google";
+import { bePOST } from "@/util/backend";
+import { IUserBasicInfo } from "@/interfaces/IUserInfo";
 
 export default class SignInWithGoogle extends Vue {
   @Prop({ type: Boolean, default: false }) loaded!: boolean;
@@ -32,11 +34,26 @@ export default class SignInWithGoogle extends Vue {
   }
 
   async loginCallback(data: GoogleAuthResponse) {
-    // NOTE: JWT 토큰 파싱은 백엔드에서 처리하고, 파싱된 데이터(ID, 계정 이름 등)는 로그인 처리 응답의 일부로 받도록 합니다.
-    //       프론트엔드에서는 백엔드에 이 JWT 토큰을 그대로 전송합니다.
+    try {
+      const response = (await bePOST("/login/google", {}, {
+        credential: data.credential,
+      })) as {
+        name: string,
+        email: string,
+        token: string,
+      };
 
-    console.log(data); // TO BE REMOVED
-    // to be filled
+      const user: IUserBasicInfo = {
+        nickname: response.name,
+      };
+
+      this.$store.commit("auth/registerLoginState", { user, token: response.token });
+      this.$cookies.set("userSession", response.token);
+
+      this.$router.replace({ name: "main" });
+    } catch(e) {
+      console.error(e);
+    }
   }
 }
 </script>

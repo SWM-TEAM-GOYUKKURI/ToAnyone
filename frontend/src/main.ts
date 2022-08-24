@@ -4,6 +4,7 @@ import App from "./App.vue";
 import router from "./plugins/router";
 import store from "./plugins/store";
 import vuetify from "./plugins/vuetify";
+import "./plugins/axios/defaults";
 import "./plugins/service-worker/register";
 
 import "normalize.css";

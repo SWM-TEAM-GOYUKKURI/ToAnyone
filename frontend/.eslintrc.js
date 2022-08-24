@@ -26,6 +26,7 @@ module.exports = {
         switch: { after: false },
         for: { after: false },
         while: { after: false },
+        catch: { after: false },
       },
     }],
     "space-before-function-paren": ["error", {
