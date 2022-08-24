@@ -53,6 +53,8 @@ export default class AppNavbar extends Vue {
   height: $app-navbar-height;
   padding: $app-navbar-padding-y $app-navbar-padding-x;
 
+  backdrop-filter: blur(3px);
+
   .app-navbar {
     &__left, &__right {
       display: flex;
