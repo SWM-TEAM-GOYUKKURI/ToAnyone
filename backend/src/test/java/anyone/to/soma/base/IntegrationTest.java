@@ -33,7 +33,7 @@ public class IntegrationTest {
         User somni = new User("somni@gmail.com", "somni");
         somni.receiveLetter();
         user1 = userRepository.save(somni);
-        user = userRepository.save(new User("test@gmail.com", "test"));
+        user = userRepository.save(new User("receiver@gmail.com", "receiver"));
     }
 
     private boolean notExecutingBeforeEachTest(TestInfo testInfo) {

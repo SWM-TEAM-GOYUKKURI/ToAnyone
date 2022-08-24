@@ -1,5 +1,6 @@
 package anyone.to.soma.letter;
 
+import anyone.to.soma.letter.dto.InboxLetterResponse;
 import anyone.to.soma.letter.dto.LetterRequest;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -17,6 +17,18 @@ public class LetterService {
 
     private final LetterRepository letterRepository;
     private final UserRepository userRepository;
+
+    @Transactional(readOnly = true)
+    public InboxLetterResponse retrieveInboxSingleLetter(Long letterId) {
+        Letter letter = letterRepository.findById(letterId).orElseThrow(IllegalArgumentException::new);
+        return InboxLetterResponse.of(letter, letter.getReceiver().getName());
+    }
+
+    public List<InboxLetterResponse> retrieveInboxAllLetters(Long receiverId) {
+        List<Letter> letter = letterRepository.findLettersByReceiverId(receiverId);
+        User receiver = userRepository.findById(receiverId).orElseThrow(IllegalArgumentException::new);
+        return InboxLetterResponse.listOf(letter, receiver.getName());
+    }
 
     @Transactional
     public Long writeLetter(LetterRequest request, User sender) {
@@ -37,6 +49,5 @@ public class LetterService {
 
         Random random = new Random();
         return userList.get(random.nextInt(userList.size()));
-
     }
 }
