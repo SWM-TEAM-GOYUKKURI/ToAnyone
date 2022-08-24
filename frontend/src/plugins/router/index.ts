@@ -7,6 +7,7 @@ import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
 import LetterViewPage from "@/pages/app/letter/LetterViewPage.vue";
+import LetterBoxPage from "@/pages/app/letter/LetterBoxPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +45,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "letter-view",
         component: LetterViewPage,
         props: true,
+      },
+      {
+        path: "letter/box",
+        name: "letter-box",
+        component: LetterBoxPage,
       },
     ],
   },

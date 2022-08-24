@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>LETTER BOX</div>
 </template>
 
 <script lang="ts">
