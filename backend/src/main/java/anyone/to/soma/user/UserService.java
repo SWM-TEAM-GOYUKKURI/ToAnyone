@@ -1,6 +1,7 @@
 package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.user.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ public class UserService {
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
         return new LoginResponse(user.getName(), user.getEmail(), accessToken);
+    }
+
+    public User loginUser(String token){
+        String uniqueId = jwtProvider.googleOAuthJwtToUser(token).getUniqueId();
+        return userRepository.findUserByUniqueId(uniqueId).orElseThrow(NoSuchRecordException::new);
     }
 
 
