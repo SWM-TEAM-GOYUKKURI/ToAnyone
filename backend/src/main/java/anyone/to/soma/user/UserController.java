@@ -3,7 +3,6 @@ package anyone.to.soma.user;
 import anyone.to.soma.user.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +20,6 @@ public class UserController {
         if (token.isBlank()) {
             throw new IllegalArgumentException();
         }
-        return ResponseEntity.ok(userService.signInUser(token));
+        return ResponseEntity.ok(userService.signInGoogleAuthUser(token));
     }
 }

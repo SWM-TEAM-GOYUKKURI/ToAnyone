@@ -42,7 +42,7 @@ class JWTProviderTest {
 
         User user = jwtProvider.googleOAuthJwtToUser(JWT);
 
-        assertThat(user.getId()).isEqualTo(sub);
+        assertThat(user.getUniqueId()).isEqualTo(sub);
         assertThat(user.getEmail()).isEqualTo(email);
     }
 

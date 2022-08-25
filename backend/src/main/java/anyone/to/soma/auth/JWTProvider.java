@@ -1,5 +1,6 @@
 package anyone.to.soma.auth;
 
+import anyone.to.soma.user.LoginType;
 import anyone.to.soma.user.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -37,7 +38,7 @@ public class JWTProvider {
         String id = jwt.getClaim("sub").asString();
         String email = jwt.getClaim("email").asString();
         String name = jwt.getClaim("name").asString();
-        return new User(id, email, name);
+        return new User(email, name, LoginType.GOOGLE, id);
     }
 
     public DecodedJWT decodeJWT(String token) {
