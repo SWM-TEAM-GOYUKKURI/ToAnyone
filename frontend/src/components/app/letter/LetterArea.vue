@@ -66,6 +66,7 @@ export default class LetterArea extends Vue {
   font-size: 1.5em;
   border-radius: 1em;
   background-color: #E9E9CC;
+  box-shadow: 0 1em 1.5em rgba(black, 0.33);
 
   &__content-area {
     display: flex;

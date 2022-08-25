@@ -52,19 +52,16 @@ export default class LetterWritePage extends Vue {
 
   padding: 2rem 0 8rem 0;
 
-  & > * {
-    box-shadow: 0 1em 1.5em rgba(black, 0.33);
-  }
-
   #decor {
     position: absolute;
     left: 0;
     width: $decor-area-width;
     min-height: $contents-min-height;
     background-color: rgba($color-secondary, 0.5);
-    border-top-right-radius: 4rem;
-    border-bottom-right-radius: 4rem;
+    border-top-right-radius: 1.5em;
+    border-bottom-right-radius: 1.5em;
     padding: 1rem;
+    box-shadow: 0 1em 1.5em rgba(black, 0.33);
   }
 
   #letter-write-area {
