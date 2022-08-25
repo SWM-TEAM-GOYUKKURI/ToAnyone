@@ -13,6 +13,11 @@ html, body {
   }
 }
 
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
 #app {
   display: inline-block; // workaround
   width: 100%;
