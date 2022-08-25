@@ -9,7 +9,7 @@
            @click="$router.back()"
            class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
         <div class="app-navbar__title"
-             key="2">To. Anyone</div>
+             key="2">{{ $route.meta.title }}</div>
       </v-slide-x-transition>
     </div>
 

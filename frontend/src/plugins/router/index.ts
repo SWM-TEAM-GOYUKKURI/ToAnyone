@@ -19,6 +19,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/",
         name: "main",
+        meta: { title: "To. Anyone" },
         component: MainPage,
       },
 
@@ -26,11 +27,13 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "profile",
         name: "profile",
+        meta: { title: "프로필" },
         component: ProfilePage,
       },
       {
         path: "profile/edit",
         name: "profile-edit",
+        meta: { title: "프로필 수정" },
         component: ProfileEditPage,
       },
 
@@ -38,17 +41,20 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "letter/write",
         name: "letter-write",
+        meta: { title: "편지 쓰기" },
         component: LetterWritePage,
       },
       {
         path: "letter/view",
         name: "letter-view",
+        meta: { title: "편지 읽기" },
         component: LetterViewPage,
         props: true,
       },
       {
         path: "letter/box",
         name: "letter-box",
+        meta: { title: "편지 보관함" },
         component: LetterBoxPage,
       },
     ],
