@@ -7,6 +7,8 @@
       <!-- temp -->
       <router-link :to="{ name: 'letter-write' }"
                    class="temp-write-letter-button animation-button">익명 편지 쓰기 <v-icon>mdi-chevron-right</v-icon></router-link>
+      <router-link :to="{ name: 'letter-box' }"
+                   class="temp-letter-box-button animation-button"><v-icon>mdi-email-open-multiple</v-icon> 편지 보관함</router-link>
     </div>
 
     <div style="margin-top: 5rem">개발 중입니다.</div>
@@ -44,20 +46,34 @@ export default class MainPage extends Vue {}
     }
   }
 
-  .temp-write-letter-button {
+  .temp-write-letter-button,
+  .temp-letter-box-button {
     display: inline-flex;
     align-items: center;
     padding: 1rem 1.5rem;
     font-size: 1.5rem;
     border-radius: 999em;
-    background-color: $color-secondary;
     text-decoration: none;
     color: currentColor;
     box-shadow: 0 0.33em 0.5em rgba(24, 24, 24, 0.33);
+    margin: 0 0.5em;
 
     i {
       font-size: 1em !important;
+    }
+  }
+
+  .temp-write-letter-button {
+    background-color: $color-secondary;
+    i {
       margin-left: 0.5em;
+    }
+  }
+
+  .temp-letter-box-button {
+    background-color: $color-tertiary;
+    i {
+      margin-right: 0.5em;
     }
   }
 }

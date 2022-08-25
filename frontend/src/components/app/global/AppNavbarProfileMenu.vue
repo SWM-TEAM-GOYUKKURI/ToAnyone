@@ -1,14 +1,21 @@
 <template>
   <div class="app-navbar__profile-menu animation-button">
-    <img class="app-navbar__profile-menu__profile-image" :src="profileImageUrl" />
+    <profile-image class="app-navbar__profile-menu__profile-image"
+                   :srcUrl="profileImageUrl" />
     <div class="app-navbar__profile-menu__nickname">{{ $store.state.auth.userBasicInfo.nickname }}</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
+import ProfileImage from "./ProfileImage.vue";
 
+@Options({
+  components: {
+    ProfileImage,
+  },
+})
 export default class AppNavbarProfileMenu extends Vue {
   @Prop({ type: String, required: true }) profileImageUrl! :string;
 }
@@ -28,7 +35,10 @@ export default class AppNavbarProfileMenu extends Vue {
 
   &__profile-image {
     aspect-ratio: 1;
+    width: auto;
+    max-width: unset;
     height: 100%;
+    max-height: 100%;
     border-radius: 100%;
     margin-right: 0.66em;
   }

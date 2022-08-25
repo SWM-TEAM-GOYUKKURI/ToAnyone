@@ -9,7 +9,7 @@
            @click="$router.back()"
            class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
         <div class="app-navbar__title"
-             key="2">To. Anyone</div>
+             key="2">{{ $route.meta.title }}</div>
       </v-slide-x-transition>
     </div>
 
@@ -52,6 +52,8 @@ export default class AppNavbar extends Vue {
   width: 100%;
   height: $app-navbar-height;
   padding: $app-navbar-padding-y $app-navbar-padding-x;
+
+  backdrop-filter: blur(3px);
 
   .app-navbar {
     &__left, &__right {
