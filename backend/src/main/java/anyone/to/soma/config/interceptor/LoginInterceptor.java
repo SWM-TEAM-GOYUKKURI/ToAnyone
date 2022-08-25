@@ -3,12 +3,14 @@ package anyone.to.soma.config.interceptor;
 import anyone.to.soma.config.annotation.LoginRequired;
 import anyone.to.soma.config.annotation.LoginUser;
 import anyone.to.soma.exception.ApplicationException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Override

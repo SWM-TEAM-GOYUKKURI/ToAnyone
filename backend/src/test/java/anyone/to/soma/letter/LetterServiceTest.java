@@ -1,6 +1,7 @@
 package anyone.to.soma.letter;
 
 import anyone.to.soma.base.IntegrationTest;
+import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.letter.dto.InboxLetterResponse;
 import anyone.to.soma.letter.dto.LetterRequest;
 import anyone.to.soma.user.User;
@@ -37,15 +38,17 @@ class LetterServiceTest extends IntegrationTest {
     @Test
     void noReceiver() {
         User user = userRepository.save(new User("eungi6850@gmail.com", "eungi"));
-        assertThatThrownBy(() -> letterService.writeLetter(letterRequest, user)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> letterService.writeLetter(letterRequest, user)).isInstanceOf(ApplicationException.class);
     }
 
     @Test
     void retrieveInboxLetterTest() {
-        Long letterId = letterService.writeLetter(letterRequest, user1);
-        InboxLetterResponse inboxLetterResponse = letterService.retrieveInboxSingleLetter(letterId);
-        assertThat(inboxLetterResponse.getReceiverName()).isEqualTo(user.getName());
-        assertThat(inboxLetterResponse.getContent()).isEqualTo(letterRequest.getContent());
+        Letter letter = new Letter("content", user);
+        letter.send(user1);
+        Long id = letterRepository.save(letter).getId();
+        InboxLetterResponse inboxLetterResponse = letterService.retrieveInboxSingleLetter(id, user1.getId());
+        assertThat(inboxLetterResponse.getReceiverName()).isEqualTo(user1.getName());
+        assertThat(inboxLetterResponse.getContent()).isEqualTo(letter.getContent());
     }
 
     @Test
