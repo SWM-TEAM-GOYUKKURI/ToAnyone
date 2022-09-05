@@ -57,6 +57,7 @@ export default class AppNavbar extends Vue {
 
   .app-navbar {
     &__left, &__right {
+      position: relative;
       display: flex;
       align-items: center;
       height: 100%;
