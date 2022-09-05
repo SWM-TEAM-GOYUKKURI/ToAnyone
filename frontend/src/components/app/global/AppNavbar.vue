@@ -4,7 +4,7 @@
       <v-slide-x-transition group
                             leave-absolute
                             origin="center center">
-        <a v-show="isCurrentRouteNotHome"
+        <a v-if="isCurrentRouteNotHome"
            key="1"
            @click="$router.back()"
            class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
