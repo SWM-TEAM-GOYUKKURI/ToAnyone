@@ -27,7 +27,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "profile",
         name: "profile",
-        meta: { title: "프로필" },
+        meta: {
+          title: "프로필",
+          hideNavbarMenu: true,
+        },
         component: ProfilePage,
       },
       {

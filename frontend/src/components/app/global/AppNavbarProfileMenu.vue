@@ -1,26 +1,26 @@
 <template>
-  <div class="app-navbar__profile animation-button"
-       @click="menuOpened = !menuOpened">
-    <profile-image class="app-navbar__profile__profile-image"
-                   :srcUrl="profileImageUrl" />
-    <div class="app-navbar__profile__nickname">{{ $store.state.auth.userBasicInfo.nickname }}</div>
-  </div>
-
-  <v-slide-y-transition>
-    <div v-show="menuOpened"
-        class="app-navbar__profile-menu">
-      <router-link class="animation-button"
-                   :to="{ name: 'profile' }"
-                   @click="onMenuClick">
-        <v-icon>mdi-account</v-icon> <span>내 프로필 보기</span>
-      </router-link>
-      <router-link class="animation-button"
-                   :to="{ name: 'logout' }"
-                   @click="onMenuClick">
-        <v-icon>mdi-logout</v-icon> <span>로그아웃</span>
-      </router-link>
+    <div class="app-navbar__profile animation-button"
+        @click="menuOpened = !menuOpened">
+      <profile-image class="app-navbar__profile__profile-image"
+                    :srcUrl="profileImageUrl" />
+      <div class="app-navbar__profile__nickname">{{ $store.state.auth.userBasicInfo.nickname }}</div>
     </div>
-  </v-slide-y-transition>
+
+    <v-slide-y-transition>
+      <div v-show="menuOpened"
+          class="app-navbar__profile-menu">
+        <router-link class="animation-button"
+                    :to="{ name: 'profile' }"
+                    @click="onMenuClick">
+          <v-icon>mdi-account</v-icon> <span>내 프로필 보기</span>
+        </router-link>
+        <router-link class="animation-button"
+                    :to="{ name: 'logout' }"
+                    @click="onMenuClick">
+          <v-icon>mdi-logout</v-icon> <span>로그아웃</span>
+        </router-link>
+      </div>
+    </v-slide-y-transition>
 </template>
 
 <script lang="ts">
