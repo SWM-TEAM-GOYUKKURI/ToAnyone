@@ -1,17 +1,19 @@
 package anyone.to.soma.letter;
 
 import anyone.to.soma.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Letter {
+public class Letter implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -32,12 +32,8 @@ public class UserService {
     }
 
     public User loginUser(String token){
-        String email = jwtProvider.decodeJWT(token).getClaim(EMAIL).asString();
+        String email = jwtProvider.decodeJWT(token).getSubject();
         return userRepository.findUserByEmail(email).orElseThrow(NoSuchRecordException::new);
     }
 
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
 }
