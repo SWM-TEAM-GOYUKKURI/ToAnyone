@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    public static final String EMAIL = "email";
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
 
@@ -29,9 +32,8 @@ public class UserService {
     }
 
     public User loginUser(String token){
-        String uniqueId = jwtProvider.googleOAuthJwtToUser(token).getUniqueId();
-        return userRepository.findUserByUniqueId(uniqueId).orElseThrow(NoSuchRecordException::new);
+        String email = jwtProvider.decodeJWT(token).getSubject();
+        return userRepository.findUserByEmail(email).orElseThrow(NoSuchRecordException::new);
     }
-
 
 }

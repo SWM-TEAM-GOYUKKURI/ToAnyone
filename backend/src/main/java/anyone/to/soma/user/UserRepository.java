@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsUserByUniqueId(String uniqueId);
 
+    Optional<User> findUserByEmail(String email);
+
     Optional<User> findUserByUniqueId(String uniqueId);
 
     @Query(value = "SELECT u FROM User as u WHERE u.receiveCount =" +

@@ -9,5 +9,9 @@ public class NoSuchRecordException extends ApplicationException {
         super("데이터베이스에 해당 항목이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
+    public NoSuchRecordException(String message) {
+        super(message, HttpStatus.BAD_REQUEST);
+    }
+
 
 }
