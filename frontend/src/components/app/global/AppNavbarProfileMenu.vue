@@ -48,7 +48,7 @@ export default class AppNavbarProfileMenu extends Vue {
   flex-direction: row;
   align-items: center;
   height: 100%;
-  background-color: rgba($color-foreground, 0.33);
+  background-color: lighten($color-background, 20%);
   border-radius: 999em;
   box-shadow: 0 0.33em 0.75em rgba(24, 24, 24, 0.5);
 }
