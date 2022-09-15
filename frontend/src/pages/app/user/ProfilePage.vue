@@ -6,7 +6,8 @@
 
         <div class="profile__my-area__image-nickname__info">
           <span class="nickname">{{ $store.state.auth.userBasicInfo.nickname }}</span>
-          <span class="info">(나이대) / (성별)</span> <!-- TODO: 이 정보는 다른 사람에게 보여지지 않는다는 툴팁 표시 -->
+          <span class="info"
+                title="이 정보는 다른 사람들에게 보여지지 않아요!">(나이대) / (성별)</span>
         </div>
       </div>
 
@@ -43,6 +44,10 @@ import ProfileImage from "@/components/app/global/ProfileImage.vue";
 })
 export default class ProfilePage extends Vue {
   private tempProfileImage = "https://picsum.photos/seed/toanyone/300";
+
+  mounted(): void {
+    // TODO: request to backend for user profile data
+  }
 }
 </script>
 
@@ -69,6 +74,7 @@ export default class ProfilePage extends Vue {
         align-items: center;
 
         &__info {
+          cursor: help;
           display: flex;
           flex-direction: column;
           justify-content: center;
