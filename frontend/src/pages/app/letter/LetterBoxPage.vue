@@ -1,15 +1,24 @@
 <template>
   <div id="letter-box-wrapper">
-    <letter-box-item v-for="item in letterItems"
-                     :key="item.letterId"
-                     :letterItem="item" />
+    <v-progress-circular v-if="!requestCompleted"
+                        indeterminate />
+
+    <div v-if="requestCompleted && _letterItems.length > 0">
+      <letter-box-item v-for="item in letterItems"
+                       :key="item.letterId"
+                       :letterItem="item" />
+    </div>
+    <div v-else-if="requestCompleted && _letterItems.length <= 0">
+      <span>아직 받은 편지가 없어요...</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterBoxItem from "@/components/app/letter/LetterBoxItem.vue";
-import { ILetterItemPreview } from "@/interfaces/ILetterItem";
+import { beGET } from "@/util/backend";
+import { ILetterBoxItem } from "@/interfaces/ILetterItem";
 
 @Options({
   components: {
@@ -17,39 +26,27 @@ import { ILetterItemPreview } from "@/interfaces/ILetterItem";
   },
 })
 export default class LetterBoxPage extends Vue {
-  testLetterItems: ILetterItemPreview[] = [{
-    letterId: 999999,
-    sender: {
-      nickname: "테스트 발신자 1",
-      profileImageId: 30000,
-    },
-    sentAt: new Date(),
-    readBefore: true,
-    previewTextContent: "간장 공장 공장장은 강 공장장이고 된장 공장 공장장은 공 공장장이다.",
-  }, {
-    letterId: 999998,
-    sender: {
-      nickname: "테스트 발신자 2",
-      profileImageId: 30001,
-    },
-    sentAt: new Date(),
-    readBefore: false,
-    previewTextContent: "내가 그린 기린 그림은 목이 긴 기린 그린 그림이고, 네가 그린 기린 그림은 목이 안 긴 기린 그린 그림이다.",
-  }];
+  _letterItems: ILetterBoxItem[] = [];
+  requestCompleted = false;
 
-  get letterItems(): ILetterItemPreview[] {
-    return Array.from(this.testLetterItems).sort((a, b) => {
-      // TODO: should test this sort condition is reliable
-
-      if(a.readBefore === b.readBefore) {
-        if(a.sentAt > b.sentAt) return 1;
-        if(a.sentAt < b.sentAt) return -1;
-      } else {
-        return a.readBefore ? 1 : -1;
-      }
+  get letterItems(): ILetterBoxItem[] {
+    return Array.from(this._letterItems).sort((a, b) => {
+      // TODO: sort by read status, receive data... need more data from backend
 
       return 0;
     });
+  }
+
+  async mounted() {
+    const response = await beGET("/letter/inbox", { credentials: this.$store.state.auth.token! });
+
+    if(response.statusCode === 200) {
+      this._letterItems = response.data as unknown as ILetterBoxItem[];
+    } else {
+      this._letterItems = [];
+    }
+
+    this.requestCompleted = true;
   }
 
   onLetterBoxItemClick(): void {

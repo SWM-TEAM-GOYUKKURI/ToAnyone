@@ -1,4 +1,12 @@
-export interface ILetterItemPreview {
+
+export interface ILetterBoxItem {
+  id: number,
+  content: string,
+  receiverName: string,
+  sendDate: Date,
+}
+
+/* export interface ILetterItemPreview {
   letterId: number,
   sender: {
     nickname: string,
@@ -11,4 +19,4 @@ export interface ILetterItemPreview {
 
 export interface ILetterItem extends ILetterItemPreview {
   textContent: string,
-}
+} */

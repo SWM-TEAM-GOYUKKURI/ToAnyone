@@ -18,7 +18,7 @@
 import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
-import { ILetterItemPreview } from "@/interfaces/ILetterItem";
+import { ILetterBoxItem } from "@/interfaces/ILetterItem";
 
 @Options({
   components: {
@@ -26,7 +26,7 @@ import { ILetterItemPreview } from "@/interfaces/ILetterItem";
   },
 })
 export default class LetterBoxItem extends Vue {
-  @Prop({ type: Object, required: true }) letterItem!: ILetterItemPreview;
+  @Prop({ type: Object, required: true }) letterItem!: ILetterBoxItem;
 }
 </script>
 
