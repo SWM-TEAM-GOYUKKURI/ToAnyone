@@ -9,7 +9,7 @@
                        :letterItem="item" />
     </div>
     <div v-else-if="requestCompleted && _letterItems.length <= 0">
-      <span>아직 받은 편지가 없어요...</span>
+      <span class="no-letters">아직 받은 편지가 없어요😖</span>
     </div>
   </div>
 </template>
@@ -59,8 +59,17 @@ export default class LetterBoxPage extends Vue {
 #letter-box-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 2em 0;
   width: 75vw;
   margin: auto;
+
+  & > * {
+    text-align: center;
+  }
+
+  .no-letters {
+    font-size: 2em;
+  }
 }
 </style>
