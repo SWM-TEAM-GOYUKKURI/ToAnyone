@@ -14,8 +14,15 @@
     <div v-if="letterWriteMode"
          class="letter-area__send-button animation-button"
          @click="$emit('sendButtonClick')">
-          <v-icon>mdi-send</v-icon>
-          <span>편지 보내기</span>
+         <v-fade-transition leave-absolute>
+            <div v-if="!letterSendInProgress">
+              <v-icon>mdi-send</v-icon>
+              <span>편지 보내기</span>
+            </div>
+            <div v-else>
+              <v-progress-circular indeterminate />
+            </div>
+         </v-fade-transition>
     </div>
   </div>
 </template>
@@ -32,6 +39,7 @@ import contenteditable from "vue-contenteditable";
 })
 export default class LetterArea extends Vue {
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
+  @Prop({ type: Boolean, default: false }) letterSendInProgress!: boolean;
   @Prop({ type: String, default: "SENDER" }) senderNickname!: string;
   @Prop({ type: String, default: "RECEIVER" }) receiverNickname!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
@@ -96,16 +104,24 @@ export default class LetterArea extends Vue {
     position: absolute;
     right: -1.5em;
     bottom: -1.5em;
+    min-width: 250px;
     padding: 1em;
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: $color-primary;
     border-radius: 999em;
     box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
     z-index: 1;
 
-    & > * {
-      margin: 0 0.25em;
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & > * {
+        margin: 0 0.25em;
+      }
     }
   }
 }
