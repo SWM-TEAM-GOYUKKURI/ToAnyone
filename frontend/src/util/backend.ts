@@ -2,8 +2,11 @@ import axios, { AxiosRequestHeaders } from "axios";
 
 const BE_URL: string = process.env.VUE_APP_BACKEND_URL;
 
-export async function beGET(endpoint: string, headers?: AxiosRequestHeaders): Promise<{ statusCode: number, data: Record<string, unknown> }> {
-  const response = await axios.get(`${BE_URL}/${endpoint}`, { headers });
+export async function beGET(endpoint: string, data?: Record<string, unknown> | null, headers?: AxiosRequestHeaders): Promise<{ statusCode: number, data: Record<string, unknown> }> {
+  const response = await axios.get(`${BE_URL}/${endpoint}`, {
+    headers,
+    params: data,
+  });
 
   return {
     statusCode: response.status,

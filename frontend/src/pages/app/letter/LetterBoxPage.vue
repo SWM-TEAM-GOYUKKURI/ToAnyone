@@ -38,7 +38,7 @@ export default class LetterBoxPage extends Vue {
   }
 
   async mounted() {
-    const response = await beGET("/letter/inbox", { credentials: this.$store.state.auth.token! });
+    const response = await beGET("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
 
     if(response.statusCode === 200) {
       this._letterItems = response.data as unknown as ILetterBoxItem[];
