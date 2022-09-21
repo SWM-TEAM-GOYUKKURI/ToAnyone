@@ -1,15 +1,15 @@
 <template>
   <router-link class="letter-box-item animation-button"
-               :class="{ 'not-read': !letterItem.readBefore }"
-               :to="{ name: 'letter-view', params: { letterId: letterItem.letterId }}">
+               :class="{ 'not-read': false /* !letterItem.readBefore */ }"
+               :to="{ name: 'letter-view', params: { letterId: letterItem.id }}">
     <div class="letter-box-item__profile-area">
       <profile-image class="letter-box-item__profile-image"
-                     :srcUrl="'https://picsum.photos/seed/toanyone' + letterItem.sender.profileImageId + '/300'" />
+                     :srcUrl="'https://picsum.photos/seed/toanyone' + null /*letterItem.sender.profileImageId */ + '/300'" />
     </div>
 
     <div class="letter-box-item__content-area">
-      <div class="letter-box-item__content-area__sender">From. {{ letterItem.sender.nickname }}</div>
-      <div class="letter-box-item__content-area__preview-content">{{ letterItem.previewTextContent }}</div>
+      <div class="letter-box-item__content-area__sender">From. {{ "null" /* letterItem.sender.nickname */ }}</div>
+      <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
     </div>
   </router-link>
 </template>
@@ -26,6 +26,7 @@ import { ILetterBoxItem } from "@/interfaces/ILetterItem";
   },
 })
 export default class LetterBoxItem extends Vue {
+  /* TODO: Needed data for letterItem: sender data(nickname/profile image id), letter read status */
   @Prop({ type: Object, required: true }) letterItem!: ILetterBoxItem;
 }
 </script>
