@@ -1,7 +1,9 @@
 package anyone.to.soma.decoration;
 
 
+import anyone.to.soma.letter.Letter;
 import anyone.to.soma.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,7 @@ public class Decoration {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Decoration(DecorationType decorationType, int count, User user) {
