@@ -1,6 +1,9 @@
 package anyone.to.soma.letter.dto;
 
+import anyone.to.soma.decoration.Decoration;
+import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.letter.Letter;
+import anyone.to.soma.letter.LetterDecoration;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +22,10 @@ public class InboxLetterResponse {
     private String content;
     private LocalDate sendDate;
     private String receiverName;
+    private List<LetterDecoration> decorations;
 
     public static InboxLetterResponse of(Letter letter, String receiverName) {
-        return new InboxLetterResponse(letter.getId(), letter.getContent(), letter.getSendDate(), receiverName);
+        return new InboxLetterResponse(letter.getId(), letter.getContent(), letter.getSendDate(), receiverName, letter.getLetterDecorations());
     }
 
     public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
