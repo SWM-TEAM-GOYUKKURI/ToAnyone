@@ -29,7 +29,7 @@ export default class LetterWritePage extends Vue {
   letterSendInProgress = false;
 
   async onSendButtonClick() {
-    if(this.letterTextContent.length > 0) {
+    if(!this.letterSendInProgress && this.letterTextContent.length > 0) {
       this.letterSendInProgress = true;
 
       const response = await bePOST("/letter", {
