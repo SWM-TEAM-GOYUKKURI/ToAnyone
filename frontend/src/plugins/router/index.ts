@@ -36,7 +36,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "profile/edit",
         name: "profile-edit",
-        meta: { title: "프로필 수정" },
+        meta: {
+          title: "프로필 수정",
+          hideNavbarMenu: true,
+        },
         component: ProfileEditPage,
       },
 
