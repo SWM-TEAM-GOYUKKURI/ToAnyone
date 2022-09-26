@@ -23,7 +23,8 @@
       </div>
     </div>
 
-    <div>프로필 수정 버튼</div>
+    <!-- ↓ TODO: styling -->
+    <router-link :to="{ name: 'profile-edit' }" style="color: #FFFFAA">(프로필 수정 버튼)</router-link>
 
     <h1>통계</h1>
     <div>(icon) nnnn년 nn월 nn일<br />에 마음을 나누기 시작했어요</div>
