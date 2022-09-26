@@ -4,7 +4,7 @@
       <v-slide-x-transition group
                             leave-absolute
                             origin="center center">
-        <a v-show="isCurrentRouteNotHome"
+        <a v-if="isCurrentRouteNotHome"
            key="1"
            @click="$router.back()"
            class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
@@ -14,7 +14,8 @@
     </div>
 
     <div class="app-navbar__right">
-      <app-navbar-profile-menu :profileImageUrl="tempProfileImage" />
+      <app-navbar-profile-menu v-if="!$route.meta.hideNavbarMenu"
+                              :profileImageUrl="tempProfileImage" />
     </div>
   </nav>
 </template>
@@ -57,6 +58,7 @@ export default class AppNavbar extends Vue {
 
   .app-navbar {
     &__left, &__right {
+      position: relative;
       display: flex;
       align-items: center;
       height: 100%;

@@ -27,13 +27,19 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "profile",
         name: "profile",
-        meta: { title: "프로필" },
+        meta: {
+          title: "프로필",
+          hideNavbarMenu: true,
+        },
         component: ProfilePage,
       },
       {
         path: "profile/edit",
         name: "profile-edit",
-        meta: { title: "프로필 수정" },
+        meta: {
+          title: "프로필 수정",
+          hideNavbarMenu: true,
+        },
         component: ProfileEditPage,
       },
 
