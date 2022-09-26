@@ -7,6 +7,7 @@
     <letter-area id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
+                 :letterSendInProgress="letterSendInProgress"
                  @sendButtonClick="onSendButtonClick" />
   </div>
 </template>
@@ -15,6 +16,7 @@
 import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
+import { bePOST } from "@/util/backend";
 
 @Options({
   components: {
@@ -24,9 +26,27 @@ import LetterArea from "@/components/app/letter/LetterArea.vue";
 })
 export default class LetterWritePage extends Vue {
   letterTextContent = "";
+  letterSendInProgress = false;
 
-  onSendButtonClick(): void {
-    // TO BE IMPLEMENTED
+  async onSendButtonClick() {
+    if(!this.letterSendInProgress && this.letterTextContent.length > 0) {
+      this.letterSendInProgress = true;
+
+      const response = await bePOST("/letter", {
+        content: this.letterTextContent,
+      }, {
+        credentials: this.$store.state.auth.token!,
+      });
+
+      if(response.statusCode === 201) {
+        // HTTP 201 Created: Letter sent successfully
+        this.letterTextContent = "";
+      } else {
+        // Error handling
+      }
+
+      this.letterSendInProgress = false;
+    }
   }
 
   onEditorKeyDown(event: KeyboardEvent): void {
