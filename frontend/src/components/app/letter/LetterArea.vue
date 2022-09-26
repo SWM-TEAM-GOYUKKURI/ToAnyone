@@ -13,6 +13,7 @@
 
     <div v-if="letterWriteMode"
          class="letter-area__send-button animation-button"
+         :class="{ 'disabled': letterSendInProgress }"
          @click="$emit('sendButtonClick')">
          <v-fade-transition leave-absolute>
             <div v-if="!letterSendInProgress">
@@ -114,10 +115,16 @@ export default class LetterArea extends Vue {
     box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
     z-index: 1;
 
+    &.disabled {
+      pointer-events: none;
+      background-color: gray;
+    }
+
     & > div {
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
 
       & > * {
         margin: 0 0.25em;
