@@ -147,11 +147,16 @@ export default class ProfilePage extends Vue {
   top: 0;
   bottom: 0;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.33);
+  background: rgba(#000, 0.5);
 
   .content {
     pointer-events: initial;
     display: block;
+    padding: 2rem;
+    min-width: 50vw;
+    border-radius: 1rem;
+    background: $color-background;
+    box-shadow: 0 0.5rem 1rem rgba(#000, 0.33);
   }
 }
 </style>
