@@ -32,15 +32,17 @@ const routes: Array<RouteRecordRaw> = [
           hideNavbarMenu: true,
         },
         component: ProfilePage,
-      },
-      {
-        path: "profile/edit",
-        name: "profile-edit",
-        meta: {
-          title: "프로필 수정",
-          hideNavbarMenu: true,
-        },
-        component: ProfileEditPage,
+        children: [
+          {
+            path: "profile/edit",
+            name: "profile-edit",
+            meta: {
+              title: "프로필 수정",
+              hideNavbarMenu: true,
+            },
+            component: ProfileEditPage,
+          },
+        ],
       },
 
       /* Letter */

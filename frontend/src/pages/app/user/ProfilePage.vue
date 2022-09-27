@@ -31,6 +31,15 @@
     <div>(icon) 총 nn일<br />To. Anyone을 찾아와주셨어요</div>
     <div>(icon) nn통<br />의 편지를 보냈어요</div>
     <div>(icon) nn통<br />의 편지를 받았어요</div>
+
+    <v-fade-transition>
+      <div v-if="$route.name == 'profile-edit'"
+           id="profile-page-edit-view">
+        <div class="content">
+          <router-view />
+        </div>
+      </div>
+    </v-fade-transition>
   </div>
 </template>
 
@@ -124,6 +133,25 @@ export default class ProfilePage extends Vue {
         }
       }
     }
+  }
+}
+
+#profile-page-edit-view {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.33);
+
+  .content {
+    pointer-events: initial;
+    display: block;
   }
 }
 </style>
