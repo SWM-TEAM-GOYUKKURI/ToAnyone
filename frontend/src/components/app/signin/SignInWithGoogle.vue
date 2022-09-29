@@ -55,7 +55,7 @@ export default class SignInWithGoogle extends Vue {
       if(!response.signed_up) {
         this.$router.replace({ name: "signup-profile" });
       } else {
-        this.$router.replace({ name: "main" });
+        window.location.href = "/";
       }
     } catch(e) {
       console.error(e);

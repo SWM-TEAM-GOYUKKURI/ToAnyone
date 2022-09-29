@@ -22,7 +22,7 @@ export default class SignupPersonalDataPage extends Vue {
         },
         token: this.$store.state.auth.token,
       });
-      this.$router.replace({ name: "main" });
+      window.location.href = "/";
     }
   }
 }
