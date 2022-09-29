@@ -1,5 +1,6 @@
 export interface IUserBasicInfo {
   nickname: string,
+  signedUp: boolean,
   // TODO: more items to be added
 }
 

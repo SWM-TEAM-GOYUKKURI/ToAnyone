@@ -41,17 +41,22 @@ export default class SignInWithGoogle extends Vue {
         name: string,
         email: string,
         token: string,
-        // TODO: a boolean value (first login(no personal data) or not)
+        signed_up: boolean, // TODO: match key name with backend response
       };
 
       const user: IUserBasicInfo = {
         nickname: response.name,
+        signedUp: response.signed_up,
       };
 
       this.$store.commit("auth/registerLoginState", { user, token: response.token });
       this.$cookies.set("userSession", response.token);
 
-      this.$router.replace({ name: "main" });
+      if(!response.signed_up) {
+        this.$router.replace({ name: "signup-profile" });
+      } else {
+        this.$router.replace({ name: "main" });
+      }
     } catch(e) {
       console.error(e);
     }
