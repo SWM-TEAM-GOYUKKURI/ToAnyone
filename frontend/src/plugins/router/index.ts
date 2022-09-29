@@ -3,6 +3,7 @@ import AppPagesWrapper from "@/pages/app/AppPagesWrapper.vue";
 import MainPage from "@/pages/app/MainPage.vue";
 import LoginPage from "@/pages/app/signin/LoginPage.vue";
 import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
+import SignupPersonalDataPage from "@/pages/app/signin/SignupPersonalDataPage.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
@@ -66,7 +67,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
 
-  /* Login / Logout */
+  /* Login / Logout / Signup */
   {
     path: "/login",
     name: "login",
@@ -76,6 +77,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/logout",
     name: "logout",
     component: LogoutPage,
+  },
+  {
+    path: "/signup/profile",
+    name: "signup-profile",
+    component: SignupPersonalDataPage,
   },
 ];
 

@@ -41,6 +41,7 @@ export default class SignInWithGoogle extends Vue {
         name: string,
         email: string,
         token: string,
+        // TODO: a boolean value (first login(no personal data) or not)
       };
 
       const user: IUserBasicInfo = {
