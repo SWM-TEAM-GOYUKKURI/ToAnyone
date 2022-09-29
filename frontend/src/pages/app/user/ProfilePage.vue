@@ -114,6 +114,7 @@ export default class ProfilePage extends Vue {
           border-right: solid currentColor 1px;
 
           & > * {
+            text-align: center;
             margin: 0.25em 0;
           }
 
