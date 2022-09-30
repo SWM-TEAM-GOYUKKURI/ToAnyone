@@ -1,4 +1,4 @@
-package anyone.to.soma.letter;
+package anyone.to.soma.letter.domain;
 
 import anyone.to.soma.decoration.DecorationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;

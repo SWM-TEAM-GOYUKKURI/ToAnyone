@@ -1,7 +1,6 @@
 package anyone.to.soma.config.loader;
 
 import anyone.to.soma.decoration.DecorationType;
-import anyone.to.soma.letter.LetterDecoration;
 import anyone.to.soma.letter.LetterService;
 import anyone.to.soma.letter.dto.LetterRequest;
 import anyone.to.soma.user.User;
@@ -11,7 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

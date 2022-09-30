@@ -1,21 +1,18 @@
 package anyone.to.soma;
 
 import anyone.to.soma.exception.repository.NoSuchRecordException;
-import anyone.to.soma.letter.Letter;
-import anyone.to.soma.letter.LetterRepository;
+import anyone.to.soma.letter.domain.Letter;
+import anyone.to.soma.letter.domain.LetterRepository;
 import anyone.to.soma.letter.LetterService;
 import anyone.to.soma.letter.dto.InboxLetterResponse;
-import anyone.to.soma.letter.dto.LetterRequest;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
-import io.swagger.models.auth.In;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

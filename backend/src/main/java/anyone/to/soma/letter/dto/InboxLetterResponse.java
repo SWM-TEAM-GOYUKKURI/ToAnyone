@@ -1,9 +1,7 @@
 package anyone.to.soma.letter.dto;
 
-import anyone.to.soma.decoration.Decoration;
-import anyone.to.soma.decoration.DecorationType;
-import anyone.to.soma.letter.Letter;
-import anyone.to.soma.letter.LetterDecoration;
+import anyone.to.soma.letter.domain.Letter;
+import anyone.to.soma.letter.domain.LetterDecoration;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
