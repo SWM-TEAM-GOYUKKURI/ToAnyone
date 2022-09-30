@@ -1,11 +1,15 @@
 package anyone.to.soma.user;
 
+import anyone.to.soma.decoration.Decoration;
+import anyone.to.soma.decoration.DecorationType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,4 +53,7 @@ public class User {
     }
 
 
+    public void useDecoration(List<DecorationType> decorations) {
+
+    }
 }

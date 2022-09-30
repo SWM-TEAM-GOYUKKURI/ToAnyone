@@ -9,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -17,7 +18,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         if(handler instanceof HandlerMethod && ((HandlerMethod) handler).hasMethodAnnotation(LoginRequired.class)){
-            if (request.getHeader("credentials").isBlank()){
+            String credentials = request.getHeader("credentials");
+            if (Objects.isNull(credentials) || credentials.isBlank()){
                 throw new ApplicationException("존재하지 않는 토큰입니다.");
             }
         }

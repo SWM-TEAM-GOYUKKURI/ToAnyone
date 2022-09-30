@@ -1,5 +1,7 @@
 package anyone.to.soma.config.loader;
 
+import anyone.to.soma.decoration.DecorationType;
+import anyone.to.soma.letter.LetterDecoration;
 import anyone.to.soma.letter.LetterService;
 import anyone.to.soma.letter.dto.LetterRequest;
 import anyone.to.soma.user.User;
@@ -9,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,7 +33,7 @@ public class DataLoader implements CommandLineRunner {
         List<User> users = userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
 
         for (int i = 0; i < 10; i++) {
-            letterService.writeLetter(new LetterRequest("안녕하세요" + i), users.get(0));
+            letterService.writeLetter(new LetterRequest("안녕하세요" + i, List.of(DecorationType.STAMP, DecorationType.FONT)), users.get(0));
         }
 
     }

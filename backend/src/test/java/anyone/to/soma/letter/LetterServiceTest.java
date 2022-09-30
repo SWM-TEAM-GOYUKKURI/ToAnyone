@@ -24,7 +24,7 @@ class LetterServiceTest extends IntegrationTest {
     @Autowired
     private LetterRepository letterRepository;
 
-    private final LetterRequest letterRequest = new LetterRequest("content");
+    private final LetterRequest letterRequest = new LetterRequest("content", List.of());
 
 
     @Test
