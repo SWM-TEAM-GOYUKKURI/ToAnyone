@@ -4,10 +4,8 @@ import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterRepository;
-import anyone.to.soma.letter.domain.ReplyLetterRepository;
 import anyone.to.soma.letter.dto.InboxLetterResponse;
 import anyone.to.soma.letter.dto.LetterRequest;
-import anyone.to.soma.letter.dto.ReplyLetterRequest;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ import java.util.Random;
 public class LetterService {
 
     private final LetterRepository letterRepository;
-    private final ReplyLetterRepository replyLetterRepository;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
@@ -77,6 +74,5 @@ public class LetterService {
 
         ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getName());
         letter.reply(replyLetter);
-
     }
 }
