@@ -34,6 +34,7 @@ public class Letter implements Serializable {
     private User receiver;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "letter_id")
     private final List<LetterDecoration> letterDecorations = new ArrayList<>();
 
     public Letter(String content, User sender) {

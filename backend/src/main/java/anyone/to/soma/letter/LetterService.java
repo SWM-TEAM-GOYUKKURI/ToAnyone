@@ -43,6 +43,7 @@ public class LetterService {
         User randomReceiver = findRandomReceiver(sender.getId());
         letter.send(randomReceiver);
         letter.attachDecorations(request.getDecorations());
+
         Long letterId = letterRepository.save(letter).getId();
         randomReceiver.receiveLetter();
         return letterId;
