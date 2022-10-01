@@ -38,5 +38,4 @@ public class SwaggerConfig {
                 .description("To Anyone API Docs")
                 .build();
     }
-
 }
