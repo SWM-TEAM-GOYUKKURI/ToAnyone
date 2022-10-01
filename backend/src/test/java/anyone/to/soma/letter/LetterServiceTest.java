@@ -1,14 +1,22 @@
 package anyone.to.soma.letter;
 
-import anyone.to.soma.base.IntegrationTest;
+import anyone.to.soma.IntegrationTest;
+import anyone.to.soma.decoration.DecorationRepository;
 import anyone.to.soma.exception.ApplicationException;
-import anyone.to.soma.letter.dto.InboxLetterResponse;
-import anyone.to.soma.letter.dto.LetterRequest;
+import anyone.to.soma.letter.application.LetterService;
+import anyone.to.soma.letter.domain.Letter;
+import anyone.to.soma.letter.domain.LetterRepository;
+import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
+import anyone.to.soma.letter.domain.dto.LetterRequest;
+import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
+import anyone.to.soma.utils.LetterDecorationRepository;
+import anyone.to.soma.utils.ReplyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +29,13 @@ class LetterServiceTest extends IntegrationTest {
     private LetterService letterService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private DecorationRepository decorationRepository;
+    @Autowired
+    private LetterDecorationRepository letterDecorationRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
+
     @Autowired
     private LetterRepository letterRepository;
 
@@ -46,9 +61,9 @@ class LetterServiceTest extends IntegrationTest {
         Letter letter = new Letter("content", user);
         letter.send(user1);
         Long id = letterRepository.save(letter).getId();
-        InboxLetterResponse inboxLetterResponse = letterService.retrieveInboxSingleLetter(id, user1.getId());
-        assertThat(inboxLetterResponse.getReceiverName()).isEqualTo(user1.getName());
-        assertThat(inboxLetterResponse.getContent()).isEqualTo(letter.getContent());
+        SingleLetterResponse singleLetterResponse = letterService.retrieveInboxSingleLetter(id, user1.getId());
+        assertThat(singleLetterResponse.getReceiverName()).isEqualTo(user1.getName());
+        assertThat(singleLetterResponse.getContent()).isEqualTo(letter.getContent());
     }
 
     @Test
@@ -62,8 +77,25 @@ class LetterServiceTest extends IntegrationTest {
         assertThat(inboxLetterResponses.size()).isEqualTo(3);
     }
 
+    @Test
+    @Transactional
+    void writeReplyLetter(){
+        Letter letter = new Letter("content", user);
+        letter.send(user1);
+        Long id = letterRepository.save(letter).getId();
+
+        LetterRequest letterRequest = new LetterRequest("reply", List.of());
+        letterService.writeReplyLetter( id, letterRequest, user1);
+
+        Letter replyLetter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        assertThat(replyLetter.getReplyLetters().get(0).getContent()).isEqualTo(letterRequest.getContent());
+    }
+
     @AfterEach
     void tearDown() {
+        replyRepository.deleteAllInBatch();
+        letterDecorationRepository.deleteAllInBatch();
+        decorationRepository.deleteAllInBatch();
         letterRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
     }

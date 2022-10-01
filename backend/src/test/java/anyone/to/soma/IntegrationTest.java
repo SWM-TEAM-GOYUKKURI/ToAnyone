@@ -1,4 +1,4 @@
-package anyone.to.soma.base;
+package anyone.to.soma;
 
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
