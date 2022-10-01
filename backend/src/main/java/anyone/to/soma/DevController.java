@@ -30,7 +30,6 @@ public class DevController {
     private final LetterService letterService;
     private final LetterRepository letterRepository;
 
-
     @GetMapping("/dev/user")
     public List<User> findAllUser() {
         return userRepository.findAll();
