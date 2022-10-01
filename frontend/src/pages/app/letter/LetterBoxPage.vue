@@ -65,6 +65,7 @@ export default class LetterBoxPage extends Vue {
   margin: auto;
 
   & > * {
+    width: 100%;
     text-align: center;
   }
 

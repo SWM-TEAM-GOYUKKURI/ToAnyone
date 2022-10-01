@@ -41,14 +41,15 @@ export default class LetterBoxItem extends Vue {
   border-radius: 2em;
   margin: 1em 0;
   box-shadow: 0 0.33em 0.75em rgba(black, 0.25);
+  text-align: left;
 
-  &.not-read{
+  &.not-read {
     background-color: rgba($color-primary, 0.33);
   }
 
   &__content-area {
     flex-grow: 1;
-    margin-left: 1em;
+    margin-left: 1.5em;
     overflow: hidden;
     white-space: nowrap;
 
