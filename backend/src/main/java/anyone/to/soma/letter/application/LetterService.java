@@ -1,11 +1,12 @@
-package anyone.to.soma.letter;
+package anyone.to.soma.letter.application;
 
 import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterRepository;
-import anyone.to.soma.letter.dto.InboxLetterResponse;
-import anyone.to.soma.letter.dto.LetterRequest;
+import anyone.to.soma.letter.domain.ReplyLetter;
+import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
+import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class LetterService {
     public InboxLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
 
-        if (!letter.getReceiver().getId().equals(userId)){
+        if (!letter.getReceiver().getId().equals(userId)) {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
@@ -65,14 +66,14 @@ public class LetterService {
     }
 
     @Transactional
-    public void writeReplyLetter(Long letterId, LetterRequest request, User sender){
+    public void writeReplyLetter(Long letterId, LetterRequest request, User sender) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
 
-        if (!letter.getReceiver().getId().equals(sender.getId())){
+        if (!letter.getReceiver().getId().equals(sender.getId())) {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getName());
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getName(), request.getDecorations());
         letter.reply(replyLetter);
     }
 }

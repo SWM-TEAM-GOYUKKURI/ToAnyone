@@ -1,10 +1,10 @@
 package anyone.to.soma;
 
 import anyone.to.soma.exception.repository.NoSuchRecordException;
+import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterRepository;
-import anyone.to.soma.letter.LetterService;
-import anyone.to.soma.letter.dto.InboxLetterResponse;
+import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
 import lombok.AccessLevel;

@@ -1,7 +1,6 @@
 package anyone.to.soma.letter.domain;
 
 import anyone.to.soma.decoration.DecorationType;
-import anyone.to.soma.letter.ReplyLetter;
 import anyone.to.soma.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,7 +32,7 @@ public class Letter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User receiver;
 
-    @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "letter_id")
     private List<ReplyLetter> replyLetters = new ArrayList<>();
 

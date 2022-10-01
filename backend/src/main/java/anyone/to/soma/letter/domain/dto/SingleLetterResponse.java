@@ -1,6 +1,6 @@
-package anyone.to.soma.letter.dto;
+package anyone.to.soma.letter.domain.dto;
 
-import anyone.to.soma.letter.domain.LetterDecoration;
+import anyone.to.soma.decoration.DecorationType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +17,7 @@ public class SingleLetterResponse {
     private String content;
     private LocalDate sendDate;
     private String receiverName;
-    private List<LetterDecoration> decorations;
-
+    private List<DecorationType> decorations;
 
 
 }

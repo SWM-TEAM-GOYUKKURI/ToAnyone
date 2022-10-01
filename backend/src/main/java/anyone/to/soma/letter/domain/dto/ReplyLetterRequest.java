@@ -1,4 +1,4 @@
-package anyone.to.soma.letter.dto;
+package anyone.to.soma.letter.domain.dto;
 
 import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.exception.ApplicationException;

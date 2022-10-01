@@ -1,10 +1,10 @@
-package anyone.to.soma.letter;
+package anyone.to.soma.letter.presentation;
 
 import anyone.to.soma.config.annotation.LoginRequired;
 import anyone.to.soma.config.annotation.LoginUser;
-import anyone.to.soma.letter.dto.InboxLetterResponse;
-import anyone.to.soma.letter.dto.LetterRequest;
-import anyone.to.soma.letter.dto.ReplyLetterRequest;
+import anyone.to.soma.letter.application.LetterService;
+import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
+import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

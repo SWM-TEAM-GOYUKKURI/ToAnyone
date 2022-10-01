@@ -1,13 +1,16 @@
 package anyone.to.soma.letter;
 
-import anyone.to.soma.base.IntegrationTest;
+import anyone.to.soma.IntegrationTest;
+import anyone.to.soma.decoration.DecorationRepository;
 import anyone.to.soma.exception.ApplicationException;
+import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterRepository;
-import anyone.to.soma.letter.dto.InboxLetterResponse;
-import anyone.to.soma.letter.dto.LetterRequest;
+import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
+import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
+import anyone.to.soma.utils.LetterDecorationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,12 @@ class LetterServiceTest extends IntegrationTest {
     private LetterService letterService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private DecorationRepository decorationRepository;
+
+    @Autowired
+    private LetterDecorationRepository letterDecorationRepository;
+
     @Autowired
     private LetterRepository letterRepository;
 
@@ -66,6 +75,8 @@ class LetterServiceTest extends IntegrationTest {
 
     @AfterEach
     void tearDown() {
+        letterDecorationRepository.deleteAllInBatch();
+        decorationRepository.deleteAllInBatch();
         letterRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
     }
