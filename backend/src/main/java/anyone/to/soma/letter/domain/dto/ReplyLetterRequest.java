@@ -14,11 +14,13 @@ import java.util.Objects;
 public class ReplyLetterRequest {
     @NotNull
     private String content;
+    private List<DecorationType> decorations;
 
 
     public ReplyLetterRequest(String content, List<DecorationType> decorations) {
         validateRequest(content);
         this.content = content;
+        this.decorations = decorations;
     }
 
     private void validateRequest(String content) {

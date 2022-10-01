@@ -7,6 +7,7 @@ import anyone.to.soma.letter.domain.LetterRepository;
 import anyone.to.soma.letter.domain.ReplyLetter;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
+import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.User;
 import anyone.to.soma.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,13 @@ public class LetterService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public InboxLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
+    public SingleLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
 
         if (!letter.getReceiver().getId().equals(userId)) {
             throw new ApplicationException("잘못된 권한입니다.");
         }
-
-        return InboxLetterResponse.of(letter, letter.getReceiver().getName());
+        return SingleLetterResponse.of(letter, letter.getReceiver().getName(), letter.getReplyLetters());
     }
 
     @Transactional(readOnly = true)

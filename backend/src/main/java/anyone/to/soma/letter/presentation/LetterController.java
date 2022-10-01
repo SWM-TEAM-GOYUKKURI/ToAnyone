@@ -5,6 +5,7 @@ import anyone.to.soma.config.annotation.LoginUser;
 import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
+import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +37,9 @@ public class LetterController {
 
     @GetMapping("/inbox/{id}")
     @LoginRequired
-    public ResponseEntity<InboxLetterResponse> retrieveInboxLetter(@PathVariable Long id, @LoginUser User user) {
-        // TODO Response가 replyLetter을 포함하도록 수정
-        InboxLetterResponse inboxLetterResponses = letterService.retrieveInboxSingleLetter(id, user.getId());
-        return ResponseEntity.ok(inboxLetterResponses);
+    public ResponseEntity<SingleLetterResponse> retrieveInboxLetter(@PathVariable Long id, @LoginUser User user) {
+        SingleLetterResponse letterResponse = letterService.retrieveInboxSingleLetter(id, user.getId());
+        return ResponseEntity.ok(letterResponse);
     }
 
     @PostMapping("/inbox/{id}")
