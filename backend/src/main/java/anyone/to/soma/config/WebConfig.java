@@ -18,7 +18,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${request.origins:https://localhost:8080}")
     private String[] origins;
-
     private final LoginUserArgumentResolver loginUserArgumentResolver;
     private final LoginInterceptor loginInterceptor;
 
