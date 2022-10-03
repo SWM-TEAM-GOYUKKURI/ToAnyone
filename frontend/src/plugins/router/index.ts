@@ -3,7 +3,7 @@ import AppPagesWrapper from "@/pages/app/AppPagesWrapper.vue";
 import MainPage from "@/pages/app/MainPage.vue";
 import LoginPage from "@/pages/app/signin/LoginPage.vue";
 import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
-import SignupPersonalDataPage from "@/pages/app/signin/SignupPersonalDataPage.vue";
+import SignupPersonalDataPage from "@/pages/app/signin/signup/personaldata/SignupPersonalDataPage.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
