@@ -82,6 +82,7 @@ export default class AppNavbarProfileMenu extends Vue {
 
   & > a {
     @include button-style();
+    min-width: max-content;
     padding: 0.75em 1.25em;
     margin: 0.5em 0;
     justify-content: space-between;
