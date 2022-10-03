@@ -16,7 +16,6 @@
 
           <v-text-field v-model="nickname"
                         hint="연동 계정에서 가져온 이름을 자동으로 입력했어요. 지금 변경할 수도 있고, 나중에 프로필 페이지에서도 변경할 수 있어요."
-                        density="compact"
                         single-line
                         persistent-hint
                         :hide-details="nicknameFieldHideHint"
@@ -31,7 +30,6 @@
                     item-title="title"
                     item-value="value"
                     label="성별"
-                    density="compact"
                     return-object
                     single-line />
         </div>
@@ -44,7 +42,6 @@
                     item-title="title"
                     item-value="value"
                     label="나이대"
-                    density="compact"
                     return-object
                     single-line />
         </div>
@@ -57,7 +54,6 @@
                     item-title="title"
                     item-value="value"
                     label="직업 분류"
-                    density="compact"
                     return-object
                     single-line />
         </div>
