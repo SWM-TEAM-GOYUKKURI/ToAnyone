@@ -219,6 +219,7 @@ export default class PersonalDataView extends Vue {
       font-size: 1.1em;
       background: rgba($color-secondary, 0.8);
       border-radius: 99999px;
+      box-shadow: 0 0.33rem 0.5rem rgba(#000, 0.25);
 
       &.disabled {
         cursor: not-allowed;
