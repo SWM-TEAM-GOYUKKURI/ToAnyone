@@ -33,8 +33,8 @@ export default class App extends Vue {
           // TODO: 랜딩 페이지 생성 시 이 로직이 변경될 수 있음(랜딩 페이지 관련 라우트는 강제 이동에서 제외)
           // }
         } else if(isLoginStateReliable() &&
-          to.name !== "signup-profile" &&
-          !this.$store.state.auth.userBasicInfo!.signedUp) {
+          !to.name?.toString().startsWith("signup-profile") &&
+          !this.$store.state.auth.userBasicInfo?.signedUp) {
           // 로그인 상태 정보는 정상적이지만 초기 회원가입 과정을 거치지 않은 경우...
 
           // 회원가입(개인정보 입력) 페이지로 강제 이동
