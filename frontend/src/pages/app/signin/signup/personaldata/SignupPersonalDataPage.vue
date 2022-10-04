@@ -15,10 +15,10 @@
           <span>닉네임</span>
 
           <v-text-field v-model="nickname"
-                        hint="연동 계정에서 가져온 이름을 자동으로 입력했어요. 지금 변경할 수도 있고, 나중에 프로필 페이지에서도 변경할 수 있어요."
                         single-line
                         persistent-hint
-                        :hide-details="nicknameFieldHideHint"
+                        :hint="!nicknameFieldHideHint ? '연동 계정에서 가져온 이름을 자동으로 입력했어요. 지금 변경할 수도 있고, 나중에 프로필 페이지에서도 변경할 수 있어요.' : ''"
+                        :rules="[ v => !!v || '닉네임을 입력해주세요.', v => v.length >= 4 || '닉네임을 최소 4자 이상 입력해주세요.' ]"
                         @input="onNicknameFieldInput" />
         </div>
 
