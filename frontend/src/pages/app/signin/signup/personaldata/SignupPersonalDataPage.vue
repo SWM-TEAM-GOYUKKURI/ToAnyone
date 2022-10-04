@@ -24,6 +24,8 @@
 import { Vue } from "vue-class-component";
 
 export default class SignupPersonalDataPage extends Vue {
+  private signupData = {};
+
   get devMode(): boolean {
     return process.env.VUE_APP_DEVMODE === "true";
   }
@@ -51,10 +53,12 @@ export default class SignupPersonalDataPage extends Vue {
   onSubmitData(from: "basic" | "survey", data: Record<string, unknown>): void {
     switch(from) {
       case "basic":
-        // TODO: save data temporarily, and go to survey view
+        this.signupData = { ...data };
+        this.$router.push({ name: "signup-profile-survey" });
         break;
 
       case "survey":
+        this.signupData = { ...this.signupData, ...data };
         // TODO: send basic + survey data to backend, get reply from backend, if all good set signed up bit for auth user and go to main page
         break;
     }
