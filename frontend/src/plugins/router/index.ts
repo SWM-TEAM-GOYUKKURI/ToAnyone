@@ -5,6 +5,7 @@ import LoginPage from "@/pages/app/signin/LoginPage.vue";
 import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
 import SignupPersonalDataPage from "@/pages/app/signin/signup/personaldata/SignupPersonalDataPage.vue";
 import BasicPersonalDataView from "@/pages/app/signin/signup/personaldata/BasicPersonalDataView.vue";
+import MentalHealthSurveyView from "@/pages/app/signin/signup/personaldata/MentalHealthSurveyView.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
@@ -88,6 +89,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "basic",
         name: "signup-profile-basic",
         component: BasicPersonalDataView,
+      },
+      {
+        path: "survey",
+        name: "signup-profile-survey",
+        component: MentalHealthSurveyView,
       },
     ],
   },
