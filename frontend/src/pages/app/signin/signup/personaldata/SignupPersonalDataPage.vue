@@ -5,13 +5,15 @@
 
     <div class="signup-personal-data__content">
       <h1><strong>처음 오셨네요!🙌</strong><br />당신은 어떤 사람인가요?👂</h1>
-      <h3>아래 정보를 입력하면 잘 맞을 듯한 익명 사용자와 편지를 주고받게 될 확률이 커져요.</h3>
+      <h3>아래 정보를 입력하면 잘 맞을 듯한 익명 사용자와 편지를 주고받게 될 확률이 높아져요.</h3>
       <h4>입력한 개인정보는 다른 사용자<small>(닉네임 제외)</small>나 외부 개인·업체에 제공되지 않아요. <a href="#">개인정보처리방침 <small>(준비 중)</small></a></h4>
 
       <hr />
 
       <router-view v-slot="{ Component }"
-                   @submitBasic="d => onSubmitData('basic', d)">
+                   @submitBasic="d => onSubmitData('basic', d)"
+                   @backSurvey="this.$router.replace({ name: 'signup-profile-basic' })"
+                   @submitSurvey="d => onSubmitData('survey', d)">
         <v-slide-y-reverse-transition leave-absolute>
           <component :is="Component" />
         </v-slide-y-reverse-transition>
