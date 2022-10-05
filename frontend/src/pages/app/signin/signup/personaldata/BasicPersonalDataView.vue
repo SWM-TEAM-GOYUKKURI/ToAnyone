@@ -224,6 +224,7 @@ export default class PersonalDataView extends Vue {
       &.disabled {
         cursor: not-allowed;
         pointer-events: none;
+        box-shadow: none;
         opacity: 0.5;
       }
     }
