@@ -11,4 +11,5 @@ public class LoginResponse {
     private String name;
     private String email;
     private String token;
+    private boolean registrationFormFilled;
 }

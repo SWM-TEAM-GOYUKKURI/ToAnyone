@@ -32,6 +32,8 @@ public class User {
 
     private int receiveCount = 0;
 
+    private boolean registrationFormFilled;
+
     public void receiveLetter() {
         receiveCount++;
     }
@@ -50,10 +52,11 @@ public class User {
         this.name = name;
         this.loginType = loginType;
         this.uniqueId = uniqueId;
+        this.registrationFormFilled = false;
     }
 
-
-    public void useDecoration(List<DecorationType> decorations) {
-
+    public void fillRegistrationForm() {
+        this.registrationFormFilled = true;
     }
+
 }

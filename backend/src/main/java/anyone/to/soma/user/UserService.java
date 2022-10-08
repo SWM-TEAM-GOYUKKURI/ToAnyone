@@ -28,7 +28,7 @@ public class UserService {
 
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
-        return new LoginResponse(user.getName(), user.getEmail(), accessToken);
+        return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());
     }
 
     public User loginUser(String token){
