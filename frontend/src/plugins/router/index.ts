@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
         component: ProfilePage,
         children: [
           {
-            path: "profile/edit",
+            path: "edit",
             name: "profile-edit",
             meta: {
               title: "프로필",
