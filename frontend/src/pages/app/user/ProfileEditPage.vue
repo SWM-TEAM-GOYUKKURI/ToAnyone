@@ -24,6 +24,7 @@ export default class ProfileEditPage extends Vue {
   pointer-events: initial;
   display: block;
   padding: 2rem;
+  margin: 2rem;
   min-width: 50vw;
   border-radius: 1rem;
   background: $color-background;
