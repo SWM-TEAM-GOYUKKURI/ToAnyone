@@ -191,6 +191,7 @@ export default class PersonalDataView extends Vue {
 #signup-personal-data-basic {
   display: flex;
   flex-direction: column;
+  padding-bottom: 2rem;
 
   .signup-personal-data-basic {
     &__form {
