@@ -35,9 +35,7 @@
     <v-fade-transition>
       <div v-if="$route.name == 'profile-edit'"
            id="profile-page-edit-view">
-        <div class="content">
-          <router-view />
-        </div>
+        <router-view />
       </div>
     </v-fade-transition>
   </div>
@@ -149,15 +147,5 @@ export default class ProfilePage extends Vue {
   bottom: 0;
   z-index: 100;
   background: rgba(#000, 0.5);
-
-  .content {
-    pointer-events: initial;
-    display: block;
-    padding: 2rem;
-    min-width: 50vw;
-    border-radius: 1rem;
-    background: $color-background;
-    box-shadow: 0 0.5rem 1rem rgba(#000, 0.33);
-  }
 }
 </style>
