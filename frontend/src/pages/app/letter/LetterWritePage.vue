@@ -34,6 +34,7 @@ export default class LetterWritePage extends Vue {
 
       const response = await bePOST("/letter", {
         content: this.letterTextContent,
+        decorations: [],
       }, {
         credentials: this.$store.state.auth.token!,
       });
