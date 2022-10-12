@@ -45,6 +45,7 @@ export default class SignInWithGoogle extends Vue {
 
       const user: IUserBasicInfo = {
         nickname: response.name,
+        email: response.email,
       };
 
       this.$store.commit("auth/registerLoginState", { user, token: response.token });

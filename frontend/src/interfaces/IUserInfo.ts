@@ -1,5 +1,6 @@
 export interface IUserBasicInfo {
   nickname: string,
+  email: string,
   // TODO: more items to be added
 }
 
