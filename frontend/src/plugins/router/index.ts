@@ -49,6 +49,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "letter-write",
         meta: { title: "편지 쓰기" },
         component: LetterWritePage,
+        props: true,
       },
       {
         path: "letter/view",

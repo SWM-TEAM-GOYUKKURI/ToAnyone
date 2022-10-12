@@ -5,6 +5,8 @@
                  :senderNickname="letterItem.senderName"
                  :receiverNickname="$store.state.auth.userBasicInfo.nickname"
                  :textContent="letterItem.content" />
+
+    <a href="#" @click="goLetterReplyPage">답장</a>
   </div>
 </template>
 
@@ -23,14 +25,22 @@ export default class LetterViewPage extends Vue {
   letterItem!: ILetterBoxItem;
   dataLoaded = false;
 
+  get letterId(): string | null {
+    if(this.$route.params) {
+      return this.$route.params.letterId as string;
+    } else {
+      return "";
+    }
+  }
+
   beforeMount(): void {
-    if(!(this.$route.params && this.$route.params.letterId)) {
+    if(!this.letterId) {
       this.$router.replace({ name: "main" });
     }
   }
 
   async mounted() {
-    const response = await beGET(`/letter/inbox/${this.$route.params.letterId}`, null, { credentials: this.$store.state.auth.token! });
+    const response = await beGET(`/letter/inbox/${this.letterId}`, null, { credentials: this.$store.state.auth.token! });
 
     if(response.statusCode === 200) {
       this.letterItem = response.data as unknown as ILetterBoxItem;
@@ -39,6 +49,16 @@ export default class LetterViewPage extends Vue {
     } else {
       // Error handling
     }
+  }
+
+  goLetterReplyPage(): void {
+    this.$router.push({
+      name: "letter-write",
+      params: {
+        replyMode: "true",
+        replyModeData: JSON.stringify({ ...this.letterItem, id: this.letterId }),
+      },
+    });
   }
 }
 </script>

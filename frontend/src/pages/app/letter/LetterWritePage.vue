@@ -4,9 +4,21 @@
       꾸미기 아이템 영역<br>구현 중입니다.
     </div>
 
-    <letter-area id="letter-write-area"
+    <!-- Normal write -->
+    <letter-area v-if="!replyMode"
+                 id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
+                 :letterSendInProgress="letterSendInProgress"
+                 @sendButtonClick="onSendButtonClick" />
+
+    <!-- Reply -->
+    <letter-area v-else
+                 id="letter-write-area"
+                 v-model:textContent="letterTextContent"
+                 :letterWriteMode="true"
+                 :letterReplyMode="true"
+                 :receiverNickname="replyModeData.senderName"
                  :letterSendInProgress="letterSendInProgress"
                  @sendButtonClick="onSendButtonClick" />
   </div>
@@ -28,22 +40,41 @@ export default class LetterWritePage extends Vue {
   letterTextContent = "";
   letterSendInProgress = false;
 
+  replyMode = false;
+  replyModeData = {};
+
+  mounted(): void {
+    if(this.$route.params) {
+      this.replyMode = (this.$route.params.replyMode === "true");
+
+      if(this.replyMode) {
+        this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as Record<string, unknown>;
+      }
+    }
+  }
+
   async onSendButtonClick() {
     if(!this.letterSendInProgress && this.letterTextContent.length > 0) {
       this.letterSendInProgress = true;
 
-      const response = await bePOST("/letter", {
-        content: this.letterTextContent,
-        decorations: [],
-      }, {
-        credentials: this.$store.state.auth.token!,
-      });
+      if(!this.replyMode) {
+        /* NORMAL WRITE MODE */
 
-      if(response.statusCode === 201) {
-        // HTTP 201 Created: Letter sent successfully
-        this.letterTextContent = "";
+        const response = await bePOST("/letter", {
+          content: this.letterTextContent,
+          decorations: [],
+        }, {
+          credentials: this.$store.state.auth.token!,
+        });
+
+        if(response.statusCode === 201) {
+          // HTTP 201 Created: Letter sent successfully
+          this.letterTextContent = "";
+        } else {
+          // Error handling
+        }
       } else {
-        // Error handling
+        /* REPLY MODE */
       }
 
       this.letterSendInProgress = false;
