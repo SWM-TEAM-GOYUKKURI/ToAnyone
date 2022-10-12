@@ -1,6 +1,6 @@
 <template>
   <div id="letter-box-wrapper">
-    <div @click="testlettertome">테스트 편지 받기</div>
+    <div v-if="devmode" @click="testlettertome">테스트 편지 받기</div>
 
     <v-progress-circular v-if="!requestCompleted"
                         indeterminate />
@@ -30,6 +30,8 @@ import { ILetterBoxItem } from "@/interfaces/ILetterItem";
 export default class LetterBoxPage extends Vue {
   _letterItems: ILetterBoxItem[] = [];
   requestCompleted = false;
+
+  get devmode(): boolean { return process.env.VUE_APP_DEVMODE === "true"; }
 
   get letterItems(): ILetterBoxItem[] {
     return Array.from(this._letterItems).sort((a, b) => {
