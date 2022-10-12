@@ -1,6 +1,6 @@
 <template>
   <router-link class="letter-box-item animation-button"
-               :class="{ 'not-read': false /* !letterItem.readBefore */ }"
+               :class="{ 'not-read': !letterItem.hadRead }"
                :to="{ name: 'letter-view', params: { letterId: letterItem.id }}">
     <div class="letter-box-item__profile-area">
       <profile-image class="letter-box-item__profile-image"
@@ -8,7 +8,7 @@
     </div>
 
     <div class="letter-box-item__content-area">
-      <div class="letter-box-item__content-area__sender">From. {{ "null" /* letterItem.sender.nickname */ }}</div>
+      <div class="letter-box-item__content-area__sender">From. {{ letterItem.senderName }}</div>
       <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
     </div>
   </router-link>
