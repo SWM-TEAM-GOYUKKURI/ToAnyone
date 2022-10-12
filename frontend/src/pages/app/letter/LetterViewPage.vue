@@ -2,7 +2,7 @@
   <div id="letter-view-wrapper">
     <letter-area v-if="dataLoaded"
                  class="letter-view-area"
-                 :senderNickname="letterItem.senderNickname"
+                 :senderNickname="letterItem.senderName"
                  :receiverNickname="$store.state.auth.userBasicInfo.nickname"
                  :textContent="letterItem.content" />
   </div>
