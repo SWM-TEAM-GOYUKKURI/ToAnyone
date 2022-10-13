@@ -31,7 +31,7 @@ public class User {
 
     private boolean registrationFormFilled;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
