@@ -1,7 +1,7 @@
-package anyone.to.soma.letter;
+package anyone.to.soma.letter.domain;
 
+import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,6 +32,14 @@ public class Letter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User receiver;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "letter_id")
+    private List<ReplyLetter> replyLetters = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "letter_id")
+    private final List<LetterDecoration> letterDecorations = new ArrayList<>();
+
     public Letter(String content, User sender) {
         this(null, content, sender);
     }
@@ -43,5 +53,16 @@ public class Letter implements Serializable {
 
     public void send(User receiver) {
         this.receiver = receiver;
+    }
+
+
+    public void attachDecorations(List<DecorationType> letterDecorations) {
+        letterDecorations.stream()
+                .map(LetterDecoration::new)
+                .forEach(this.letterDecorations::add);
+    }
+
+    public void reply(ReplyLetter replyLetter) {
+        this.replyLetters.add(replyLetter);
     }
 }

@@ -1,7 +1,8 @@
 <template>
   <div id="letter-view-wrapper">
-    <letter-area class="letter-view-area"
-                 senderNickname="테스트 발신자 (테스트용 대체 콘텐츠)"
+    <letter-area v-if="dataLoaded"
+                 class="letter-view-area"
+                 :senderNickname="letterItem.senderNickname"
                  :receiverNickname="$store.state.auth.userBasicInfo.nickname"
                  :textContent="letterItem.content" />
   </div>
@@ -19,7 +20,8 @@ import { ILetterBoxItem } from "@/interfaces/ILetterItem";
   },
 })
 export default class LetterViewPage extends Vue {
-  letterItem: ILetterBoxItem | null = null;
+  letterItem!: ILetterBoxItem;
+  dataLoaded = false;
 
   beforeMount(): void {
     if(!(this.$route.params && this.$route.params.letterId)) {
@@ -32,6 +34,8 @@ export default class LetterViewPage extends Vue {
 
     if(response.statusCode === 200) {
       this.letterItem = response.data as unknown as ILetterBoxItem;
+
+      this.dataLoaded = true;
     } else {
       // Error handling
     }
