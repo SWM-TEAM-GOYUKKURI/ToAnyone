@@ -2,6 +2,8 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.IntegrationTest;
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserRepository;
 import anyone.to.soma.user.dto.LoginResponse;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.AfterEach;

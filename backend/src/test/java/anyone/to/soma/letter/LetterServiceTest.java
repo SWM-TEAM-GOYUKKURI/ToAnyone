@@ -9,8 +9,8 @@ import anyone.to.soma.letter.domain.LetterRepository;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
-import anyone.to.soma.user.User;
-import anyone.to.soma.user.UserRepository;
+import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserRepository;
 import anyone.to.soma.utils.LetterDecorationRepository;
 import anyone.to.soma.utils.ReplyRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -79,13 +79,13 @@ class LetterServiceTest extends IntegrationTest {
 
     @Test
     @Transactional
-    void writeReplyLetter(){
+    void writeReplyLetter() {
         Letter letter = new Letter("content", user);
         letter.send(user1);
         Long id = letterRepository.save(letter).getId();
 
         LetterRequest letterRequest = new LetterRequest("reply", List.of());
-        letterService.writeReplyLetter( id, letterRequest, user1);
+        letterService.writeReplyLetter(id, letterRequest, user1);
 
         Letter replyLetter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         assertThat(replyLetter.getReplyLetters().get(0).getContent()).isEqualTo(letterRequest.getContent());

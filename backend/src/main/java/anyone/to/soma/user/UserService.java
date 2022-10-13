@@ -2,12 +2,12 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
+import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserRepository;
 import anyone.to.soma.user.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +31,15 @@ public class UserService {
         return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());
     }
 
-    public User loginUser(String token){
+    public User loginUser(String token) {
         String email = jwtProvider.decodeJWT(token).getSubject();
         return userRepository.findUserByEmail(email).orElseThrow(NoSuchRecordException::new);
     }
 
+    @Transactional
+    public void updateUserProfile(User user) {
+        user.fillRegistrationForm();
+
+
+    }
 }

@@ -1,15 +1,12 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.domain;
 
-import anyone.to.soma.decoration.Decoration;
-import anyone.to.soma.decoration.DecorationType;
+import anyone.to.soma.user.LoginType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +30,10 @@ public class User {
     private int receiveCount = 0;
 
     private boolean registrationFormFilled;
+
+    @OneToOne
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
 
     public void receiveLetter() {
         receiveCount++;
