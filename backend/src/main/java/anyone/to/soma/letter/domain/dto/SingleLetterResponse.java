@@ -21,12 +21,14 @@ public class SingleLetterResponse {
     private String content;
     private LocalDate sendDate;
     private String receiverName;
+    private String senderNickName;
+    private boolean isRead;
     private List<DecorationType> decorations;
     private List<ReplyLetter> replyLetters;
 
 
     public static SingleLetterResponse of(Letter letter, String receiverName, List<ReplyLetter> replyLetters) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
-        return new SingleLetterResponse(letter.getContent(), letter.getSendDate(), receiverName, letterDecorations, replyLetters);
+        return new SingleLetterResponse(letter.getContent(), letter.getSendDate(), receiverName, letter.getSender().getNickname(), letter.isRead(), letterDecorations, replyLetters);
     }
 }
