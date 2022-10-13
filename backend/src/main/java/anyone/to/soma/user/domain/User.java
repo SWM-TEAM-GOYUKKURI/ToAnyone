@@ -60,4 +60,7 @@ public class User {
         this.registrationFormFilled = true;
     }
 
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
+    }
 }

@@ -1,9 +1,15 @@
 package anyone.to.soma.user.domain;
 
+import anyone.to.soma.user.domain.type.Age;
+import anyone.to.soma.user.domain.type.Gender;
+import anyone.to.soma.user.domain.type.Job;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
@@ -26,10 +32,15 @@ public class Profile {
     private Job job;
 
     @OneToOne(mappedBy = "profile")
+    @JsonIgnore
     private User user;
 
-    // TODO: 심리검사 선택지 추가
-
+    @ElementCollection
+    @CollectionTable(
+            name = "user_psychological_test",
+            joinColumns = @JoinColumn(name = "profile_id")
+    )
+    private final List<PsychologicalExam> psychologicalExams = new ArrayList<>();
 
     public Profile(String nickname, Gender gender, Age age, Job job, User user) {
         this(null, nickname, gender, age, job, user);
@@ -42,5 +53,9 @@ public class Profile {
         this.age = age;
         this.job = job;
         this.user = user;
+    }
+
+    public void addPsychologicalExam(List<PsychologicalExam> psychologicalExam) {
+        psychologicalExams.addAll(psychologicalExam);
     }
 }

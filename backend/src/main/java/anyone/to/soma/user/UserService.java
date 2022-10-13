@@ -2,9 +2,11 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
+import anyone.to.soma.user.domain.Profile;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.UserRepository;
 import anyone.to.soma.user.dto.LoginResponse;
+import anyone.to.soma.user.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +39,10 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserProfile(User user) {
+    public void updateUserProfile(User user, ProfileRequest request) {
         user.fillRegistrationForm();
-
-
+        Profile profile = new Profile(request.getNickname(), request.getGender(), request.getAge(), request.getJob(), user);
+        profile.addPsychologicalExam(request.getPsychologicalExams());
+        user.updateProfile(profile);
     }
 }
