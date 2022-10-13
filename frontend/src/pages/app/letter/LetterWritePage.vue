@@ -43,13 +43,18 @@ export default class LetterWritePage extends Vue {
   replyMode = false;
   replyModeData = {};
 
-  mounted(): void {
+  beforeCreate(): void {
     if(this.$route.params) {
       this.replyMode = (this.$route.params.replyMode === "true");
 
       if(this.replyMode) {
         this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as Record<string, unknown>;
       }
+    }
+
+    if(this.$route.name === "letter-reply" && !(this.replyMode && this.replyModeData)) {
+      // Route is letter reply but without valid reply data: redirect to main
+      this.$router.replace({ name: "main" });
     }
   }
 
