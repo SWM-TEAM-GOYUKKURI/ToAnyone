@@ -100,6 +100,19 @@ export default class LetterWritePage extends Vue {
         }
       } else {
         /* REPLY MODE */
+
+        const response = await bePOST(`/letter/inbox/${this.replyModeData?.id}`, {
+          content: this.letterTextContent,
+          decorations: [],
+        }, {
+          credentials: this.$store.state.auth.token!,
+        });
+
+        if(response.statusCode === 201) {
+          this.letterTextContent = "";
+        } else {
+          // todo
+        }
       }
 
       this.letterSendInProgress = false;
