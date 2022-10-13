@@ -27,8 +27,10 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
+import { RouteLocationNormalized } from "vue-router";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
 import { bePOST } from "@/util/backend";
+import { ILetterBoxItem } from "@/interfaces/ILetterItem";
 
 @Options({
   components: {
@@ -41,20 +43,38 @@ export default class LetterWritePage extends Vue {
   letterSendInProgress = false;
 
   replyMode = false;
-  replyModeData = {};
+  replyModeData: ILetterBoxItem | null = null;
 
   beforeCreate(): void {
     if(this.$route.params) {
       this.replyMode = (this.$route.params.replyMode === "true");
 
       if(this.replyMode) {
-        this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as Record<string, unknown>;
+        this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as ILetterBoxItem;
       }
     }
 
     if(this.$route.name === "letter-reply" && !(this.replyMode && this.replyModeData)) {
       // Route is letter reply but without valid reply data: redirect to main
       this.$router.replace({ name: "main" });
+    }
+  }
+
+  beforeRouteLeave(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+    const answer = window.confirm("편지를 작성 중이에요. 정말로 나가실건가요?");
+    if(answer) {
+      if(to.name === "letter-view" &&
+         from.name === "letter-reply" &&
+         this.replyMode &&
+         this.replyModeData) {
+        to.params = {
+          letterId: this.replyModeData.id.toString(),
+        };
+      }
+
+      return true;
+    } else {
+      return false;
     }
   }
 
