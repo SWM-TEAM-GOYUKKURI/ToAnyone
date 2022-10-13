@@ -1,6 +1,7 @@
 package anyone.to.soma.letter.domain;
 
 import anyone.to.soma.decoration.DecorationType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class ReplyLetter {
     private List<DecorationType> decorations = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Letter letter;
 
     public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, List<DecorationType> decorations) {
