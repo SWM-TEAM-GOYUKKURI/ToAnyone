@@ -53,7 +53,7 @@ export default class LetterViewPage extends Vue {
 
   goLetterReplyPage(): void {
     this.$router.push({
-      name: "letter-write",
+      name: "letter-reply",
       params: {
         replyMode: "true",
         replyModeData: JSON.stringify({ ...this.letterItem, id: this.letterId }),
