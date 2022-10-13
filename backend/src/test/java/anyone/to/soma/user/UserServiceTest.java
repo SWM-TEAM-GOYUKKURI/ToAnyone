@@ -2,17 +2,28 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.IntegrationTest;
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.decoration.DecorationRepository;
+import anyone.to.soma.letter.domain.LetterRepository;
+import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.type.Age;
+import anyone.to.soma.user.domain.type.Gender;
+import anyone.to.soma.user.domain.type.Job;
 import anyone.to.soma.user.dto.LoginResponse;
+import anyone.to.soma.user.dto.ProfileRequest;
+import anyone.to.soma.utils.LetterDecorationRepository;
+import anyone.to.soma.utils.ReplyRepository;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class UserServiceTest extends IntegrationTest {
 
@@ -25,6 +36,15 @@ class UserServiceTest extends IntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LetterRepository letterRepository;
+
+    @Autowired
+    private DecorationRepository decorationRepository;
+    @Autowired
+    private LetterDecorationRepository letterDecorationRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
     @Autowired
     private JWTProvider jwtProvider;
 
@@ -42,8 +62,29 @@ class UserServiceTest extends IntegrationTest {
         assertThat(usersByMinReceieveCount.get(0).getReceiveCount()).isEqualTo(1);
     }
 
+    @Test
+    @Transactional
+    void user_profile_update_test() {
+        ProfileRequest profileRequest = new ProfileRequest("nickname", Gender.MALE, Age.TWENTY, Job.STUDENT_UNIV, List.of(new PsychologicalExam(1L, 1L)));
+        userService.updateUserProfile(user, profileRequest);
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
+
+        assertAll(
+                () -> assertThat(updatedUser.getProfile().getNickname()).isEqualTo(profileRequest.getNickname()),
+                () -> assertThat(updatedUser.getProfile().getAge()).isEqualTo(profileRequest.getAge()),
+                () -> assertThat(updatedUser.getProfile().getGender()).isEqualTo(profileRequest.getGender()),
+                () -> assertThat(updatedUser.getProfile().getJob()).isEqualTo(profileRequest.getJob()),
+                () -> assertThat(updatedUser.getProfile().getPsychologicalExams().size()).isEqualTo(profileRequest.getPsychologicalExams().size())
+        );
+    }
+
     @AfterEach
     void tearDown() {
+        replyRepository.deleteAllInBatch();
+        letterDecorationRepository.deleteAllInBatch();
+        decorationRepository.deleteAllInBatch();
+        letterRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
     }
+
 }
