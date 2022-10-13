@@ -1,6 +1,6 @@
 package anyone.to.soma.config.loader;
 
-import anyone.to.soma.user.User;
+import anyone.to.soma.user.domain.User;
 
 import java.util.List;
 
