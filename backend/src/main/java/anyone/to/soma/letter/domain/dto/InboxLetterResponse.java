@@ -17,15 +17,19 @@ import java.util.stream.Collectors;
 @Getter
 public class InboxLetterResponse {
 
+    private static final int MAX_CONTENT_LENGTH = 101;
+
     private Long id;
     private String content;
     private LocalDate sendDate;
     private String receiverName;
+
+
     private List<DecorationType> decorations;
 
     public static InboxLetterResponse of(Letter letter, String receiverName) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
-        return new InboxLetterResponse(letter.getId(), letter.getContent(), letter.getSendDate(), receiverName, letterDecorations);
+        return new InboxLetterResponse(letter.getId(), letter.getContent().substring(0, MAX_CONTENT_LENGTH), letter.getSendDate(), receiverName, letterDecorations);
     }
 
     public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
