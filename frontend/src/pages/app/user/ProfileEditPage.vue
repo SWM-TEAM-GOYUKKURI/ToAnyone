@@ -42,6 +42,10 @@ export default class ProfileEditPage extends Vue {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      & > :first-child {
+        flex-grow: 1;
+      }
     }
   }
 }
