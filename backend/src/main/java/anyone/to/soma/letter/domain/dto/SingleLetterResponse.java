@@ -21,7 +21,7 @@ public class SingleLetterResponse {
     private String content;
     private LocalDate sendDate;
     private String receiverName;
-    private String senderNickName;
+    private String senderName;
     private boolean isRead;
     private List<DecorationType> decorations;
     private List<ReplyLetter> replyLetters;
