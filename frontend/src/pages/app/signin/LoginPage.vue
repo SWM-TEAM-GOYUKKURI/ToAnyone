@@ -16,7 +16,8 @@ import * as GoogleLogin from "@/plugins/signin/google/index";
 import SignInWithGoogle from "@/components/app/signin/SignInWithGoogle.vue";
 import SignInWithKakao from "@/components/app/signin/SignInWithKakao.vue";
 import { bePOST } from "@/util/backend";
-import { IUserBasicInfo } from "@/interfaces/IUserInfo";
+import { UserInfoBasic } from "@/interfaces/internal";
+import { LoginGoogleResponse } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -39,16 +40,14 @@ export default class LoginPage extends Vue {
 
   async onGoogleLogin(data: GoogleLogin.GoogleAuthResponse) {
     try {
-      const response = (await bePOST("/login/google", {}, {
+      const response = (await bePOST<LoginGoogleResponse>("/login/google", {}, {
         credential: data.credential,
-      })).data as {
-        name: string,
-        email: string,
-        token: string,
-      };
+      })).data;
 
-      const user: IUserBasicInfo = {
+      const user: UserInfoBasic = {
         nickname: response.name,
+        email: response.email,
+        firstSignupPassed: response.registrationFormFilled,
       };
 
       this.$store.commit("auth/registerLoginState", { user, token: response.token });
