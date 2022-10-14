@@ -34,7 +34,7 @@ export default class App extends Vue {
           // }
         } else if(isLoginStateReliable() &&
           !to.name?.toString().startsWith("signup-profile") &&
-          !this.$store.state.auth.userBasicInfo?.signedUp) {
+          !this.$store.state.auth.userBasicInfo?.firstSignupPassed) {
           // 로그인 상태 정보는 정상적이지만 초기 회원가입 과정을 거치지 않은 경우...
 
           // 회원가입(개인정보 입력) 페이지로 강제 이동
