@@ -1,7 +1,7 @@
 package anyone.to.soma.decoration;
 
 
-import anyone.to.soma.user.User;
+import anyone.to.soma.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package anyone.to.soma.letter.domain;
 
 import anyone.to.soma.decoration.DecorationType;
-import anyone.to.soma.user.User;
+import anyone.to.soma.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +26,8 @@ public class Letter implements Serializable {
 
     private LocalDate sendDate;
 
+    private boolean isRead;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
 
@@ -49,6 +51,7 @@ public class Letter implements Serializable {
         this.content = content;
         this.sendDate = LocalDate.now();
         this.sender = sender;
+        this.isRead = false;
     }
 
     public void send(User receiver) {
@@ -64,5 +67,9 @@ public class Letter implements Serializable {
 
     public void reply(ReplyLetter replyLetter) {
         this.replyLetters.add(replyLetter);
+    }
+
+    public void read() {
+        this.isRead = true;
     }
 }

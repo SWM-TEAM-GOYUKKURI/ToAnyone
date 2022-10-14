@@ -30,7 +30,7 @@ import contenteditable from "vue-contenteditable";
 import { RouteLocationNormalized } from "vue-router";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
 import { bePOST } from "@/util/backend";
-import { ILetterBoxItem } from "@/interfaces/ILetterItem";
+import { LetterWriteRequest } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -85,10 +85,12 @@ export default class LetterWritePage extends Vue {
       if(!this.replyMode) {
         /* NORMAL WRITE MODE */
 
-        const response = await bePOST("/letter", {
+        const responseData: LetterWriteRequest = {
           content: this.letterTextContent,
           decorations: [],
-        }, {
+        };
+
+        const response = await bePOST("/letter", responseData, {
           credentials: this.$store.state.auth.token!,
         });
 

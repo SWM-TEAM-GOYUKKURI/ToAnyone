@@ -3,7 +3,8 @@
     <div class="logo-area">LOGO<br>HERE</div>
 
     <div class="login-button-area">
-      <sign-in-with-google :loaded="googleLoadState" />
+      <sign-in-with-google :loaded="googleLoadState"
+                           :callback="onGoogleLogin" />
       <sign-in-with-kakao />
     </div>
   </div>
@@ -11,9 +12,12 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import googleSigninScript from "@/plugins/signin/google/index";
+import * as GoogleLogin from "@/plugins/signin/google/index";
 import SignInWithGoogle from "@/components/app/signin/SignInWithGoogle.vue";
 import SignInWithKakao from "@/components/app/signin/SignInWithKakao.vue";
+import { bePOST } from "@/util/backend";
+import { UserInfoBasic } from "@/interfaces/internal";
+import { LoginGoogleResponse } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -23,15 +27,36 @@ import SignInWithKakao from "@/components/app/signin/SignInWithKakao.vue";
 })
 export default class LoginPage extends Vue {
   get googleLoadState(): boolean {
-    return googleSigninScript.loadState.value;
+    return GoogleLogin.loadState.value;
   }
 
   created() {
-    googleSigninScript.load();
+    GoogleLogin.load();
   }
 
   unmounted() {
-    googleSigninScript.unload();
+    GoogleLogin.unload();
+  }
+
+  async onGoogleLogin(data: GoogleLogin.GoogleAuthResponse) {
+    try {
+      const response = (await bePOST<LoginGoogleResponse>("/login/google", {}, {
+        credential: data.credential,
+      })).data;
+
+      const user: UserInfoBasic = {
+        nickname: response.name,
+        email: response.email,
+        firstSignupPassed: response.registrationFormFilled,
+      };
+
+      this.$store.commit("auth/registerLoginState", { user, token: response.token });
+      this.$cookies.set("userSession", response.token);
+
+      this.$router.replace({ name: "main" });
+    } catch(e) {
+      console.error(e);
+    }
   }
 }
 </script>
