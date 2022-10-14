@@ -6,6 +6,16 @@
                  :receiverNickname="letterItem.receiverName"
                  :textContent="letterItem.content" />
 
+    <div v-if="dataLoaded && letterItem.replyLetters"
+         class="letter-view__replies">
+      <letter-area v-for="letter in letterItem.replyLetters"
+                   class="letter-view-area reply"
+                   :key="letter.id"
+                   :senderNickname="letter.senderName"
+                   :receiverNickname="letter.receiverName"
+                   :textContent="letter.content" />
+    </div>
+
     <a href="#" @click="goLetterReplyPage">답장</a>
   </div>
 </template>
@@ -65,12 +75,16 @@ export default class LetterViewPage extends Vue {
 
 <style lang="scss" scoped>
 #letter-view-wrapper {
-  padding: 3rem 0;
+  padding: 1rem 0;
 
   .letter-view-area {
     width: 80vw;
-    min-height: 70vh;
-    margin: auto;
+    min-height: 50vh;
+    margin: 3rem auto;
+
+    &.reply {
+      width: 70vw;
+    }
   }
 }
 </style>
