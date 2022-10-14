@@ -2,12 +2,14 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
+import anyone.to.soma.user.domain.Profile;
+import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserRepository;
 import anyone.to.soma.user.dto.LoginResponse;
+import anyone.to.soma.user.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +30,19 @@ public class UserService {
 
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
-        return new LoginResponse(user.getName(), user.getEmail(), accessToken);
+        return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());
     }
 
-    public User loginUser(String token){
+    public User loginUser(String token) {
         String email = jwtProvider.decodeJWT(token).getSubject();
         return userRepository.findUserByEmail(email).orElseThrow(NoSuchRecordException::new);
     }
 
+    @Transactional
+    public void updateUserProfile(User user, ProfileRequest request) {
+        user.fillRegistrationForm();
+        Profile profile = new Profile(request.getNickname(), request.getGender(), request.getAge(), request.getJob(), user);
+        profile.addPsychologicalExam(request.getPsychologicalExams());
+        user.updateProfile(profile);
+    }
 }
