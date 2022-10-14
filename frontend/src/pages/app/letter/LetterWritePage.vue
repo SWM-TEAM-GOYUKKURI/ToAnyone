@@ -30,7 +30,7 @@ import contenteditable from "vue-contenteditable";
 import { RouteLocationNormalized } from "vue-router";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
 import { bePOST } from "@/util/backend";
-import { LetterWriteRequest } from "@/interfaces/backend";
+import { LetterInboxItem, LetterWriteRequest } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -43,14 +43,14 @@ export default class LetterWritePage extends Vue {
   letterSendInProgress = false;
 
   replyMode = false;
-  replyModeData: ILetterBoxItem | null = null;
+  replyModeData: LetterInboxItem | null = null;
 
   beforeCreate(): void {
     if(this.$route.params) {
       this.replyMode = (this.$route.params.replyMode === "true");
 
       if(this.replyMode) {
-        this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as ILetterBoxItem;
+        this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as LetterInboxItem;
       }
     }
 
