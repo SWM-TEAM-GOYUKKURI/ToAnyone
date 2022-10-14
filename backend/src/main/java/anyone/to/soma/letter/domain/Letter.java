@@ -26,6 +26,8 @@ public class Letter implements Serializable {
 
     private LocalDate sendDate;
 
+    private boolean isRead;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
 
@@ -49,6 +51,7 @@ public class Letter implements Serializable {
         this.content = content;
         this.sendDate = LocalDate.now();
         this.sender = sender;
+        this.isRead = false;
     }
 
     public void send(User receiver) {
@@ -64,5 +67,9 @@ public class Letter implements Serializable {
 
     public void reply(ReplyLetter replyLetter) {
         this.replyLetters.add(replyLetter);
+    }
+
+    public void read() {
+        this.isRead = true;
     }
 }

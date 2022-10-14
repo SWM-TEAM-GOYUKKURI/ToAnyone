@@ -63,4 +63,12 @@ public class User {
     public void updateProfile(Profile profile) {
         this.profile = profile;
     }
+
+    public String getNickname() {
+        if(profile == null) {
+            return "익명";
+        }
+
+        return profile.getNickname();
+    }
 }
