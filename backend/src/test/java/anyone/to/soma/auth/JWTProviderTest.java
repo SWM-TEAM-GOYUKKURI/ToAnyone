@@ -1,6 +1,6 @@
 package anyone.to.soma.auth;
 
-import anyone.to.soma.user.User;
+import anyone.to.soma.user.domain.User;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

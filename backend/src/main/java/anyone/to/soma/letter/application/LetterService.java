@@ -8,8 +8,8 @@ import anyone.to.soma.letter.domain.ReplyLetter;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
-import anyone.to.soma.user.User;
-import anyone.to.soma.user.UserRepository;
+import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +25,15 @@ public class LetterService {
     private final LetterRepository letterRepository;
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public SingleLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
 
         if (!letter.getReceiver().getId().equals(userId)) {
             throw new ApplicationException("잘못된 권한입니다.");
         }
+
+        letter.read();
         return SingleLetterResponse.of(letter, letter.getReceiver().getName(), letter.getReplyLetters());
     }
 

@@ -4,6 +4,4 @@ public enum DecorationType {
     STAMP,
     FONT,
     LETTER_PAPER;
-
-
 }
