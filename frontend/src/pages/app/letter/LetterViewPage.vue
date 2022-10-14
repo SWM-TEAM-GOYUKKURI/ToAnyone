@@ -2,8 +2,8 @@
   <div id="letter-view-wrapper">
     <letter-area v-if="dataLoaded"
                  class="letter-view-area"
-                 :senderNickname="letterItem.senderNickname"
-                 :receiverNickname="$store.state.auth.userBasicInfo.nickname"
+                 :senderNickname="letterItem.senderName"
+                 :receiverNickname="letterItem.receiverName"
                  :textContent="letterItem.content" />
   </div>
 </template>
@@ -12,7 +12,7 @@
 import { Options, Vue } from "vue-class-component";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
 import { beGET } from "@/util/backend";
-import { ILetterBoxItem } from "@/interfaces/ILetterItem";
+import { LetterItemFull } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -20,7 +20,7 @@ import { ILetterBoxItem } from "@/interfaces/ILetterItem";
   },
 })
 export default class LetterViewPage extends Vue {
-  letterItem!: ILetterBoxItem;
+  letterItem!: LetterItemFull;
   dataLoaded = false;
 
   beforeMount(): void {
@@ -30,10 +30,10 @@ export default class LetterViewPage extends Vue {
   }
 
   async mounted() {
-    const response = await beGET(`/letter/inbox/${this.$route.params.letterId}`, null, { credentials: this.$store.state.auth.token! });
+    const response = await beGET<LetterItemFull>(`/letter/inbox/${this.$route.params.letterId}`, null, { credentials: this.$store.state.auth.token! });
 
-    if(response.statusCode === 200) {
-      this.letterItem = response.data as unknown as ILetterBoxItem;
+    if(response.statusCode === 200 && response.data) {
+      this.letterItem = response.data;
 
       this.dataLoaded = true;
     } else {
