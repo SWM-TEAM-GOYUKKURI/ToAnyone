@@ -53,108 +53,92 @@
 </template>
 
 <script lang="ts">
+import { UserProfileAge, UserProfileGender, UserProfileJob } from "@/interfaces/backend";
 import { Vue } from "vue-class-component";
 
 export default class PersonalDataView extends Vue {
-  nicknameFieldHideHint = false;
-
-  genderItems = [
+  readonly genderItems = Object.freeze([
     {
-      value: "male",
+      value: UserProfileGender.MALE,
       title: "남성",
     }, {
-      value: "female",
+      value: UserProfileGender.FEMALE,
       title: "여성",
     }, {
-      value: "nonbinary",
+      value: UserProfileGender.NON_BINARY,
       title: "논바이너리 / 기타",
     }, {
-      value: "notselected",
+      value: UserProfileGender.NOT_SELECTED,
       title: "선택하지 않음",
     },
-  ];
+  ]);
 
-  ageItems = [
+  readonly ageItems = Object.freeze([
     {
-      value: "ten",
+      value: UserProfileAge.TEN,
       title: "10대",
-    },
-    {
-      value: "twenty",
+    }, {
+      value: UserProfileAge.TWENTY,
       title: "20대",
-    },
-    {
-      value: "thirty",
+    }, {
+      value: UserProfileAge.THIRTY,
       title: "30대",
-    },
-    {
-      value: "fourty",
+    }, {
+      value: UserProfileAge.FORTY,
       title: "40대",
-    },
-    {
-      value: "fifty",
+    }, {
+      value: UserProfileAge.FIFTY,
       title: "50대 이상",
-    },
-    {
-      value: "notselected",
+    }, {
+      value: UserProfileAge.NOT_SELECTED,
       title: "선택하지 않음",
     },
-  ];
+  ]);
 
-  jobItems = [
+  readonly jobItems = Object.freeze([
     {
-      value: "student",
+      value: UserProfileJob.STUDENT,
       title: "초·중·고등학생",
-    },
-    {
-      value: "student_univ",
+    }, {
+      value: UserProfileJob.STUDENT_UNIV,
       title: "대학생",
-    },
-    {
-      value: "management",
+    }, {
+      value: UserProfileJob.MANAGEMENT,
       title: "경영·관리",
-    },
-    {
-      value: "office_tech",
+    }, {
+      value: UserProfileJob.OFFICE_TECH,
       title: "사무·기술직",
-    },
-    {
-      value: "professional",
+    }, {
+      value: UserProfileJob.PROFESSIONAL,
       title: "전문직",
-    },
-    {
-      value: "freelancer",
+    }, {
+      value: UserProfileJob.FREELANCER,
       title: "프리랜서",
-    },
-    {
-      value: "simple_labor",
+    }, {
+      value: UserProfileJob.SIMPLE_LABOR,
       title: "단순노무 (기능·작업 등)",
-    },
-    {
-      value: "seller",
+    }, {
+      value: UserProfileJob.SELLER,
       title: "판매·영업·마케팅",
-    },
-    {
-      value: "service",
+    }, {
+      value: UserProfileJob.SERVICE,
       title: "서비스",
-    },
-    {
-      value: "self_emp",
+    }, {
+      value: UserProfileJob.SELF_EMP,
       title: "자영업",
-    },
-    {
-      value: "homemaker",
+    }, {
+      value: UserProfileJob.HOME_MAKER,
       title: "전업주부",
-    },
-    {
-      value: "noemp_etc",
+    }, {
+      value: UserProfileJob.NOT_WORKING,
       title: "무직·기타",
-    },
-    {
-      value: "notselected",
+    }, {
+      value: UserProfileJob.NOT_SELECTED,
       title: "선택하지 않음",
     },
-  ];
+  ]);
+
+  nicknameFieldHideHint = false;
 
   formData = {
     nickname: "",
@@ -171,6 +155,7 @@ export default class PersonalDataView extends Vue {
   }
 
   mounted(): void {
+    // Fill nickname textfield with signin account username
     this.formData.nickname = this.$store.state.auth.userBasicInfo!.nickname;
   }
 

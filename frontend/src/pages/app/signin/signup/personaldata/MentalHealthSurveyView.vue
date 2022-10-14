@@ -2,15 +2,15 @@
   <div id="signup-personal-data-survey">
     <div class="signup-personal-data-survey__content">
       <div v-for="(item, index) in mentalHealthSurveyItems"
-           :key="index"
+           :key="index + 1"
            class="signup-personal-data-survey__content__item">
         <span class="question-title">{{ index + 1 }}. {{ item.question }}</span>
 
         <v-radio-group v-model="mentalHealthData[index + 1]">
           <v-radio v-for="(value, index) in item.selections"
-                   :key="index"
+                   :key="index + 1"
                    :label="value"
-                   :value="index" />
+                   :value="index + 1" />
         </v-radio-group>
       </div>
     </div>
@@ -62,7 +62,14 @@ export default class MentalHealthSurveyView extends Vue {
       question: "나는 나의 외모에 관심이 많다.",
       selections: [""],
     },
-    // 12, 14
+    { // 12
+      question: "...",
+      selections: [""],
+    },
+    { // 14
+      question: "...",
+      selections: [""],
+    },
   ];
 
   mentalHealthData = {};
