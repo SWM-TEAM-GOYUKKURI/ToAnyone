@@ -1,11 +1,11 @@
 import { Module } from "vuex";
 import { RootStoreState } from "..";
-import { IUserBasicInfo } from "@/interfaces/IUserInfo";
+import { UserInfoBasic } from "@/interfaces/internal";
 
 export interface AuthStoreState {
   isLoggedIn: boolean,
   token: string | null,
-  userBasicInfo: IUserBasicInfo | null,
+  userBasicInfo: UserInfoBasic | null,
 }
 
 const authStore: Module<AuthStoreState, RootStoreState> = {
@@ -22,7 +22,7 @@ const authStore: Module<AuthStoreState, RootStoreState> = {
   },
   mutations: {
     registerLoginState(state, payload: {
-      user: IUserBasicInfo | null,
+      user: UserInfoBasic | null,
       token?: string,
     }): void {
       // payload의 데이터가 모두 null이 아닌 값이 있는 경우 로그인 상태를 설정하는 것으로 처리

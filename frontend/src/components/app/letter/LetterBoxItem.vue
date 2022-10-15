@@ -18,7 +18,7 @@
 import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
-import { ILetterBoxItem } from "@/interfaces/ILetterItem";
+import { LetterInboxItem } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -27,7 +27,7 @@ import { ILetterBoxItem } from "@/interfaces/ILetterItem";
 })
 export default class LetterBoxItem extends Vue {
   /* TODO: Needed data for letterItem: sender data(nickname/profile image id), letter read status */
-  @Prop({ type: Object, required: true }) letterItem!: ILetterBoxItem;
+  @Prop({ type: Object, required: true }) letterItem!: LetterInboxItem;
 }
 </script>
 
