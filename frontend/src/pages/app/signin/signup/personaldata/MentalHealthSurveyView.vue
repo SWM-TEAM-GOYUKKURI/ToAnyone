@@ -60,15 +60,15 @@ export default class MentalHealthSurveyView extends Vue {
     },
     { // 10
       question: "나는 나의 외모에 관심이 많다.",
-      selections: [""],
+      selections: ["", "", "", ""],
     },
     { // 12
       question: "...",
-      selections: [""],
+      selections: ["", "", "", ""],
     },
     { // 14
       question: "...",
-      selections: [""],
+      selections: ["", "", "", ""],
     },
   ];
 

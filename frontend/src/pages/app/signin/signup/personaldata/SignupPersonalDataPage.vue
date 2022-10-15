@@ -24,9 +24,11 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
+import { RouteLocationNormalized } from "vue-router";
 
 export default class SignupPersonalDataPage extends Vue {
   private signupData = {};
+  basicDataEntered = false;
 
   get devMode(): boolean {
     return process.env.VUE_APP_DEVMODE === "true";
@@ -35,6 +37,24 @@ export default class SignupPersonalDataPage extends Vue {
   mounted(): void {
     if(this.$route.name === "signup-profile") {
       // 라우트 경로가 `/signup/profile`인 경우 페이지 정상 표시를 위해 핸들링 (`/signup/profile/basic`으로 replace)
+      this.$router.replace({ name: "signup-profile-basic" });
+    }
+
+    this.onRouteUpdate(this.$route);
+  }
+
+  beforeRouteUpdate(to: RouteLocationNormalized) {
+    this.onRouteUpdate(to);
+  }
+
+  onRouteUpdate(to: RouteLocationNormalized) {
+    if(to.name === "signup-profile-basic") {
+      // 라우트 경로가 개인정보 입력 뷰인 경우 개인정보 입력 완료 여부 초기화
+      this.basicDataEntered = false;
+    }
+
+    if(to.name === "signup-profile-survey" && !this.basicDataEntered) {
+      // 라우트 경로가 심리검사 뷰인데 개인정보 입력 완료 여부가 확인이 되지 않을 경우 개인정보 입력 뷰로 강제이동
       this.$router.replace({ name: "signup-profile-basic" });
     }
   }
@@ -57,10 +77,11 @@ export default class SignupPersonalDataPage extends Vue {
       case "basic":
         this.signupData = { ...data };
         this.$router.push({ name: "signup-profile-survey" });
+        this.basicDataEntered = true;
         break;
 
       case "survey":
-        this.signupData = { ...this.signupData, ...data };
+        this.signupData = { ...this.signupData, survey: { ...data } };
         // TODO: send basic + survey data to backend, get reply from backend, if all good set signed up bit for auth user and go to main page
         break;
     }
