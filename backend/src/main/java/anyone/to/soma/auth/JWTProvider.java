@@ -41,6 +41,10 @@ public class JWTProvider {
         return new User(email, name, LoginType.GOOGLE, id);
     }
 
+    public String decodeJWTToSubject(String token) {
+        return decodeJWT(token).getSubject();
+    }
+
     public DecodedJWT decodeJWT(String token) {
         return JWT.decode(token);
     }

@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public User loginUser(String token) {
-        String email = jwtProvider.decodeJWT(token).getSubject();
+        String email = jwtProvider.decodeJWTToSubject(token);
         return userRepository.findUserByEmail(email).orElseThrow(NoSuchRecordException::new);
     }
 
