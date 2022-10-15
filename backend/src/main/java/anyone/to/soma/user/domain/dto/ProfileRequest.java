@@ -1,4 +1,4 @@
-package anyone.to.soma.user.dto;
+package anyone.to.soma.user.domain.dto;
 
 import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.type.Age;
