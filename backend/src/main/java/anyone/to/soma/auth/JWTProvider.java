@@ -1,7 +1,7 @@
 package anyone.to.soma.auth;
 
-import anyone.to.soma.user.LoginType;
 import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.type.LoginType;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;

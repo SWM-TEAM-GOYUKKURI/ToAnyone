@@ -2,7 +2,7 @@ package anyone.to.soma.config.argumentresolver;
 
 import anyone.to.soma.config.annotation.LoginUser;
 import anyone.to.soma.exception.ApplicationException;
-import anyone.to.soma.user.UserService;
+import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

@@ -1,12 +1,14 @@
 package anyone.to.soma.user;
 
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.UserRepository;
 import anyone.to.soma.user.domain.type.Age;
 import anyone.to.soma.user.domain.type.Gender;
 import anyone.to.soma.user.domain.type.Job;
+import anyone.to.soma.user.domain.type.LoginType;
 import anyone.to.soma.user.dto.LoginResponse;
 import anyone.to.soma.user.dto.ProfileRequest;
 import anyone.to.soma.utils.Fixtures;
@@ -44,7 +46,7 @@ public class UserServiceMockTest {
     private User googleUser;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         googleUser = Fixtures.UserStub.defaultGoogleUser(EMAIL);
     }
 

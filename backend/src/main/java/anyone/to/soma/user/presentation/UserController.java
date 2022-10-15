@@ -1,7 +1,8 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.presentation;
 
 import anyone.to.soma.config.annotation.LoginRequired;
 import anyone.to.soma.config.annotation.LoginUser;
+import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.dto.LoginResponse;
 import anyone.to.soma.user.dto.ProfileRequest;

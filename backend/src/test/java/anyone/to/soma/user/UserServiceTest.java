@@ -2,8 +2,8 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.IntegrationTest;
 import anyone.to.soma.auth.JWTProvider;
-import anyone.to.soma.decoration.DecorationRepository;
 import anyone.to.soma.letter.domain.LetterRepository;
+import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.UserRepository;
@@ -39,8 +39,6 @@ class UserServiceTest extends IntegrationTest {
     @Autowired
     private LetterRepository letterRepository;
 
-    @Autowired
-    private DecorationRepository decorationRepository;
     @Autowired
     private LetterDecorationRepository letterDecorationRepository;
     @Autowired
@@ -82,7 +80,6 @@ class UserServiceTest extends IntegrationTest {
     void tearDown() {
         replyRepository.deleteAllInBatch();
         letterDecorationRepository.deleteAllInBatch();
-        decorationRepository.deleteAllInBatch();
         letterRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
     }

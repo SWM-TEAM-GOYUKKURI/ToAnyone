@@ -1,4 +1,4 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.application;
 
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;

@@ -1,8 +1,8 @@
 package anyone.to.soma.utils;
 
 import anyone.to.soma.letter.domain.Letter;
-import anyone.to.soma.user.LoginType;
 import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.type.LoginType;
 
 public class Fixtures {
 

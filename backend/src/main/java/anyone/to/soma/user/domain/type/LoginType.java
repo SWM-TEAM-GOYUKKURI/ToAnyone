@@ -1,4 +1,4 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.domain.type;
 
 public enum LoginType {
     GOOGLE,

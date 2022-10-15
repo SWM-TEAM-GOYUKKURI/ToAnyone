@@ -1,7 +1,6 @@
 package anyone.to.soma.letter;
 
 import anyone.to.soma.IntegrationTest;
-import anyone.to.soma.decoration.DecorationRepository;
 import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.Letter;
@@ -29,8 +28,6 @@ class LetterServiceTest extends IntegrationTest {
     private LetterService letterService;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private DecorationRepository decorationRepository;
     @Autowired
     private LetterDecorationRepository letterDecorationRepository;
     @Autowired
@@ -95,7 +92,6 @@ class LetterServiceTest extends IntegrationTest {
     void tearDown() {
         replyRepository.deleteAllInBatch();
         letterDecorationRepository.deleteAllInBatch();
-        decorationRepository.deleteAllInBatch();
         letterRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
     }
