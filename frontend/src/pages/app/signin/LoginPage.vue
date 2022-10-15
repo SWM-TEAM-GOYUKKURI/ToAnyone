@@ -30,11 +30,11 @@ export default class LoginPage extends Vue {
     return GoogleLogin.loadState.value;
   }
 
-  created() {
+  created(): void {
     GoogleLogin.load();
   }
 
-  unmounted() {
+  unmounted(): void {
     GoogleLogin.unload();
   }
 
