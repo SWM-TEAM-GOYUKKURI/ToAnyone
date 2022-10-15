@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    public static final String EMAIL = "email";
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
 
