@@ -40,7 +40,6 @@ public class UserService {
 
     @Transactional
     public void updateUserProfile(User user, ProfileRequest request) {
-        user.fillRegistrationForm();
         Profile profile = new Profile(request.getNickname(), request.getGender(), request.getAge(), request.getJob(), user);
         profile.addPsychologicalExam(request.getPsychologicalExams());
         user.updateProfile(profile);

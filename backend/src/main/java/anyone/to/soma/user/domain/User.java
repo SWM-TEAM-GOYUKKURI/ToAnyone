@@ -56,12 +56,9 @@ public class User {
         this.registrationFormFilled = false;
     }
 
-    public void fillRegistrationForm() {
-        this.registrationFormFilled = true;
-    }
-
     public void updateProfile(Profile profile) {
         this.profile = profile;
+        this.registrationFormFilled = true;
     }
 
     public String getNickname() {
