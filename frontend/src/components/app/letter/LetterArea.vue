@@ -7,6 +7,7 @@
                        tag="div"
                        :contenteditable="letterWriteMode"
                        :no-html="true"
+                       @input="$emit('textareaInput')"
                        @keydown.ctrl="onEditorKeyDown"></contenteditable>
       <div style="text-align: right"><strong>To. {{ receiverNickname }}</strong></div>
     </div>
