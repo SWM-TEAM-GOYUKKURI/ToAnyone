@@ -25,9 +25,10 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { RouteLocationNormalized } from "vue-router";
+import { SignupData } from "@/interfaces/internal";
 
 export default class SignupPersonalDataPage extends Vue {
-  private signupData = {};
+  private signupData: SignupData = {};
   basicDataEntered = false;
 
   get devMode(): boolean {
@@ -81,9 +82,33 @@ export default class SignupPersonalDataPage extends Vue {
         break;
 
       case "survey":
-        this.signupData = { ...this.signupData, survey: { ...data } };
-        // TODO: send basic + survey data to backend, get reply from backend, if all good set signed up bit for auth user and go to main page
+        this.signupData = { ...this.signupData, survey: { ...(data as Record<number, number>) } };
+
+        if(this.validateSignupData()) {
+          // TODO: send basic + survey data to backend, get reply from backend, if all good set signed up bit for auth user and go to main page
+        }
         break;
+    }
+  }
+
+  validateSignupData(): boolean {
+    function isSignupData(data: SignupData): data is SignupData { return !!data; }
+
+    if(isSignupData(this.signupData) &&
+      "nickname" in this.signupData && typeof this.signupData.nickname === "string" &&
+      "gender" in this.signupData && typeof this.signupData.gender === "string" &&
+      "age" in this.signupData && typeof this.signupData.age === "string" &&
+      "job" in this.signupData && typeof this.signupData.job === "string" &&
+      "survey" in this.signupData && typeof this.signupData.survey === "object") {
+      // Additional checks for survey
+      if(Object.keys(this.signupData.survey).length === 10 &&
+        Object.keys(this.signupData.survey).every((v) => parseInt(v) >= 1 && parseInt(v) <= 10) &&
+        Object.values(this.signupData.survey).every((v) => v >= 1 && v <= 4)) {
+        return true;
+      }
+      return false;
+    } else {
+      return false;
     }
   }
 }
