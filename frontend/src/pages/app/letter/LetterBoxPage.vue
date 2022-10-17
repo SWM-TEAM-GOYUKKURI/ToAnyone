@@ -18,7 +18,7 @@
 import { Options, Vue } from "vue-class-component";
 import LetterBoxItem from "@/components/app/letter/LetterBoxItem.vue";
 import { beGET } from "@/util/backend";
-import { ILetterBoxItem } from "@/interfaces/ILetterItem";
+import { LetterInboxItemList } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -26,10 +26,10 @@ import { ILetterBoxItem } from "@/interfaces/ILetterItem";
   },
 })
 export default class LetterBoxPage extends Vue {
-  _letterItems: ILetterBoxItem[] = [];
+  _letterItems: LetterInboxItemList = [];
   requestCompleted = false;
 
-  get letterItems(): ILetterBoxItem[] {
+  get letterItems(): LetterInboxItemList {
     return Array.from(this._letterItems).sort((a, b) => {
       // TODO: sort by read status, receive data... need more data from backend
 
@@ -38,10 +38,10 @@ export default class LetterBoxPage extends Vue {
   }
 
   async mounted() {
-    const response = await beGET("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
+    const response = await beGET<LetterInboxItemList>("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
 
-    if(response.statusCode === 200) {
-      this._letterItems = response.data as unknown as ILetterBoxItem[];
+    if(response.statusCode === 200 && response.data) {
+      this._letterItems = response.data;
     } else {
       this._letterItems = [];
     }

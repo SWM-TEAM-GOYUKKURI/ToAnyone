@@ -6,11 +6,10 @@
 import { Vue } from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import { GoogleAuthResponse } from "@/plugins/signin/google";
-import { bePOST } from "@/util/backend";
-import { IUserBasicInfo } from "@/interfaces/IUserInfo";
 
 export default class SignInWithGoogle extends Vue {
   @Prop({ type: Boolean, default: false }) loaded!: boolean;
+  @Prop({ type: Function, required: true }) callback!: (data: GoogleAuthResponse) => void;
 
   get googleClientId(): string {
     return process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID;
@@ -21,7 +20,7 @@ export default class SignInWithGoogle extends Vue {
     if(this.loaded && window.google) {
       window.google.accounts.id.initialize({
         client_id: this.googleClientId,
-        callback: this.loginCallback,
+        callback: this.callback,
       });
 
       window.google.accounts.id.renderButton(this.$refs.googleLoginButton, {
@@ -30,29 +29,6 @@ export default class SignInWithGoogle extends Vue {
         theme: "outline",
         text: "signin_with",
       });
-    }
-  }
-
-  async loginCallback(data: GoogleAuthResponse) {
-    try {
-      const response = (await bePOST("/login/google", {}, {
-        credential: data.credential,
-      })).data as {
-        name: string,
-        email: string,
-        token: string,
-      };
-
-      const user: IUserBasicInfo = {
-        nickname: response.name,
-      };
-
-      this.$store.commit("auth/registerLoginState", { user, token: response.token });
-      this.$cookies.set("userSession", response.token);
-
-      this.$router.replace({ name: "main" });
-    } catch(e) {
-      console.error(e);
     }
   }
 }

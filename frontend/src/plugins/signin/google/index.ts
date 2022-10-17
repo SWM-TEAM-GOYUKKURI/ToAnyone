@@ -17,7 +17,7 @@ async function scriptLoadHandler() {
   }
 }
 
-function load() {
+export function load() {
   gsiScript.src = "https://accounts.google.com/gsi/client";
   gsiScript.async = true;
   gsiScript.defer = true;
@@ -27,7 +27,7 @@ function load() {
   gsiScript.addEventListener("load", scriptLoadHandler);
 }
 
-function unload() {
+export function unload() {
   gsiScript.removeAttribute("src");
   gsiScript.removeEventListener("load", scriptLoadHandler);
   gsiScript.remove();
@@ -41,8 +41,6 @@ function unload() {
   loadState.value = false;
 }
 
-export default {
-  load,
-  unload,
+export {
   loadState,
 };

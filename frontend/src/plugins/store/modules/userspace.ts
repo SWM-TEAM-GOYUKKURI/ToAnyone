@@ -1,9 +1,9 @@
 import { Module } from "vuex";
 import { RootStoreState } from "..";
-import { IUserInfo } from "@/interfaces/IUserInfo";
+import { UserInfo } from "@/interfaces/internal";
 
 export interface UserspaceStoreState {
-  user: IUserInfo | null,
+  user: UserInfo | null,
   settings: {
     // to be filled
   },
