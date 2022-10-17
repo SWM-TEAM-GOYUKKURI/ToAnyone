@@ -123,7 +123,8 @@ export default class LetterWritePage extends Vue {
         });
 
         if(response.statusCode === 201) {
-          this.letterTextContent = "";
+          this.letterTextInputOccured = false;
+          this.$router.replace({ name: "letter-view" });
         } else {
           // todo
         }
