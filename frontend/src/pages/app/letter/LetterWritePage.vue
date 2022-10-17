@@ -64,22 +64,25 @@ export default class LetterWritePage extends Vue {
   }
 
   beforeRouteLeave(to: RouteLocationNormalized, from: RouteLocationNormalized) {
-    if(this.letterTextInputOccured) {
-      const answer = window.confirm("편지를 작성 중이에요. 정말로 나가실건가요?");
-      if(answer) {
-        if(to.name === "letter-view" &&
-          from.name === "letter-reply" &&
-          this.replyMode &&
-          this.replyModeData) {
-          to.params = {
-            letterId: this.replyModeData.id.toString(),
-          };
-        }
+    let answer = true;
 
-        return true;
-      } else {
-        return false;
+    if(this.letterTextInputOccured) {
+      answer = window.confirm("편지를 작성 중이에요. 정말로 나가실건가요?");
+    }
+
+    if(answer) {
+      if(to.name === "letter-view" &&
+        from.name === "letter-reply" &&
+        this.replyMode &&
+        this.replyModeData) {
+        to.params = {
+          letterId: this.replyModeData.id.toString(),
+        };
       }
+
+      return true;
+    } else {
+      return false;
     }
   }
 
