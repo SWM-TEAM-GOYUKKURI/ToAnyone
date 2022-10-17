@@ -1,12 +1,12 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.application;
 
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.user.domain.Profile;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.UserRepository;
-import anyone.to.soma.user.dto.LoginResponse;
-import anyone.to.soma.user.dto.ProfileRequest;
+import anyone.to.soma.user.domain.dto.LoginResponse;
+import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    public static final String EMAIL = "email";
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
 
@@ -34,13 +33,12 @@ public class UserService {
     }
 
     public User loginUser(String token) {
-        String email = jwtProvider.decodeJWT(token).getSubject();
+        String email = jwtProvider.decodeJWTToSubject(token);
         return userRepository.findUserByEmail(email).orElseThrow(NoSuchRecordException::new);
     }
 
     @Transactional
     public void updateUserProfile(User user, ProfileRequest request) {
-        user.fillRegistrationForm();
         Profile profile = new Profile(request.getNickname(), request.getGender(), request.getAge(), request.getJob(), user);
         profile.addPsychologicalExam(request.getPsychologicalExams());
         user.updateProfile(profile);

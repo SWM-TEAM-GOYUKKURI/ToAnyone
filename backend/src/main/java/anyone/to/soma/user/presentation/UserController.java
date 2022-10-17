@@ -1,10 +1,11 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.presentation;
 
 import anyone.to.soma.config.annotation.LoginRequired;
 import anyone.to.soma.config.annotation.LoginUser;
+import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.dto.LoginResponse;
-import anyone.to.soma.user.dto.ProfileRequest;
+import anyone.to.soma.user.domain.dto.LoginResponse;
+import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,4 +1,4 @@
-package anyone.to.soma.user.dto;
+package anyone.to.soma.user.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
