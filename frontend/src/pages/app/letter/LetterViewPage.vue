@@ -16,7 +16,9 @@
                    :textContent="letter.content" />
     </div>
 
-    <a href="#" @click="goLetterReplyPage">답장</a>
+    <a href="#"
+       class="letter-view__reply-button animation-button"
+       @click="goLetterReplyPage"><v-icon>mdi-reply</v-icon> 답장하기</a>
   </div>
 </template>
 
@@ -84,6 +86,23 @@ export default class LetterViewPage extends Vue {
 
     &.reply {
       width: 70vw;
+    }
+  }
+
+  .letter-view {
+    &__reply-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1em 1.5em;
+      font-size: 1.25em;
+      background-color: $color-secondary;
+      box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.5);
+      border-radius: 999999rem;
+      white-space: pre;
     }
   }
 }
