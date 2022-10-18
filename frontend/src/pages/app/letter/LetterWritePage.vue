@@ -63,6 +63,11 @@ export default class LetterWritePage extends Vue {
     }
   }
 
+  mounted(): void {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.body.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   beforeRouteLeave(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     let answer = true;
 
