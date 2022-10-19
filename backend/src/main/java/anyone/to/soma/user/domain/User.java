@@ -1,6 +1,6 @@
 package anyone.to.soma.user.domain;
 
-import anyone.to.soma.user.LoginType;
+import anyone.to.soma.user.domain.type.LoginType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,16 +56,13 @@ public class User {
         this.registrationFormFilled = false;
     }
 
-    public void fillRegistrationForm() {
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
         this.registrationFormFilled = true;
     }
 
-    public void updateProfile(Profile profile) {
-        this.profile = profile;
-    }
-
     public String getNickname() {
-        if(profile == null) {
+        if (profile == null) {
             return "익명";
         }
 
