@@ -48,8 +48,8 @@ public class LetterService {
     public Long writeLetter(LetterRequest request, User sender) {
         Letter letter = new Letter(request.getContent(), sender);
         User randomReceiver = findRandomReceiver(sender.getId());
-        letter.send(randomReceiver);
         letter.attachDecorations(request.getDecorations());
+        letter.send(randomReceiver);
 
         Long letterId = letterRepository.save(letter).getId();
         randomReceiver.receiveLetter();
