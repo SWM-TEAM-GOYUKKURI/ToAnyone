@@ -110,7 +110,8 @@ export default class SignupPersonalDataPage extends Vue {
 
             this.$router.replace({ name: "main" });
           } else {
-            // ERROR
+            // TEMP ALERT
+            alert(`사용자 정보 업데이트 중 오류: ${response.statusCode}`);
           }
         }
         break;

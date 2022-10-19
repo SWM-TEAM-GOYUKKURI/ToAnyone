@@ -46,7 +46,8 @@ export default class LetterWritePage extends Vue {
         // HTTP 201 Created: Letter sent successfully
         this.letterTextContent = "";
       } else {
-        // Error handling
+        // TEMP ALERT
+        alert(`편지 전송 중 오류: ${response.statusCode}`);
       }
 
       this.letterSendInProgress = false;

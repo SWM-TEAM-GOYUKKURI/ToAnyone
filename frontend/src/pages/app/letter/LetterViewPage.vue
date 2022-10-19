@@ -37,7 +37,8 @@ export default class LetterViewPage extends Vue {
 
       this.dataLoaded = true;
     } else {
-      // Error handling
+      // TEMP ALERT
+      alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
     }
   }
 }
