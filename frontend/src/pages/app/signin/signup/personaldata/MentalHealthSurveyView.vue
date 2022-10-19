@@ -17,10 +17,11 @@
 
     <div class="signup-personal-data-survey__buttons">
       <div class="signup-personal-data-survey__buttons__back animation-button"
-          @click="onBackButtonClick">〈&nbsp; 뒤로</div>
+           @click="onBackButtonClick">〈&nbsp; 뒤로</div>
 
       <div class="signup-personal-data-survey__buttons__done animation-button"
-          @click="onDoneButtonClick">확인 &nbsp;✓</div>
+           :class="{ 'disabled': isFormValid }"
+           @click="onDoneButtonClick">확인 &nbsp;✓</div>
     </div>
   </div>
 </template>
@@ -74,12 +75,19 @@ export default class MentalHealthSurveyView extends Vue {
 
   mentalHealthData = {};
 
+  get isFormValid(): boolean {
+    return (Object.keys(this.mentalHealthData).length !== 10) &&
+          (Object.keys(this.mentalHealthData).every((p) => parseInt(p) >= 1 && parseInt(p) <= 10));
+  }
+
   onBackButtonClick(): void {
     this.$emit("backSurvey");
   }
 
   onDoneButtonClick(): void {
-    this.$emit("submitSurvey", this.mentalHealthData);
+    if(this.isFormValid) {
+      this.$emit("submitSurvey", this.mentalHealthData);
+    }
   }
 }
 </script>
