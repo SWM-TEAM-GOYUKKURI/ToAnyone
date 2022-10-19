@@ -25,7 +25,9 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { RouteLocationNormalized } from "vue-router";
-import { SignupData } from "@/interfaces/internal";
+import { SignupData, UserInfoBasic } from "@/interfaces/internal";
+import { bePUT } from "@/util/backend";
+import { UserProfilePsychologicalExamItem, UserProfileUpdateRequest } from "@/interfaces/backend";
 
 export default class SignupPersonalDataPage extends Vue {
   private signupData: SignupData = {};
@@ -73,7 +75,7 @@ export default class SignupPersonalDataPage extends Vue {
     }
   }
 
-  onSubmitData(from: "basic" | "survey", data: Record<string, unknown>): void {
+  async onSubmitData(from: "basic" | "survey", data: Record<string, unknown>) {
     switch(from) {
       case "basic":
         this.signupData = { ...data };
@@ -85,7 +87,31 @@ export default class SignupPersonalDataPage extends Vue {
         this.signupData = { ...this.signupData, survey: { ...(data as Record<number, number>) } };
 
         if(this.validateSignupData()) {
-          // TODO: send basic + survey data to backend, get reply from backend, if all good set signed up bit for auth user and go to main page
+          const requestData: UserProfileUpdateRequest = {
+            age: this.signupData.age!,
+            gender: this.signupData.gender!,
+            job: this.signupData.job!,
+            nickname: this.signupData.nickname!,
+            psychologicalExams: Object.entries(this.signupData.survey!).map((v) => { return { questionId: parseInt(v[0]), answerId: v[1] } as UserProfilePsychologicalExamItem; }),
+          };
+
+          const response = await bePUT("/user", requestData, {
+            credentials: this.$store.state.auth.token!,
+          });
+
+          if(response.statusCode === 200) {
+            if(this.$store.state.auth.userBasicInfo) {
+              const user: UserInfoBasic = { ...this.$store.state.auth.userBasicInfo, firstSignupPassed: true };
+              this.$store.commit("auth/registerLoginState", {
+                user,
+                token: this.$store.state.auth.token,
+              });
+            }
+
+            this.$router.replace({ name: "main" });
+          } else {
+            // ERROR
+          }
         }
         break;
     }
