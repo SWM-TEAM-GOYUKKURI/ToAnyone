@@ -1,4 +1,4 @@
-package anyone.to.soma.user.dto;
+package anyone.to.soma.user.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,4 +11,5 @@ public class LoginResponse {
     private String name;
     private String email;
     private String token;
+    private boolean registrationFormFilled;
 }

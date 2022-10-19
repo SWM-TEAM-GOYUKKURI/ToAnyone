@@ -17,6 +17,7 @@ import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
 import { bePOST } from "@/util/backend";
+import { LetterWriteRequest } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -32,10 +33,12 @@ export default class LetterWritePage extends Vue {
     if(!this.letterSendInProgress && this.letterTextContent.length > 0) {
       this.letterSendInProgress = true;
 
-      const response = await bePOST("/letter", {
+      const responseData: LetterWriteRequest = {
         content: this.letterTextContent,
         decorations: [],
-      }, {
+      };
+
+      const response = await bePOST("/letter", responseData, {
         credentials: this.$store.state.auth.token!,
       });
 

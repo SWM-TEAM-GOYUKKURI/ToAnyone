@@ -1,15 +1,12 @@
-package anyone.to.soma.user;
+package anyone.to.soma.user.domain;
 
-import anyone.to.soma.decoration.Decoration;
-import anyone.to.soma.decoration.DecorationType;
+import anyone.to.soma.user.domain.type.LoginType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +29,12 @@ public class User {
 
     private int receiveCount = 0;
 
+    private boolean registrationFormFilled;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
     public void receiveLetter() {
         receiveCount++;
     }
@@ -50,10 +53,19 @@ public class User {
         this.name = name;
         this.loginType = loginType;
         this.uniqueId = uniqueId;
+        this.registrationFormFilled = false;
     }
 
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
+        this.registrationFormFilled = true;
+    }
 
-    public void useDecoration(List<DecorationType> decorations) {
+    public String getNickname() {
+        if (profile == null) {
+            return "익명";
+        }
 
+        return profile.getNickname();
     }
 }
