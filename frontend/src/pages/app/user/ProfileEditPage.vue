@@ -10,6 +10,16 @@
           <v-icon size="x-large">mdi-close</v-icon>
         </a>
       </div>
+
+      <div class="profile-edit__form">
+        <div class="profile-edit__form__nickname">
+          <span>닉네임</span>
+          <v-text-field v-model="formData.nickname"
+                        single-line
+                        density="compact"
+                        :rules="[ v => !!v || '닉네임을 입력해주세요.', v => v.length >= 4 || '닉네임을 최소 4자 이상 입력해주세요.' ]" />
+        </div>
+      </div>
     </div>
   </v-slide-y-reverse-transition>
 </template>
@@ -19,9 +29,14 @@ import { Vue } from "vue-class-component";
 
 export default class ProfileEditPage extends Vue {
   show = false;
+  formData = { };
 
   mounted(): void {
     this.show = true;
+
+    this.formData = {
+      nickname: this.$store.state.auth.userBasicInfo?.nickname,
+    };
   }
 }
 </script>
