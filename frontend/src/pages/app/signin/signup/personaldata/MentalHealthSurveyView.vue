@@ -59,17 +59,17 @@ export default class MentalHealthSurveyView extends Vue {
       question: "나의 마음은 안정되어 있다.",
       selections: ["매우 자주 그렇다", "자주 그렇다", "가끔 그렇다", "전혀 아니다"],
     },
-    { // 10
-      question: "나는 나의 외모에 관심이 많다.",
-      selections: ["", "", "", ""],
+    {
+      question: "나는 나의 외모에 관심이 있는 편이다.",
+      selections: ["매우 그렇다", "그렇다", "그렇지 않다", "전혀 그렇지 않다"],
     },
-    { // 12
-      question: "...",
-      selections: ["", "", "", ""],
+    {
+      question: "나는 무언가를 기다리는 것이 즐겁다.",
+      selections: ["이전에 그랬던 것처럼 그렇다", "그렇다", "전보다 덜 즐겁다", "전혀 그렇지 않다"],
     },
-    { // 14
-      question: "...",
-      selections: ["", "", "", ""],
+    {
+      question: "나는 문화생활(책, 노래, 영화 등)을 즐긴다.",
+      selections: ["자주 즐긴다", "가끔 즐긴다", "거의 못 즐긴다", "전혀 못 즐긴다"],
     },
   ];
 
