@@ -1,7 +1,7 @@
 <template>
   <div id="signup-personal-data-wrapper">
-    <div v-if="devMode"
-         @click="devSkipInput">SKIP</div>
+    <!-- <div v-if="devMode"
+         @click="devSkipInput">SKIP</div> -->
 
     <div class="signup-personal-data__content">
       <h1><strong>처음 오셨네요!🙌</strong><br />당신은 어떤 사람인가요?👂</h1>
@@ -34,9 +34,9 @@ export default class SignupPersonalDataPage extends Vue {
   private signupData: SignupData = {};
   basicDataEntered = false;
 
-  get devMode(): boolean {
+  /* get devMode(): boolean {
     return process.env.VUE_APP_DEVMODE === "true";
-  }
+  } */
 
   mounted(): void {
     (this.$refs.logout as HTMLAnchorElement).href = this.$router.resolve({ name: "logout" }).href;
@@ -65,7 +65,7 @@ export default class SignupPersonalDataPage extends Vue {
     }
   }
 
-  devSkipInput(): void {
+  /* devSkipInput(): void {
     if(this.devMode) {
       this.$store.commit("auth/registerLoginState", {
         user: {
@@ -76,7 +76,7 @@ export default class SignupPersonalDataPage extends Vue {
       });
       window.location.href = "/";
     }
-  }
+  } */
 
   async onSubmitData(from: "basic" | "survey", data: Record<string, unknown>) {
     switch(from) {
