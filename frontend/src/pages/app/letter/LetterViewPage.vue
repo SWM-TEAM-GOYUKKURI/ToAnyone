@@ -16,7 +16,8 @@
                    :textContent="letter.content" />
     </div>
 
-    <a href="#"
+    <a v-if="!lastLetterSentByMe"
+       href="#"
        class="letter-view__reply-button animation-button"
        @click="goLetterReplyPage"><v-icon>mdi-reply</v-icon> 답장하기</a>
   </div>
@@ -43,6 +44,23 @@ export default class LetterViewPage extends Vue {
     } else {
       return "";
     }
+  }
+
+  get lastLetterSentByMe(): boolean {
+    if(this.dataLoaded && this.letterItem) {
+      if(this.letterItem.replyLetters && this.letterItem.replyLetters.length > 0) {
+        const lastReplyLetter = this.letterItem.replyLetters[this.letterItem.replyLetters.length - 1];
+        if(lastReplyLetter.senderName === this.$store.state.auth.userBasicInfo!.nickname) {
+          return true;
+        }
+      } else {
+        if(this.letterItem.senderName === this.$store.state.auth.userBasicInfo!.nickname) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   beforeMount(): void {
