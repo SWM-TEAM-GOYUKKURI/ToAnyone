@@ -1,6 +1,6 @@
 <template>
   <div id="letter-box-wrapper">
-    <div v-if="devmode" @click="testlettertome">테스트 편지 받기</div>
+    <!-- <div v-if="devmode" @click="testlettertome">테스트 편지 받기</div> -->
 
     <v-progress-circular v-if="!requestCompleted"
                         indeterminate />
@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterBoxItem from "@/components/app/letter/LetterBoxItem.vue";
-import { beGET, bePOST } from "@/util/backend";
+import { beGET /* , bePOST */ } from "@/util/backend";
 import { LetterInboxItemList } from "@/interfaces/backend";
 
 @Options({
@@ -58,7 +58,7 @@ export default class LetterBoxPage extends Vue {
     }
   }
 
-  async testlettertome() {
+  /* async testlettertome() {
     const response = await bePOST("/dev/letter", {
       content: "테스트 편지",
       senderEmail: this.$store.state.auth.userBasicInfo?.email,
@@ -73,7 +73,7 @@ export default class LetterBoxPage extends Vue {
     } else {
       // Error handling
     }
-  }
+  } */
 }
 </script>
 
