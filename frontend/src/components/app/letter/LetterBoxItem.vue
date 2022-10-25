@@ -1,6 +1,6 @@
 <template>
   <router-link class="letter-box-item animation-button"
-               :class="{ 'not-read': !letterItem.hadRead }"
+               :class="{ 'not-read': !letterItem.read }"
                :to="{ name: 'letter-view', params: { letterId: letterItem.id }}">
     <div class="letter-box-item__profile-area">
       <profile-image class="letter-box-item__profile-image"
