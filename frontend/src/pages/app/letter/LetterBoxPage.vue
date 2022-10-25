@@ -35,7 +35,9 @@ export default class LetterBoxPage extends Vue {
 
   get letterItems(): LetterInboxItemList {
     return Array.from(this._letterItems).sort((a, b) => {
-      // TODO: sort by read status, receive data... need more data from backend
+      if(!a.read) return -1;
+
+      // TODO: sort by read status, receive date...
 
       return 0;
     });
