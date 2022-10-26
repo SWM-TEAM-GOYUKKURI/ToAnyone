@@ -4,10 +4,24 @@
       꾸미기 아이템 영역<br>구현 중입니다.
     </div>
 
-    <letter-area id="letter-write-area"
+    <!-- Normal write -->
+    <letter-area v-if="!replyMode"
+                 id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
                  :letterSendInProgress="letterSendInProgress"
+                 @textareaInput="onTextareaInput"
+                 @sendButtonClick="onSendButtonClick" />
+
+    <!-- Reply -->
+    <letter-area v-else
+                 id="letter-write-area"
+                 v-model:textContent="letterTextContent"
+                 :letterWriteMode="true"
+                 :letterReplyMode="true"
+                 :receiverNickname="replyModeData.senderName"
+                 :letterSendInProgress="letterSendInProgress"
+                 @textareaInput="onTextareaInput"
                  @sendButtonClick="onSendButtonClick" />
   </div>
 </template>
@@ -15,9 +29,10 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
+import { RouteLocationNormalized } from "vue-router";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
 import { bePOST } from "@/util/backend";
-import { LetterWriteRequest } from "@/interfaces/backend";
+import { LetterInboxItem, LetterWriteRequest } from "@/interfaces/backend";
 
 @Options({
   components: {
@@ -27,26 +42,99 @@ import { LetterWriteRequest } from "@/interfaces/backend";
 })
 export default class LetterWritePage extends Vue {
   letterTextContent = "";
+  letterTextInputOccured = false;
   letterSendInProgress = false;
+
+  replyMode = false;
+  replyModeData: LetterInboxItem | null = null;
+
+  beforeCreate(): void {
+    if(this.$route.params) {
+      this.replyMode = (this.$route.params.replyMode === "true");
+
+      if(this.replyMode) {
+        this.replyModeData = JSON.parse(this.$route.params.replyModeData as string) as LetterInboxItem;
+      }
+    }
+
+    if(this.$route.name === "letter-reply" && !(this.replyMode && this.replyModeData)) {
+      // Route is letter reply but without valid reply data: redirect to main
+      this.$router.replace({ name: "main" });
+    }
+  }
+
+  mounted(): void {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.body.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  beforeRouteLeave(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+    let answer = true;
+
+    if(this.letterTextInputOccured) {
+      answer = window.confirm("편지를 작성 중이에요. 정말로 나가실건가요?");
+    }
+
+    if(answer) {
+      if(to.name === "letter-view" &&
+        from.name === "letter-reply" &&
+        this.replyMode &&
+        this.replyModeData) {
+        to.params = {
+          letterId: this.replyModeData.id.toString(),
+        };
+      }
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  onTextareaInput() {
+    this.letterTextInputOccured = true;
+  }
 
   async onSendButtonClick() {
     if(!this.letterSendInProgress && this.letterTextContent.length > 0) {
       this.letterSendInProgress = true;
 
-      const responseData: LetterWriteRequest = {
-        content: this.letterTextContent,
-        decorations: [],
-      };
+      if(!this.replyMode) {
+        /* NORMAL WRITE MODE */
 
-      const response = await bePOST("/letter", responseData, {
-        credentials: this.$store.state.auth.token!,
-      });
+        const responseData: LetterWriteRequest = {
+          content: this.letterTextContent,
+          decorations: [],
+        };
 
-      if(response.statusCode === 201) {
-        // HTTP 201 Created: Letter sent successfully
-        this.letterTextContent = "";
+        const response = await bePOST("/letter", responseData, {
+          credentials: this.$store.state.auth.token!,
+        });
+
+        if(response.statusCode === 201) {
+          // HTTP 201 Created: Letter sent successfully
+          this.letterTextContent = "";
+        } else {
+          // TEMP ALERT
+          alert(`편지 전송 중 API 오류: ${response.statusCode}`);
+        }
       } else {
-        // Error handling
+        /* REPLY MODE */
+
+        const response = await bePOST(`/letter/inbox/${this.replyModeData?.id}`, {
+          content: this.letterTextContent,
+          decorations: [],
+        }, {
+          credentials: this.$store.state.auth.token!,
+        });
+
+        if(response.statusCode === 201) {
+          this.letterTextInputOccured = false;
+          this.$router.replace({ name: "letter-view" });
+        } else {
+          // TEMP ALERT
+          alert(`편지 답장 전송 중 API 오류: ${response.statusCode}`);
+        }
       }
 
       this.letterSendInProgress = false;

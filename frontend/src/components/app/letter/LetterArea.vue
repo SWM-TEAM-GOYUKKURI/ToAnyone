@@ -7,8 +7,9 @@
                        tag="div"
                        :contenteditable="letterWriteMode"
                        :no-html="true"
+                       @input="$emit('textareaInput')"
                        @keydown.ctrl="onEditorKeyDown"></contenteditable>
-      <div style="text-align: right"><strong>To. {{ realReceiverNickname }}</strong></div>
+      <div style="text-align: right"><strong>To. {{ receiverNickname }}</strong></div>
     </div>
 
     <div v-if="letterWriteMode"
@@ -18,7 +19,7 @@
          <v-fade-transition leave-absolute>
             <div v-if="!letterSendInProgress">
               <v-icon>mdi-send</v-icon>
-              <span>편지 보내기</span>
+              <span>{{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
             </div>
             <div v-else>
               <v-progress-circular indeterminate />
@@ -40,14 +41,11 @@ import contenteditable from "vue-contenteditable";
 })
 export default class LetterArea extends Vue {
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
+  @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
   @Prop({ type: Boolean, default: false }) letterSendInProgress!: boolean;
-  @Prop({ type: String, default: "SENDER" }) senderNickname!: string;
-  @Prop({ type: String, default: "RECEIVER" }) receiverNickname!: string;
+  @Prop({ type: String, default: "" }) senderNickname!: string;
+  @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
-
-  get realReceiverNickname(): string {
-    return this.letterWriteMode ? "Anyone" : this.receiverNickname;
-  }
 
   get realSenderNickname(): string {
     return this.letterWriteMode ? this.$store.state.auth.userBasicInfo!.nickname : this.senderNickname;

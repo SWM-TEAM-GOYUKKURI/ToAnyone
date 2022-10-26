@@ -74,7 +74,7 @@ export enum UserProfileJob {
   NOT_SELECTED = "NOT_SELECTED",
 }
 
-interface UserProfilePsychologicalExamItem {
+export interface UserProfilePsychologicalExamItem {
   answerId: number,
   questionId: number
 }

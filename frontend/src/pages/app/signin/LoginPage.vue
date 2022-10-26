@@ -30,11 +30,11 @@ export default class LoginPage extends Vue {
     return GoogleLogin.loadState.value;
   }
 
-  created() {
+  created(): void {
     GoogleLogin.load();
   }
 
-  unmounted() {
+  unmounted(): void {
     GoogleLogin.unload();
   }
 
@@ -53,7 +53,11 @@ export default class LoginPage extends Vue {
       this.$store.commit("auth/registerLoginState", { user, token: response.token });
       this.$cookies.set("userSession", response.token);
 
-      this.$router.replace({ name: "main" });
+      if(user.firstSignupPassed) {
+        this.$router.replace({ name: "main" });
+      } else {
+        this.$router.replace({ name: "signup-profile" });
+      }
     } catch(e) {
       console.error(e);
     }
