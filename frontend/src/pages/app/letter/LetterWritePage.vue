@@ -115,7 +115,8 @@ export default class LetterWritePage extends Vue {
           // HTTP 201 Created: Letter sent successfully
           this.letterTextContent = "";
         } else {
-          // Error handling
+          // TEMP ALERT
+          alert(`편지 전송 중 API 오류: ${response.statusCode}`);
         }
       } else {
         /* REPLY MODE */
@@ -131,7 +132,8 @@ export default class LetterWritePage extends Vue {
           this.letterTextInputOccured = false;
           this.$router.replace({ name: "letter-view" });
         } else {
-          // todo
+          // TEMP ALERT
+          alert(`편지 답장 전송 중 API 오류: ${response.statusCode}`);
         }
       }
 
