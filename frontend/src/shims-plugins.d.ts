@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Store } from "vuex";
 import { RootStoreState } from "@/plugins/store";
 

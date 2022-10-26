@@ -40,10 +40,15 @@ export default class LetterBoxPage extends Vue {
   async mounted() {
     const response = await beGET<LetterInboxItemList>("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
 
-    if(response.statusCode === 200 && response.data) {
-      this._letterItems = response.data;
+    if(response.statusCode === 200) {
+      if(response.data) {
+        this._letterItems = response.data;
+      } else {
+        this._letterItems = [];
+      }
     } else {
-      this._letterItems = [];
+      // TEMP ALERT
+      alert(`편지 보관 목록 불러오는 중 오류: ${response.statusCode}`);
     }
 
     this.requestCompleted = true;
