@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteLocationNormalized, RouteRecordRaw } from "vue-router";
 import AppPagesWrapper from "@/pages/app/AppPagesWrapper.vue";
 import MainPage from "@/pages/app/MainPage.vue";
 import LoginPage from "@/pages/app/signin/LoginPage.vue";
@@ -22,7 +22,6 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/",
         name: "main",
-        meta: { title: "To. Anyone" },
         component: MainPage,
       },
 
@@ -52,6 +51,13 @@ const routes: Array<RouteRecordRaw> = [
         name: "letter-write",
         meta: { title: "편지 쓰기" },
         component: LetterWritePage,
+      },
+      {
+        path: "letter/reply",
+        name: "letter-reply",
+        meta: { title: "편지 답장하기" },
+        component: LetterWritePage,
+        props: true,
       },
       {
         path: "letter/view",
@@ -102,6 +108,14 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.afterEach((to: RouteLocationNormalized) => {
+  if(to.meta.title) {
+    document.title = `To. Anyone - ${to.meta.title}`;
+  } else {
+    document.title = "To. Anyone";
+  }
 });
 
 export default router;
