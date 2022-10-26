@@ -18,6 +18,12 @@ a {
   text-decoration: none;
 }
 
+hr {
+  border: none;
+  border-bottom: solid 1px $color-foreground;
+  margin: 1em 0;
+}
+
 #app {
   display: inline-block; // workaround
   width: 100%;

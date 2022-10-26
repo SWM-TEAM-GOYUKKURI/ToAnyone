@@ -24,3 +24,12 @@ export async function bePOST<T>(endpoint: string, data: Record<string, any>, hea
     data: response.data,
   };
 }
+
+export async function bePUT<T>(endpoint: string, data: Record<string, any>, headers?: AxiosRequestHeaders): Promise<{ statusCode: number, data: T }> {
+  const response = await axios.put<T>(`${BE_URL}/${endpoint}`, data, { headers });
+
+  return {
+    statusCode: response.status,
+    data: response.data,
+  };
+}
