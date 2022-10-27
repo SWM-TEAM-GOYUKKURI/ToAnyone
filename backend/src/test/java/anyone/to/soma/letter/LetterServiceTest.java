@@ -59,7 +59,7 @@ class LetterServiceTest extends IntegrationTest {
         letter.send(user1);
         Long id = letterRepository.save(letter).getId();
         SingleLetterResponse singleLetterResponse = letterService.retrieveInboxSingleLetter(id, user1.getId());
-        assertThat(singleLetterResponse.getReceiverName()).isEqualTo(user1.getName());
+        assertThat(singleLetterResponse.getReceiverName()).isEqualTo(user1.getNickname());
         assertThat(singleLetterResponse.getContent()).isEqualTo(letter.getContent());
     }
 

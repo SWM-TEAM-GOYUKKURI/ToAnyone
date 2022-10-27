@@ -35,6 +35,13 @@ public class LetterController {
         return ResponseEntity.ok(inboxLetterResponses);
     }
 
+    @GetMapping("/sent")
+    @LoginRequired
+    public ResponseEntity<List<InboxLetterResponse>> retrieveSentLetters(@LoginUser User user) {
+        List<InboxLetterResponse> inboxLetterResponses = letterService.retrieveSentLetters(user);
+        return ResponseEntity.ok(inboxLetterResponses);
+    }
+
     @GetMapping("/inbox/{id}")
     @LoginRequired
     public ResponseEntity<SingleLetterResponse> retrieveInboxLetter(@PathVariable Long id, @LoginUser User user) {
@@ -51,6 +58,5 @@ public class LetterController {
         letterService.writeReplyLetter(id, request, user);
         return ResponseEntity.created(URI.create("/inbox/" + id)).build();
     }
-
 
 }

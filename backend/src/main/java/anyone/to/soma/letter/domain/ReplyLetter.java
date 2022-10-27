@@ -28,6 +28,8 @@ public class ReplyLetter {
 
     private String senderName;
 
+    private String receiverName;
+
     @ElementCollection
     @CollectionTable(
             name = "reply_letter_decoration",
@@ -39,20 +41,21 @@ public class ReplyLetter {
     @JsonIgnore
     private Letter letter;
 
-    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, List<DecorationType> decorations) {
-        this(null, content, sendDate, letter, senderName, decorations);
+    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
+        this(null, content, sendDate, letter, senderName, receiverName, decorations);
     }
 
 //    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName) {
 //        this(null, content, sendDate, letter, senderName);
 //    }
 
-    private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, List<DecorationType> decorations) {
+    private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
         this.id = id;
         this.content = content;
         this.sendDate = sendDate;
         this.letter = letter;
         this.senderName = senderName;
         this.decorations = decorations;
+        this.receiverName = receiverName;
     }
 }

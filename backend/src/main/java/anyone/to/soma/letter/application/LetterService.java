@@ -34,20 +34,20 @@ public class LetterService {
         }
 
         letter.read();
-        return SingleLetterResponse.of(letter, letter.getReceiver().getName(), letter.getReplyLetters());
+        return SingleLetterResponse.of(letter, letter.getReceiver().getNickname(), letter.getReplyLetters());
     }
 
     @Transactional(readOnly = true)
     public List<InboxLetterResponse> retrieveInboxAllLetters(Long receiverId) {
         List<Letter> letter = letterRepository.findLettersByReceiverId(receiverId);
         User receiver = userRepository.findById(receiverId).orElseThrow(NoSuchRecordException::new);
-        return InboxLetterResponse.listOf(letter, receiver.getName());
+        return InboxLetterResponse.listOf(letter, receiver.getNickname());
     }
 
     @Transactional
     public Long writeLetter(LetterRequest request, User sender) {
         Letter letter = new Letter(request.getContent(), sender);
-        User randomReceiver = findRandomReceiver(sender.getId());
+        User randomReceiver = findRandomReceiver(sender);
         letter.attachDecorations(request.getDecorations());
         letter.send(randomReceiver);
 
@@ -56,8 +56,8 @@ public class LetterService {
         return letterId;
     }
 
-    private User findRandomReceiver(Long senderId) {
-        List<User> userList = userRepository.findUsersByMinReceiveCount(senderId);
+    private User findRandomReceiver(User sender) {
+        List<User> userList = userRepository.findUsersByMinReceiveCount(sender.getId());
 
         if (userList.isEmpty()) {
             throw new ApplicationException("편지를 보낼 사람이 없습니다.");
@@ -75,7 +75,12 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getName(), request.getDecorations());
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.getReceiver().getNickname(), request.getDecorations());
         letter.reply(replyLetter);
+    }
+
+    public List<InboxLetterResponse> retrieveSentLetters(User sender) {
+        List<Letter> sentLetters = letterRepository.findLettersBySenderId(sender.getId());
+        return InboxLetterResponse.listOf(sentLetters, sender.getNickname());
     }
 }
