@@ -64,7 +64,13 @@ public class LetterService {
         }
 
         Random random = new Random();
-        return userList.get(random.nextInt(userList.size()));
+        User user = userList.get(random.nextInt(userList.size()));
+
+        if (user.getId().equals(senderId)){
+            throw new ApplicationException("자기 자신에게는 송신할 수 없습니다.");
+        }
+
+        return user;
     }
 
     @Transactional

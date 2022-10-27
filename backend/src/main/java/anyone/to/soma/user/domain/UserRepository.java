@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByUniqueId(String uniqueId);
 
-    @Query(value = "SELECT u FROM User as u WHERE u.receiveCount =" +
+    @Query(value = "SELECT u FROM User as u WHERE u.id<>:userId AND u.receiveCount =" +
             "(SELECT MIN(u2.receiveCount) FROM User u2 WHERE u2.id<>:userId)")
     List<User> findUsersByMinReceiveCount(@Param("userId") Long userId);
 }
