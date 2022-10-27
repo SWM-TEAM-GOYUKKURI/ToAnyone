@@ -47,7 +47,7 @@ public class LetterService {
     @Transactional
     public Long writeLetter(LetterRequest request, User sender) {
         Letter letter = new Letter(request.getContent(), sender);
-        User randomReceiver = findRandomReceiver(sender.getId());
+        User randomReceiver = findRandomReceiver(sender);
         letter.attachDecorations(request.getDecorations());
         letter.send(randomReceiver);
 
@@ -56,21 +56,15 @@ public class LetterService {
         return letterId;
     }
 
-    private User findRandomReceiver(Long senderId) {
-        List<User> userList = userRepository.findUsersByMinReceiveCount(senderId);
+    private User findRandomReceiver(User sender) {
+        List<User> userList = userRepository.findUsersByMinReceiveCount(sender.getId());
 
         if (userList.isEmpty()) {
             throw new ApplicationException("편지를 보낼 사람이 없습니다.");
         }
 
         Random random = new Random();
-        User user = userList.get(random.nextInt(userList.size()));
-
-        if (user.getId().equals(senderId)){
-            throw new ApplicationException("자기 자신에게는 송신할 수 없습니다.");
-        }
-
-        return user;
+        return userList.get(random.nextInt(userList.size()));
     }
 
     @Transactional
@@ -81,11 +75,11 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.getReceiver().getNickname(),request.getDecorations());
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.getReceiver().getNickname(), request.getDecorations());
         letter.reply(replyLetter);
     }
 
-    public List<InboxLetterResponse> retrieveSentLetters(User sender){
+    public List<InboxLetterResponse> retrieveSentLetters(User sender) {
         List<Letter> sentLetters = letterRepository.findLettersBySenderId(sender.getId());
         return InboxLetterResponse.listOf(sentLetters, sender.getNickname());
     }

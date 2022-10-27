@@ -1,6 +1,7 @@
 package anyone.to.soma.letter.domain;
 
 import anyone.to.soma.decoration.DecorationType;
+import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,6 +56,9 @@ public class Letter implements Serializable {
     }
 
     public void send(User receiver) {
+        if (this.sender.getEmail().equals(receiver.getEmail())) {
+            throw new ApplicationException("자기 자신에게는 송신할 수 없습니다.");
+        }
         this.receiver = receiver;
     }
 

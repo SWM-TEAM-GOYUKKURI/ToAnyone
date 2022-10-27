@@ -15,9 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,9 +32,10 @@ public class LetterServiceMockTest {
     private LetterService letterService;
 
     @Test
-    void write_Letter(){
+    void write_Letter() {
         LetterRequest request = new LetterRequest("content", List.of());
         Letter letter = Fixtures.LetterStub.defaultLetterWithReceiver(request.getContent());
+
         when(userRepository.findUsersByMinReceiveCount(any())).thenReturn(List.of(UserStub.defaultGoogleUser("receiver@gmail.com")));
         when(letterRepository.save(any(Letter.class))).thenReturn(letter);
 
