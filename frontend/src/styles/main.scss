@@ -1,4 +1,7 @@
+@import "./fonts.scss";
+
 html, body {
+  font-family: $font-family-ui;
   background-color: $color-background;
   color: $color-foreground;
   width: 100%;
