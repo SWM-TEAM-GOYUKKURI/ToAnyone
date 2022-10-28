@@ -6,7 +6,7 @@ html, body {
   color: $color-foreground;
   width: 100%;
   height: 100%;
-  font-size: 1.1em;
+  font-size: 1.05em;
   overflow-x: hidden;
   overflow-y: auto;
   word-break: keep-all;
@@ -46,6 +46,8 @@ hr {
 
   &.primary {
     background: $color-primary;
+    color: $color-dark;
+    font-weight: bold;
   }
 
   &.narrow {
