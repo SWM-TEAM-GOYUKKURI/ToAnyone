@@ -16,6 +16,8 @@
           <button class="landing__main__buttons__login button primary"><v-icon>mdi-login</v-icon> <span>로그인</span></button>
         </router-link>
       </div>
+
+      <div class="landing__main__bgcredit">Image by <a href="https://pixabay.com/users/andrys-439428" target="_blank">Andrys Stienstra</a> from <a href="https://pixabay.com" target="_blank">Pixabay</a></div>
     </section>
 
     <footer class="landing__footer">
@@ -49,12 +51,16 @@ export default class LandingPage extends Vue {
 #landing-wrapper {
   .landing {
     &__main {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 100vh;
+
+      background: url("@/assets/bg/bg-letter-pixabay-andrys_stienstra-darken.jpg");
+      backdrop-filter: brightness(50%);
 
       &__title {
         font-size: 4em;
@@ -73,6 +79,16 @@ export default class LandingPage extends Vue {
           padding-left: 4em;
           padding-right: 4em;
         }
+      }
+
+      &__bgcredit {
+        position: absolute;
+        bottom: 1.5em;
+        right: 1.5em;
+        font-size: 0.66em;
+        opacity: 0.75;
+
+        a { text-decoration: underline; }
       }
     }
 
