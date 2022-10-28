@@ -1,13 +1,10 @@
 <template>
   <div id="signup-personal-data-wrapper">
-    <!-- <div v-if="devMode"
-         @click="devSkipInput">SKIP</div> -->
-
     <div class="signup-personal-data__content">
       <h1><strong>처음 오셨네요!🙌</strong><br />당신은 어떤 사람인가요?👂</h1>
       <h3>아래 정보를 입력하면 잘 맞을 듯한 익명 사용자와 편지를 주고받게 될 확률이 높아져요.</h3>
       <h4>입력한 개인정보는 다른 사용자<small>(닉네임 제외)</small>나 외부 개인·업체에 제공되지 않아요. <a href="#">개인정보처리방침 <small>(준비 중)</small></a></h4>
-      <h4 class="sub">잘못 로그인했나요? <a ref="logout" href="#">로그아웃</a></h4>
+      <h4 class="sub">잘못 로그인했나요? <router-link :to="{ name: 'logout' }">로그아웃</router-link></h4>
 
       <hr />
 
@@ -34,13 +31,7 @@ export default class SignupPersonalDataPage extends Vue {
   private signupData: SignupData = {};
   basicDataEntered = false;
 
-  /* get devMode(): boolean {
-    return process.env.VUE_APP_DEVMODE === "true";
-  } */
-
   mounted(): void {
-    (this.$refs.logout as HTMLAnchorElement).href = this.$router.resolve({ name: "logout" }).href;
-
     this.onRouteUpdate(this.$route);
   }
 
@@ -64,19 +55,6 @@ export default class SignupPersonalDataPage extends Vue {
       this.$router.replace({ name: "signup-profile-basic" });
     }
   }
-
-  /* devSkipInput(): void {
-    if(this.devMode) {
-      this.$store.commit("auth/registerLoginState", {
-        user: {
-          ...this.$store.state.auth.userBasicInfo,
-          firstSignupPassed: true,
-        },
-        token: this.$store.state.auth.token,
-      });
-      window.location.href = "/";
-    }
-  } */
 
   async onSubmitData(from: "basic" | "survey", data: Record<string, unknown>) {
     switch(from) {
