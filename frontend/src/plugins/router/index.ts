@@ -3,7 +3,6 @@ import LandingPage from "@/pages/landing/LandingPage.vue";
 import LandingLoginView from "@/pages/landing/LandingLoginView.vue";
 import AppPagesWrapper from "@/pages/app/AppPagesWrapper.vue";
 import MainPage from "@/pages/app/MainPage.vue";
-import LoginPage from "@/pages/app/signin/LoginPage.vue";
 import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
 import SignupPersonalDataPage from "@/pages/app/signin/signup/personaldata/SignupPersonalDataPage.vue";
 import BasicPersonalDataView from "@/pages/app/signin/signup/personaldata/BasicPersonalDataView.vue";
@@ -94,12 +93,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
 
-  /* Login / Logout / Signup */
-  {
-    path: "/login-page",
-    name: "login-page",
-    component: LoginPage,
-  },
+  /* Logout / Signup */
   {
     path: "/logout",
     name: "logout",
