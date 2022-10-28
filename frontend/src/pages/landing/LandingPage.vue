@@ -19,7 +19,7 @@
     </section>
 
     <footer class="landing__footer">
-      <div>Copyright ⓒ TEAM GOYUKKURI <small>(from SW Maestro)</small>, All rights reserved.</div>
+      <div>Copyright ⓒ TEAM GOYUKKURI <small><a href="https://swmaestro.org/" target="_blank">(from SW Maestro)</a></small>, All rights reserved.</div>
     </footer>
   </div>
 </template>
@@ -83,6 +83,8 @@ export default class LandingPage extends Vue {
       & > * {
         opacity: 0.8;
       }
+
+      a { text-decoration: underline; }
     }
   }
 }
