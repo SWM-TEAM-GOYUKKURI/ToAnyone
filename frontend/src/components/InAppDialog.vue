@@ -15,10 +15,10 @@ export default class InAppDialog extends Vue { }
 <style lang="scss" scoped>
 .dialog-wrapper {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
+  width: 105vw;
+  height: 105vh;
+  left: -2.5vw;
+  top: -2.5vh;
   z-index: 100000;
 
   display: flex;
