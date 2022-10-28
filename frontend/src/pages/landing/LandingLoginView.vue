@@ -19,8 +19,8 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import * as GoogleLogin from "@/plugins/signin/google";
-import SignInWithGoogle from "@/components/app/signin/SignInWithGoogle.vue";
-import SignInWithKakao from "@/components/app/signin/SignInWithKakao.vue";
+import SignInWithGoogle from "@/components/signin/SignInWithGoogle.vue";
+import SignInWithKakao from "@/components/signin/SignInWithKakao.vue";
 import { LoginGoogleResponse } from "@/interfaces/backend";
 import { UserInfoBasic } from "@/interfaces/internal";
 import { bePOST } from "@/util/backend";
@@ -57,9 +57,9 @@ export default class LoginView extends Vue {
       this.$cookies.set("userSession", response.token);
 
       if(user.firstSignupPassed) {
-        this.$router.replace({ name: "main" });
+        window.location.href = this.$router.resolve({ name: "main" }).href;
       } else {
-        this.$router.replace({ name: "signup-profile" });
+        window.location.href = this.$router.resolve({ name: "signup-profile" }).href;
       }
     } catch(e) {
       alert("로그인하는 중 오류가 발생했어요. " + e);
