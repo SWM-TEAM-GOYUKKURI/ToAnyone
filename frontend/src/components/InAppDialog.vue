@@ -30,6 +30,7 @@ export default class InAppDialog extends Vue { }
 
   .dialog__window {
     background: $color-background;
+    max-width: 100%;
     padding: 1.5em;
     border-radius: 1em;
     box-shadow: 0 0.25em 0.5em rgba(black, 0.33);
