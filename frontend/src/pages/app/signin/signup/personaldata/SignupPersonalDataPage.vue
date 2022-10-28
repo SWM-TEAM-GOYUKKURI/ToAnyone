@@ -1,21 +1,35 @@
 <template>
   <div id="signup-personal-data-wrapper">
     <div class="signup-personal-data__content">
-      <h1><strong>처음 오셨네요!🙌</strong><br />당신은 어떤 사람인가요?👂</h1>
-      <h3>아래 정보를 입력하면 잘 맞을 듯한 익명 사용자와 편지를 주고받게 될 확률이 높아져요.</h3>
-      <h4>입력한 개인정보는 다른 사용자<small>(닉네임 제외)</small>나 외부 개인·업체에 제공되지 않아요. <a href="#">개인정보처리방침 <small>(준비 중)</small></a></h4>
-      <h4 class="sub">잘못 로그인했나요? <router-link :to="{ name: 'logout' }">로그아웃</router-link></h4>
+      <v-slide-y-reverse-transition>
+        <h1 v-if="transitionTimeline.title"><strong>처음 오셨네요!🙌</strong><br />당신은 어떤 사람인가요?👂</h1>
+      </v-slide-y-reverse-transition>
 
-      <hr />
+      <v-slide-y-reverse-transition>
+        <h3 v-if="transitionTimeline.descIn && !transitionTimeline.descOut">자신의 정보를 입력하면 잘 맞을 듯한 익명 사용자와 편지를 주고받게 될 확률이 높아져요.</h3>
+      </v-slide-y-reverse-transition>
 
-      <router-view v-slot="{ Component }"
-                   @submitBasic="d => onSubmitData('basic', d)"
-                   @backSurvey="this.$router.replace({ name: 'signup-profile-basic' })"
-                   @submitSurvey="d => onSubmitData('survey', d)">
-        <v-slide-y-reverse-transition leave-absolute>
-          <component :is="Component" />
-        </v-slide-y-reverse-transition>
-      </router-view>
+      <v-slide-y-reverse-transition>
+        <div v-if="transitionTimeline.descPersist">
+          <h4>입력한 개인정보는 다른 사용자<small>(닉네임 제외)</small>나 외부 개인·업체에 제공되지 않아요. <a href="#">개인정보처리방침 <small>(준비 중)</small></a></h4>
+          <h4 class="sub">잘못 로그인했나요? <router-link :to="{ name: 'logout' }">로그아웃</router-link></h4>
+        </div>
+      </v-slide-y-reverse-transition>
+
+      <v-slide-y-reverse-transition>
+        <div v-if="transitionTimeline.form">
+          <hr />
+
+          <router-view v-slot="{ Component }"
+                      @submitBasic="d => onSubmitData('basic', d)"
+                      @backSurvey="this.$router.replace({ name: 'signup-profile-basic' })"
+                      @submitSurvey="d => onSubmitData('survey', d)">
+            <v-slide-y-reverse-transition leave-absolute>
+              <component :is="Component" />
+            </v-slide-y-reverse-transition>
+          </router-view>
+        </div>
+      </v-slide-y-reverse-transition>
     </div>
   </div>
 </template>
@@ -26,13 +40,23 @@ import { RouteLocationNormalized } from "vue-router";
 import { SignupData, UserInfoBasic } from "@/interfaces/internal";
 import { bePUT } from "@/util/backend";
 import { UserProfilePsychologicalExamItem, UserProfileUpdateRequest } from "@/interfaces/backend";
+import { doAfter } from "@/util/transition-helper";
 
 export default class SignupPersonalDataPage extends Vue {
   private signupData: SignupData = {};
   basicDataEntered = false;
+  transitionTimeline = {
+    title: false,
+    descIn: false,
+    descOut: false,
+    descPersist: false,
+    form: false,
+  };
 
   mounted(): void {
     this.onRouteUpdate(this.$route);
+
+    this.startTransition();
   }
 
   beforeRouteUpdate(to: RouteLocationNormalized) {
@@ -54,6 +78,14 @@ export default class SignupPersonalDataPage extends Vue {
       // 라우트 경로가 심리검사 뷰인데 개인정보 입력 완료 여부가 확인이 되지 않을 경우 개인정보 입력 뷰로 강제이동
       this.$router.replace({ name: "signup-profile-basic" });
     }
+  }
+
+  async startTransition() {
+    await doAfter(200, () => { this.transitionTimeline.title = true; });
+    await doAfter(200, () => { this.transitionTimeline.descIn = true; });
+    await doAfter(2000, () => { this.transitionTimeline.descOut = true; });
+    await doAfter(300, () => { this.transitionTimeline.descPersist = true; });
+    await doAfter(200, () => { this.transitionTimeline.form = true; });
   }
 
   async onSubmitData(from: "basic" | "survey", data: Record<string, unknown>) {

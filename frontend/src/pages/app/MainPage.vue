@@ -22,7 +22,7 @@ import { Options, Vue } from "vue-class-component";
   components: {
   },
 })
-export default class MainPage extends Vue {}
+export default class MainPage extends Vue { }
 </script>
 
 <style lang="scss">

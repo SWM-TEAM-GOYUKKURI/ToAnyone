@@ -19,9 +19,7 @@ import AppNavbar from "@/components/app/global/AppNavbar.vue";
     AppNavbar,
   },
 })
-export default class AppPagesWrapper extends Vue {
-
-}
+export default class AppPagesWrapper extends Vue { }
 </script>
 
 <style lang="scss" scoped>
