@@ -8,8 +8,6 @@
                          :callback="onGoogleLogin" />
     <sign-in-with-kakao />
 
-    <hr />
-
     <div class="landing-login__controls">
       <button class="button narrow" @click="close"><v-icon>mdi-close</v-icon> <span>닫기</span></button>
     </div>
@@ -84,6 +82,7 @@ export default class LoginView extends Vue {
     &__controls {
       display: flex;
       justify-content: flex-end;
+      margin-top: 2em;
     }
   }
 
