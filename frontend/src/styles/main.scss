@@ -64,6 +64,13 @@ hr {
     padding: 0.5em 0.75em;
     font-size: 0.95em;
   }
+
+  &:disabled, &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.5;
+    box-shadow: none;
+  }
 }
 
 /* Often-used transitions */
