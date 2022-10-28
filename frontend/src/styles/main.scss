@@ -34,6 +34,26 @@ hr {
   height: 100%;
 }
 
+.button {
+  padding: 1em 1.5em;
+  border-radius: 0.5em;
+  background: $color-secondary;
+
+  &:is(button) {
+    -webkit-appearance: none;
+    border: none;
+  }
+
+  &.primary {
+    background: $color-primary;
+  }
+
+  &.narrow {
+    padding: 0.5em 0.75em;
+    font-size: 0.95em;
+  }
+}
+
 /* Often-used transitions */
 .animation-button {
   transition: transform 0.25s cubic-bezier(0, 0, 0, 1);
