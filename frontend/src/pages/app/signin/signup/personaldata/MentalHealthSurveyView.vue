@@ -85,9 +85,7 @@ export default class MentalHealthSurveyView extends Vue {
   }
 
   onDoneButtonClick(): void {
-    if(this.isFormValid) {
-      this.$emit("submitSurvey", this.mentalHealthData);
-    }
+    this.$emit("submitSurvey", this.mentalHealthData);
   }
 }
 </script>
