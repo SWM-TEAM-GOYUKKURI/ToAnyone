@@ -15,6 +15,8 @@ export default class SignInWithGoogle extends Vue {
     return process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID;
   }
 
+  mounted(): void { this.onScriptLoadStateChange(); }
+
   @Watch("loaded")
   onScriptLoadStateChange() {
     if(this.loaded && window.google) {
