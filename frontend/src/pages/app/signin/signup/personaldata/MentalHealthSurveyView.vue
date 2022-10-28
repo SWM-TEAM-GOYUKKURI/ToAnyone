@@ -21,7 +21,7 @@
 
       <button class="signup-personal-data-survey__buttons__done button primary"
            :disabled="!formReqFulfilled"
-           @click="onDoneButtonClick">확인 &nbsp;✓</button>
+           @click="onDoneButtonClick">완료 &nbsp;<v-icon>mdi-check</v-icon></button>
     </div>
   </div>
 </template>

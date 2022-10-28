@@ -12,7 +12,7 @@
       <v-slide-y-reverse-transition>
         <div v-if="transitionTimeline.descPersist">
           <h4>입력한 개인정보는 다른 사용자<small>(닉네임 제외)</small>나 외부 개인·업체에 제공되지 않아요. <a href="#">개인정보처리방침 <small>(준비 중)</small></a></h4>
-          <h4 class="sub">잘못 로그인했나요? <router-link :to="{ name: 'logout' }">로그아웃</router-link></h4>
+          <h4 class="sub">입력해주신 정보는 "완료" 버튼을 누를 때만 저장돼요. 잘못 로그인했나요? <router-link :to="{ name: 'logout' }">로그아웃</router-link></h4>
         </div>
       </v-slide-y-reverse-transition>
 
