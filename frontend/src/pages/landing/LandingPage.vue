@@ -1,10 +1,12 @@
 <template>
-  <v-slide-y-transition>
-    <in-app-dialog v-show="$route.name === 'login'"
-                   id="login-dialog">
-      <router-view />
-    </in-app-dialog>
-  </v-slide-y-transition>
+  <router-view v-slot="{ Component }">
+    <v-slide-y-transition>
+      <in-app-dialog v-if="$route.name === 'login'"
+                     id="login-dialog">
+        <component :is="Component" />
+      </in-app-dialog>
+    </v-slide-y-transition>
+  </router-view>
 
   <div id="landing-wrapper">
     <section class="landing__main">
