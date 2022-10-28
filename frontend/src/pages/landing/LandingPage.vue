@@ -69,11 +69,15 @@ export default class LandingPage extends Vue {
       &__title {
         font-size: 4em;
         font-weight: bold;
+
+        @media (max-width: $viewport-small-max-width) { font-size: 3em; }
       }
 
       &__subtitle {
         font-size: 1.5em;
         margin-top: 1em;
+
+        @media (max-width: $viewport-small-max-width) { font-size: 1.25em; }
       }
 
       &__buttons {
