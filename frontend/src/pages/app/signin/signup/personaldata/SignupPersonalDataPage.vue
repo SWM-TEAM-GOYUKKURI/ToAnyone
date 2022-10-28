@@ -41,11 +41,6 @@ export default class SignupPersonalDataPage extends Vue {
   mounted(): void {
     (this.$refs.logout as HTMLAnchorElement).href = this.$router.resolve({ name: "logout" }).href;
 
-    if(this.$route.name === "signup-profile") {
-      // 라우트 경로가 `/signup/profile`인 경우 페이지 정상 표시를 위해 핸들링 (`/signup/profile/basic`으로 replace)
-      this.$router.replace({ name: "signup-profile-basic" });
-    }
-
     this.onRouteUpdate(this.$route);
   }
 
@@ -54,6 +49,11 @@ export default class SignupPersonalDataPage extends Vue {
   }
 
   onRouteUpdate(to: RouteLocationNormalized) {
+    if(to.name === "signup-profile") {
+      // 라우트 경로가 `/signup/profile`인 경우 페이지 정상 표시를 위해 핸들링 (`/signup/profile/basic`으로 replace)
+      this.$router.replace({ name: "signup-profile-basic" });
+    }
+
     if(to.name === "signup-profile-basic") {
       // 라우트 경로가 개인정보 입력 뷰인 경우 개인정보 입력 완료 여부 초기화
       this.basicDataEntered = false;
