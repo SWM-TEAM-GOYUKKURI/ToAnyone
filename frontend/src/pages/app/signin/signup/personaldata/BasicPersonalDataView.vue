@@ -46,9 +46,9 @@
       </div>
     </div>
 
-    <div class="signup-personal-data-basic__next-button animation-button"
-         :class="{ 'disabled': !formReqFulfilled }"
-         @click="onNextButtonClick">다음 &nbsp;〉</div>
+    <button class="signup-personal-data-basic__next-button button primary"
+            :class="{ 'disabled': !formReqFulfilled }"
+            @click="onNextButtonClick">다음 &nbsp;〉</button>
   </div>
 </template>
 
@@ -198,21 +198,9 @@ export default class PersonalDataView extends Vue {
     }
 
     &__next-button {
-      cursor: pointer;
-      display: inline-block;
       align-self: flex-end;
-      padding: 1em 2em;
-      font-size: 1.1em;
-      background: rgba($color-secondary, 0.8);
-      border-radius: 99999px;
-      box-shadow: 0 0.33rem 0.5rem rgba(#000, 0.25);
-
-      &.disabled {
-        cursor: not-allowed;
-        pointer-events: none;
-        box-shadow: none;
-        opacity: 0.5;
-      }
+      padding-left: 3em;
+      padding-right: 3em;
     }
   }
 }
