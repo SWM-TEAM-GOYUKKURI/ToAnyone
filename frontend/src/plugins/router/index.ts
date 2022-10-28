@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteLocationNormalized, RouteRecordRaw } from "vue-router";
+import LandingPage from "@/pages/landing/LandingPage.vue";
+import LandingLoginView from "@/pages/landing/LandingLoginView.vue";
 import AppPagesWrapper from "@/pages/app/AppPagesWrapper.vue";
 import MainPage from "@/pages/app/MainPage.vue";
 import LoginPage from "@/pages/app/signin/LoginPage.vue";
@@ -13,6 +15,21 @@ import LetterViewPage from "@/pages/app/letter/LetterViewPage.vue";
 import LetterBoxPage from "@/pages/app/letter/LetterBoxPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
+  /* Landing */
+  {
+    path: "/hello",
+    name: "landing",
+    component: LandingPage,
+    children: [
+      {
+        path: "/login",
+        name: "login",
+        component: LandingLoginView,
+      },
+    ],
+  },
+
+  /* Root */
   {
     path: "/",
     name: "app-wrapper",
@@ -79,8 +96,8 @@ const routes: Array<RouteRecordRaw> = [
 
   /* Login / Logout / Signup */
   {
-    path: "/login",
-    name: "login",
+    path: "/login-page",
+    name: "login-page",
     component: LoginPage,
   },
   {
