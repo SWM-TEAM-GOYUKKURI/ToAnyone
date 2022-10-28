@@ -27,7 +27,7 @@ export default class SignInWithGoogle extends Vue {
 
       window.google.accounts.id.renderButton(this.$refs.googleLoginButton, {
         type: "standard",
-        width: 400,
+        width: 350,
         theme: "outline",
         text: "signin_with",
       });
