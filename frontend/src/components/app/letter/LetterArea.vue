@@ -81,7 +81,6 @@ export default class LetterArea extends Vue {
     flex-direction: column;
     width: 100%;
     overflow: hidden;
-    font-family: serif;
     color: #310;
     padding-bottom: 2em;
 
