@@ -68,8 +68,6 @@ export default class LoginView extends Vue {
 
 <style lang="scss" scoped>
 #landing-login-wrapper {
-  width: 400px;
-
   & > * { text-align: center; }
 
   .landing-login {
