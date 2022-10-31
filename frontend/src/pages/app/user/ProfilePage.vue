@@ -32,23 +32,26 @@
     <div>(icon) nn통<br />의 편지를 보냈어요</div>
     <div>(icon) nn통<br />의 편지를 받았어요</div>
 
-    <v-fade-transition>
-      <div v-if="$route.name == 'profile-edit'"
-           id="profile-page-edit-view">
-        <div>
-          <router-view />
-        </div>
-      </div>
-    </v-fade-transition>
+    <router-view v-slot="{ Component }">
+      <v-slide-y-transition>
+        <in-app-dialog v-if="$route.name === 'profile-edit'"
+                      id="profile-page-edit-dialog"
+                      :fullscreenOnVPSmall="true">
+          <component :is="Component" />
+        </in-app-dialog>
+      </v-slide-y-transition>
+    </router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import InAppDialog from "@/components/InAppDialog.vue";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
 
 @Options({
   components: {
+    InAppDialog,
     ProfileImage,
   },
 })
