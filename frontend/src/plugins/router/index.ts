@@ -7,6 +7,7 @@ import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
 import SignupPersonalDataPage from "@/pages/app/signin/signup/personaldata/SignupPersonalDataPage.vue";
 import BasicPersonalDataView from "@/pages/app/signin/signup/personaldata/BasicPersonalDataView.vue";
 import MentalHealthSurveyView from "@/pages/app/signin/signup/personaldata/MentalHealthSurveyView.vue";
+import ItemStorePage from "@/pages/app/store/ItemStorePage.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
@@ -89,6 +90,14 @@ const routes: Array<RouteRecordRaw> = [
         name: "letter-box",
         meta: { title: "편지 보관함" },
         component: LetterBoxPage,
+      },
+
+      /* Item Store */
+      {
+        path: "store",
+        name: "item-store",
+        meta: { title: "아이템 상점" },
+        component: ItemStorePage,
       },
     ],
   },
