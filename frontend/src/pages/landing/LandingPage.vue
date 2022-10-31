@@ -2,7 +2,8 @@
   <router-view v-slot="{ Component }">
     <v-slide-y-transition>
       <in-app-dialog v-if="$route.name === 'login'"
-                     id="login-dialog">
+                     id="login-dialog"
+                     :fullscreenOnVPSmall="true">
         <component :is="Component" />
       </in-app-dialog>
     </v-slide-y-transition>
