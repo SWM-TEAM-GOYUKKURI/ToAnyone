@@ -1,7 +1,7 @@
 <template>
   <div id="home-page">
     <div class="home-page__headlines">
-      <div class="home-page__headlines__first">{{ $store.state.auth.userBasicInfo.nickname }}님,<br />반가워요👋</div>
+      <div class="home-page__headlines__first">{{ $store.state.auth.userBasicInfo.nickname }}님, 반가워요👋</div>
       <div class="home-page__headlines__second">지금 느끼는 감정을 다른 사람과 나눠보세요.</div>
     </div>
 
@@ -64,6 +64,7 @@ export default class MainPage extends Vue { }
 
       &__first {
         font-weight: 400;
+        word-break: keep-all;
       }
 
       &__second {
