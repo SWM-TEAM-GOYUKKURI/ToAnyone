@@ -53,3 +53,13 @@ export default class InAppDialog extends Vue {
   }
 }
 </style>
+
+<style lang="scss">
+.dialog-wrapper {
+  @media (max-width: $viewport-small-max-width) {
+    &.fullscreen-on-vp-small .dialog__window > * {
+      width: 100%;
+    }
+  }
+}
+</style>
