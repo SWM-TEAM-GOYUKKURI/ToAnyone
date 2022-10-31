@@ -3,6 +3,7 @@ package anyone.to.soma.letter.domain.dto;
 import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterDecoration;
+import anyone.to.soma.letter.domain.ReplyLetter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,12 +31,22 @@ public class InboxLetterResponse {
     public static InboxLetterResponse of(Letter letter, String receiverName) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         String content = letter.getContent();
-        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), receiverName, letter.getSender().getNickname(), letter.isRead(), letterDecorations);
+        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
     }
 
     public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
         return letters.stream()
                 .map(s -> InboxLetterResponse.of(s, receiverName))
                 .collect(Collectors.toList());
+    }
+
+    private static boolean readPolicy(Letter letter){
+        List<ReplyLetter> replyLetters = letter.getReplyLetters();
+        if (replyLetters.isEmpty()){
+            return letter.isRead();
+        }
+
+        replyLetters.sort((a, b) -> b.getId().compareTo(a.getId()));
+        return replyLetters.get(0).isRead();
     }
 }

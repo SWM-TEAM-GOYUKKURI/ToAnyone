@@ -87,9 +87,9 @@ public class LetterService {
     @Transactional
     public void readLetter(Long letterId, User reader) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
+        letter.checkValidReader(reader.getId());
 
         if (letter.getReplyLetters().isEmpty()) {
-            letter.checkCorrectReceiver(reader.getId());
             letter.read();
             return;
         }
