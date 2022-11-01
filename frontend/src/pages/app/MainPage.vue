@@ -53,7 +53,11 @@ export default class MainPage extends Vue { }
 
 <style lang="scss">
 #home-page {
-  padding: 0 10vw;
+  padding: 0 10vw 3vh 10vw;
+
+  @media (max-width: $viewport-small-max-width) {
+    padding: 0 5vw 3vh 5vw;
+  }
 
   .home-page {
     &__headlines {
@@ -78,9 +82,13 @@ export default class MainPage extends Vue { }
       a.button {
         flex-direction: row;
         justify-content: space-between;
-        margin: 1em 2em;
+        margin: 1em 10%;
         padding-top: 1.5em;
         padding-bottom: 1.5em;
+
+        @media (max-width: $viewport-small-max-width) {
+          margin: 1em 1em;
+        }
 
         .content {
           display: flex;
