@@ -7,6 +7,7 @@
 
         <div class="profile__my-area__me__info">
           <span class="nickname"><strong>{{ $store.state.auth.userBasicInfo.nickname }}</strong></span>
+          <hr />
           <span class="info"><strong>{{ tempData.age }}</strong> / <strong>{{ tempData.gender }}</strong></span>
           <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong></span>
           <span class="info">업적 달성 <strong>{{ tempData.achievementsCount }}개</strong></span>
@@ -78,6 +79,14 @@ export default class ProfilePage extends Vue {
   width: 80vw;
   min-height: calc(100vh - $app-navbar-height);
 
+  @media (max-width: $viewport-small-max-width) {
+    & {
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+  }
+
   .profile {
     &__my-area {
       position: sticky;
@@ -87,8 +96,7 @@ export default class ProfilePage extends Vue {
       align-items: center;
       height: 100%;
       padding: 1em;
-      margin: 1em;
-      margin-right: 2em;
+      margin: 1em 2em;
 
       &__me {
         display: flex;
@@ -103,11 +111,17 @@ export default class ProfilePage extends Vue {
           align-items: center;
           line-height: 1.5;
 
-          & > * { margin: 0.25em 0; }
+          & > * {
+            text-align: center;
+            margin: 0.33em 0;
+          }
+
+          hr { width: 100%; }
 
           .nickname {
             font-size: 2em;
             font-weight: 700;
+            margin: 0.33em 0 0 0;
           }
 
           .info {
