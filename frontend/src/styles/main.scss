@@ -36,6 +36,10 @@ hr {
   height: 100%;
 }
 
+.t-primary {
+  color: $color-primary;
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -53,6 +57,7 @@ hr {
   }
 
   &:is(button) {
+    cursor: pointer;
     -webkit-appearance: none;
     border: none;
   }

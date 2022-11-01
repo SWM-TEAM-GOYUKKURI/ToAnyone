@@ -19,15 +19,16 @@
 
     <div class="profile__statistics">
       <div class="profile__statistics__statistics">
-        <h1>통계</h1>
-        <div>(icon) nnnn년 nn월 nn일<br />에 마음을 나누기 시작했어요</div>
-        <div>(icon) 총 nn일<br />To. Anyone을 찾아와주셨어요</div>
-        <div>(icon) nn통<br />의 편지를 보냈어요</div>
-        <div>(icon) nn통<br />의 편지를 받았어요</div>
+        <h1><v-icon>mdi-chart-timeline-variant</v-icon> 통계</h1>
+
+        <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ signupDateFormatted }}</span>에 가입했어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-login-variant</v-icon> <span>총 <span class="t-primary">{{ tempData.signinDays }}일</span> 동안 To. Anyone을 찾아왔어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-email-send</v-icon> <span>지금까지 <span class="t-primary">{{ tempData.sentLetterCount }}통</span>의 편지를 보냈어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ tempData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
       </div>
 
       <div class="profile_statistics__achievements">
-        <h1>업적</h1>
+        <h1><v-icon>mdi-trophy-variant</v-icon> 업적</h1>
       </div>
     </div>
 
@@ -61,7 +62,16 @@ export default class ProfilePage extends Vue {
     gender: "남성",
     points: 3000,
     achievementsCount: 5,
+
+    signupDate: new Date("2022-06-01"),
+    signinDays: 16,
+    sentLetterCount: 42,
+    receivedLetterCount: 51,
   };
+
+  get signupDateFormatted(): string {
+    return `${this.tempData.signupDate.getFullYear()}년 ${this.tempData.signupDate.getMonth() + 1}월 ${this.tempData.signupDate.getDate()}일`;
+  }
 
   mounted(): void {
     // TODO: request to backend for user profile data
@@ -80,11 +90,9 @@ export default class ProfilePage extends Vue {
   min-height: calc(100vh - $app-navbar-height);
 
   @media (max-width: $viewport-small-max-width) {
-    & {
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-    }
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
   }
 
   .profile {
@@ -170,6 +178,19 @@ export default class ProfilePage extends Vue {
       display: flex;
       flex-grow: 1;
       flex-direction: column;
+      width: max-content;
+
+      @media (max-width: $viewport-small-max-width) {
+        width: 100%;
+      }
+
+      & > * { margin: 1em 0; }
+
+      &__statistics {
+        .button {
+          margin: 0.5em 0;
+        }
+      }
     }
   }
 }
