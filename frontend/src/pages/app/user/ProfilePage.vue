@@ -1,36 +1,34 @@
 <template>
   <div id="profile-page-wrapper">
     <div class="profile__my-area">
-      <div class="profile__my-area__image-nickname">
-        <profile-image :srcUrl="tempProfileImage" />
+      <div class="profile__my-area__me">
+        <profile-image :srcUrl="tempData.profileImageUrl"
+                       size="large" />
 
-        <div class="profile__my-area__image-nickname__info">
-          <span class="nickname">{{ $store.state.auth.userBasicInfo.nickname }}</span>
-          <span class="info"
-                title="이 정보는 다른 사람들에게 보여지지 않아요!">(나이대) / (성별)</span>
+        <div class="profile__my-area__me__info">
+          <span class="nickname"><strong>{{ $store.state.auth.userBasicInfo.nickname }}</strong></span>
+          <span class="info"><strong>{{ tempData.age }}</strong> / <strong>{{ tempData.gender }}</strong></span>
+          <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong></span>
+          <span class="info">업적 달성 <strong>{{ tempData.achievementsCount }}개</strong></span>
         </div>
-      </div>
 
-      <div class="profile__my-area__achievements">
-        <div class="profile__my-area__achievements__item">
-          <span class="title">달성한 업적</span>
-          <span class="content">nn개 <small>/ nn개</small></span>
-        </div>
-        <div class="profile__my-area__achievements__item">
-          <span class="title">총 편지 작성 개수</span>
-          <span class="content">nn통</span>
-        </div>
+        <router-link :to="{ name: 'profile-edit' }"><button class="profile__my-area__me__profile-edit button"><v-icon>mdi-account-edit</v-icon> <span>프로필 수정</span></button></router-link>
       </div>
     </div>
 
-    <!-- ↓ TODO: styling -->
-    <router-link :to="{ name: 'profile-edit' }" style="color: #FFFFAA">(프로필 수정 버튼)</router-link>
+    <div class="profile__statistics">
+      <div class="profile__statistics__statistics">
+        <h1>통계</h1>
+        <div>(icon) nnnn년 nn월 nn일<br />에 마음을 나누기 시작했어요</div>
+        <div>(icon) 총 nn일<br />To. Anyone을 찾아와주셨어요</div>
+        <div>(icon) nn통<br />의 편지를 보냈어요</div>
+        <div>(icon) nn통<br />의 편지를 받았어요</div>
+      </div>
 
-    <h1>통계</h1>
-    <div>(icon) nnnn년 nn월 nn일<br />에 마음을 나누기 시작했어요</div>
-    <div>(icon) 총 nn일<br />To. Anyone을 찾아와주셨어요</div>
-    <div>(icon) nn통<br />의 편지를 보냈어요</div>
-    <div>(icon) nn통<br />의 편지를 받았어요</div>
+      <div class="profile_statistics__achievements">
+        <h1>업적</h1>
+      </div>
+    </div>
 
     <router-view v-slot="{ Component }">
       <v-slide-y-transition>
@@ -56,7 +54,13 @@ import ProfileImage from "@/components/app/global/ProfileImage.vue";
   },
 })
 export default class ProfilePage extends Vue {
-  private tempProfileImage = "https://picsum.photos/seed/toanyone/300";
+  tempData = {
+    profileImageUrl: "https://picsum.photos/seed/toanyone/300",
+    age: "00대",
+    gender: "남성",
+    points: 3000,
+    achievementsCount: 5,
+  };
 
   mounted(): void {
     // TODO: request to backend for user profile data
@@ -66,34 +70,40 @@ export default class ProfilePage extends Vue {
 
 <style lang="scss">
 #profile-page-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
   margin: auto;
   width: 80vw;
+  min-height: calc(100vh - $app-navbar-height);
 
   .profile {
     &__my-area {
+      position: sticky;
       display: flex;
-      justify-content: space-between;
-      padding: 1rem 2rem 1rem 1rem;
-      margin: 1rem;
-      background: rgba($color-secondary, 0.5);
-      border-radius: 10rem 2rem 2rem 10rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 1em;
+      margin: 1em;
+      margin-right: 2em;
 
-      & > div {
+      &__me {
         display: flex;
-      }
-
-      &__image-nickname {
-        display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
 
         &__info {
-          cursor: help;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          align-items: flex-start;
-          margin-left: 1.5rem;
+          align-items: center;
           line-height: 1.5;
+
+          & > * { margin: 0.25em 0; }
 
           .nickname {
             font-size: 2em;
@@ -103,6 +113,10 @@ export default class ProfilePage extends Vue {
           .info {
             font-size: 1.25em;
           }
+        }
+
+        &__profile-edit {
+          margin-top: 1em;
         }
       }
 
@@ -136,6 +150,12 @@ export default class ProfilePage extends Vue {
           }
         }
       }
+    }
+
+    &__statistics {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
     }
   }
 }
