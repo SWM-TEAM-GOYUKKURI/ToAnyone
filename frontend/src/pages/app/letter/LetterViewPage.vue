@@ -18,15 +18,15 @@
 
     <a v-if="!lastLetterSentByMe"
        href="#"
-       class="letter-view__reply-button animation-button"
-       @click="goLetterReplyPage"><v-icon>mdi-reply</v-icon> 답장하기</a>
+       class="letter-view__reply-button button round"
+       @click="goLetterReplyPage"><v-icon>mdi-reply</v-icon> <span>답장하기</span></a>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
-import { beGET } from "@/util/backend";
+import { beGET, bePUT } from "@/util/backend";
 import { LetterItemFull } from "@/interfaces/backend";
 
 @Options({
@@ -70,7 +70,8 @@ export default class LetterViewPage extends Vue {
   }
 
   async mounted() {
-    const response = await beGET<LetterItemFull>(`/letter/inbox/${this.$route.params.letterId}`, null, { credentials: this.$store.state.auth.token! });
+    /* Load letter contents */
+    const response = await beGET<LetterItemFull>(`/letter/inbox/${this.letterId}`, null, { credentials: this.$store.state.auth.token! });
 
     if(response.statusCode === 200 && response.data) {
       this.letterItem = response.data;
@@ -79,6 +80,14 @@ export default class LetterViewPage extends Vue {
     } else {
       // TEMP ALERT
       alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
+    }
+
+    /* Letter read state update */
+    const readStateUpdateResponse = await bePUT(`/letter/inbox/${this.letterId}`, {}, { credentials: this.$store.state.auth.token! });
+
+    if(!(readStateUpdateResponse.statusCode === 204)) {
+      // TEMP ALERT
+      alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
     }
   }
 
@@ -110,17 +119,11 @@ export default class LetterViewPage extends Vue {
 
   .letter-view {
     &__reply-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      padding: 1em 1.5em;
       font-size: 1.25em;
-      background-color: $color-secondary;
       box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.5);
-      border-radius: 999999rem;
       white-space: pre;
     }
   }
