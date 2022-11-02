@@ -26,6 +26,8 @@ public class ReplyLetter {
 
     private LocalDate sendDate;
 
+    private boolean isRead;
+
     private String senderName;
 
     private String receiverName;
@@ -45,10 +47,6 @@ public class ReplyLetter {
         this(null, content, sendDate, letter, senderName, receiverName, decorations);
     }
 
-//    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName) {
-//        this(null, content, sendDate, letter, senderName);
-//    }
-
     private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
         this.id = id;
         this.content = content;
@@ -57,5 +55,10 @@ public class ReplyLetter {
         this.senderName = senderName;
         this.decorations = decorations;
         this.receiverName = receiverName;
+        this.isRead = false;
+    }
+
+    public void read() {
+        this.isRead = true;
     }
 }

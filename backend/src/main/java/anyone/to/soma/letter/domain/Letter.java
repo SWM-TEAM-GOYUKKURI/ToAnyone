@@ -76,4 +76,11 @@ public class Letter implements Serializable {
     public void read() {
         this.isRead = true;
     }
+
+    public void checkValidReader(Long reader) {
+        if (!sender.getId().equals(reader) && !receiver.getId().equals(reader)) {
+            throw new ApplicationException("읽을 수 없는 사용자입니다.");
+        }
+
+    }
 }

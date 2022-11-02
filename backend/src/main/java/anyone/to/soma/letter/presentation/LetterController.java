@@ -59,4 +59,13 @@ public class LetterController {
         return ResponseEntity.created(URI.create("/inbox/" + id)).build();
     }
 
+    @PutMapping("/inbox/{id}")
+    @LoginRequired
+    public ResponseEntity<Void> readLetter(
+            @PathVariable Long id,
+            @LoginUser User user) {
+        letterService.readLetter(id, user);
+        return ResponseEntity.noContent().build();
+    }
+
 }
