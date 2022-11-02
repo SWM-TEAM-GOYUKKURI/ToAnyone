@@ -38,6 +38,8 @@
             <span class="title">{{ achiv.name }}</span>
             <span class="desc">{{ achiv.desc }}</span>
           </div>
+
+          <v-icon v-if="tempData.achivements[index]" class="done">mdi-check</v-icon>
         </div>
       </div>
     </div>
@@ -185,7 +187,9 @@ export default class ProfilePage extends Vue {
 
       &__achievements {
         .button {
+          position: relative;
           margin: 0.5em 0;
+          overflow: hidden;
 
           .content {
             display: inline-flex;
@@ -194,6 +198,14 @@ export default class ProfilePage extends Vue {
 
             .title { font-size: 1.1em; }
             .desc { font-size: 0.85em; opacity: 0.8; }
+          }
+
+          .done {
+            position: absolute;
+            right: -0.3em;
+            bottom: -0.3em;
+            font-size: 10em;
+            opacity: 0.2;
           }
         }
       }
