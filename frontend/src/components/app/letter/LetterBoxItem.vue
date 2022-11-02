@@ -8,7 +8,7 @@
     </div>
 
     <div class="letter-box-item__content-area">
-      <div class="letter-box-item__content-area__sender">From. <span style="font-weight: bold">{{ letterItem.senderName }}</span></div>
+      <div class="letter-box-item__content-area__sender">{{ sentByMe ? "To. " : "From." }} <span style="font-weight: bold">{{ sentByMe ? letterItem.receiverName : letterItem.senderName }}</span></div>
       <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
       <div class="letter-box-item__content-area__send-date">{{ new Date(letterItem.sendDate).toLocaleDateString("ko-KR") }}에 전송됨</div>
     </div>
@@ -29,6 +29,7 @@ import { LetterInboxItem } from "@/interfaces/backend";
 export default class LetterBoxItem extends Vue {
   /* TODO: Needed data for letterItem: sender data(nickname/profile image id), letter read status */
   @Prop({ type: Object, required: true }) letterItem!: LetterInboxItem;
+  @Prop({ type: Boolean, default: false, required: true }) sentByMe!: boolean;
 }
 </script>
 

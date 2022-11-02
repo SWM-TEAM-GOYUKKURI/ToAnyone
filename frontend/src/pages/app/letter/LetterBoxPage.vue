@@ -8,8 +8,9 @@
 
       <div class="letter-box__items">
         <letter-box-item v-for="item in letterItems"
-                          :key="item.letterId"
-                          :letterItem="item" />
+                         :key="item.letterId"
+                         :letterItem="item"
+                         :sentByMe="_sentLetterIds.includes(item.id)" />
       </div>
     </div>
     <div v-else-if="requestCompleted && letterItems.length <= 0">
@@ -31,6 +32,7 @@ import { LetterInboxItemList } from "@/interfaces/backend";
 })
 export default class LetterBoxPage extends Vue {
   _letterItems: LetterInboxItemList = [];
+  _sentLetterIds: number[] = [];
   requestCompleted = false;
 
   get letterItems(): LetterInboxItemList {
@@ -49,6 +51,7 @@ export default class LetterBoxPage extends Vue {
   }
 
   async loadInbox() {
+    /* === Inbox === */
     const response = await beGET<LetterInboxItemList>("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
 
     if(isSuccessful(response.statusCode)) {
@@ -60,6 +63,19 @@ export default class LetterBoxPage extends Vue {
     } else {
       // TEMP ALERT
       alert(`편지 보관 목록 불러오는 중 오류: ${response.statusCode}`);
+    }
+
+    /* === Sent Letters === */
+    const sentLettersResponse = await beGET<LetterInboxItemList>("/letter/sent", null, { credentials: this.$store.state.auth.token! });
+
+    if(isSuccessful(sentLettersResponse.statusCode)) {
+      if(sentLettersResponse.data) {
+        this._letterItems = [...this.letterItems, ...sentLettersResponse.data];
+        this._sentLetterIds = sentLettersResponse.data.map((v) => v.id);
+      }
+    } else {
+      // TEMP ALERT
+      alert(`전송한 편지 목록 불러오는 중 오류: ${response.statusCode}`);
     }
   }
 }
