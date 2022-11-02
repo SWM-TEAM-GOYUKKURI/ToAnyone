@@ -8,38 +8,38 @@
     <div class="home-page__links">
       <router-link :to="{ name: 'letter-write' }"
                    class="button primary">
-        <img src="#" alt="편지 쓰기 아이콘" />
+        <img class="icon" :src="getAssetPath('icon/ico_write@2x.png')" alt="편지 쓰기 아이콘" />
 
         <div class="content">
           <span class="title">편지 쓰기</span>
           <span class="desc">익명의 사용자와 나누고픈 이야기를 쓰고 보내보세요.</span>
         </div>
 
-        <img src="#" alt="편지 쓰기 링크" />
+        <span class="link-icon"><v-icon size="xx-large">mdi-chevron-right</v-icon></span>
       </router-link>
 
       <router-link :to="{ name: 'letter-box' }"
                    class="button">
-        <img src="#" alt="편지 보관함 아이콘" />
+        <img class="icon" :src="getAssetPath('icon/ico_box@2x.png')" alt="편지 보관함 아이콘" />
 
         <div class="content">
           <span class="title">편지 보관함</span>
           <span class="desc">주고받았던 편지를 확인해보세요.</span>
         </div>
 
-        <img src="#" alt="편지 쓰기 링크" />
+        <span class="link-icon"><v-icon size="xx-large">mdi-chevron-right</v-icon></span>
       </router-link>
 
       <router-link :to="{ name: 'item-store' }"
                    class="button">
-        <img src="#" alt="아이템 상점 아이콘" />
+        <img class="icon" :src="getAssetPath('icon/ico_stars@2x.png')" alt="아이템 상점 아이콘" />
 
         <div class="content">
           <span class="title">아이템 상점</span>
           <span class="desc">편지를 꾸미기 위한 스티커, 폰트, 편지지 등을 포인트로 구매할 수 있어요.</span>
         </div>
 
-        <img src="#" alt="아이템 상점 링크" />
+        <span class="link-icon"><v-icon size="xx-large">mdi-chevron-right</v-icon></span>
       </router-link>
     </div>
   </div>
@@ -47,8 +47,11 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
+import { getAssetPath } from "@/util/path-transform";
 
-export default class MainPage extends Vue { }
+export default class MainPage extends Vue {
+  getAssetPath = getAssetPath;
+}
 </script>
 
 <style lang="scss">
@@ -74,6 +77,10 @@ export default class MainPage extends Vue { }
       &__second {
         font-size: 0.66em;
       }
+
+      @media (max-width: $viewport-small-max-width) {
+        font-size: 2.25rem;
+      }
     }
 
     &__links {
@@ -86,8 +93,10 @@ export default class MainPage extends Vue { }
         padding-top: 1.5em;
         padding-bottom: 1.5em;
 
-        @media (max-width: $viewport-small-max-width) {
-          margin: 1em 1em;
+        img {
+          width: 6em;
+          height: 6em;
+          margin-right: 1.5em;
         }
 
         .content {
@@ -97,9 +106,34 @@ export default class MainPage extends Vue { }
           align-items: flex-start;
           justify-content: center;
 
-          .title { font-weight: bold; font-size: 1.75em; }
+          & > * {
+            margin: 0.5rem 0;
+            text-align: left;
+          }
 
-          & > * { margin: 0.5rem 0; }
+          .title { font-weight: bold; font-size: 1.75em; }
+        }
+
+        @media (max-width: $viewport-small-max-width) {
+          flex-direction: column;
+          margin: 1em 1em;
+
+          img {
+            width: 3em;
+            height: 3em;
+            margin-right: 0;
+            margin-bottom: 1em;
+          }
+
+          .content {
+            align-items: center;
+
+            & > * { margin: 0; }
+            .title { font-size: 1.33em; }
+            .desc { display: none !important; }
+          }
+
+          .link-icon { display: none; }
         }
       }
     }
