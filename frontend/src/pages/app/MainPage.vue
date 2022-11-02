@@ -99,6 +99,10 @@ export default class MainPage extends Vue {
           margin-right: 1.5em;
         }
 
+        &.primary {
+          background-color: fade-out($color-primary, 0.125);  // Slightly darker color
+        }
+
         .content {
           display: flex;
           flex-grow: 1;
