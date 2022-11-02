@@ -33,7 +33,6 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-//        letter.read();
         return SingleLetterResponse.of(letter, letter.getReceiver().getNickname(), letter.getReplyLetters());
     }
 
@@ -52,7 +51,8 @@ public class LetterService {
         letter.send(randomReceiver);
 
         Long letterId = letterRepository.save(letter).getId();
-        randomReceiver.receiveLetter();
+        userRepository.increaseReceiveCount(randomReceiver.getId());
+        userRepository.increaseSendCount(sender.getId());
         return letterId;
     }
 
