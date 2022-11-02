@@ -73,6 +73,10 @@ hr {
     font-size: 0.95em;
   }
 
+  &.round {
+    border-radius: 9999999rem !important;
+  }
+
   &:disabled, &.disabled {
     cursor: not-allowed;
     pointer-events: none;
