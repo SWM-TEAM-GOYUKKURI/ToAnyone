@@ -10,6 +10,7 @@ import MentalHealthSurveyView from "@/pages/app/signin/signup/personaldata/Menta
 import ItemStorePage from "@/pages/app/store/ItemStorePage.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
+import PointHelpView from "@/pages/app/user/PointHelpView.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
 import LetterViewPage from "@/pages/app/letter/LetterViewPage.vue";
 import LetterBoxPage from "@/pages/app/letter/LetterBoxPage.vue";
@@ -60,6 +61,15 @@ const routes: Array<RouteRecordRaw> = [
               hideNavbarMenu: true,
             },
             component: ProfileEditPage,
+          },
+          {
+            path: "pointhelp",
+            name: "point-help",
+            meta: {
+              title: "프로필",
+              hideNavbarMenu: true,
+            },
+            component: PointHelpView,
           },
         ],
       },

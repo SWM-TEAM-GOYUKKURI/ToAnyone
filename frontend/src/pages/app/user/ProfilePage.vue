@@ -9,7 +9,7 @@
           <span class="nickname"><strong>{{ $store.state.auth.userBasicInfo.nickname }}</strong></span>
           <hr />
           <span class="info"><strong>{{ tempData.age }}</strong> / <strong>{{ tempData.gender }}</strong></span>
-          <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong> <span title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></span></span>
+          <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>
           <span class="info">업적 달성 <strong>{{ tempData.achievementsCount }}개</strong></span>
         </div>
 
@@ -44,8 +44,7 @@
 
     <router-view v-slot="{ Component }">
       <v-slide-y-transition>
-        <in-app-dialog v-if="$route.name === 'profile-edit'"
-                      id="profile-page-edit-dialog"
+        <in-app-dialog v-if="$route.name === 'profile-edit' || $route.name === 'point-help'"
                       :fullscreenOnVPSmall="true">
           <component :is="Component" />
         </in-app-dialog>
@@ -108,6 +107,13 @@ export default class ProfilePage extends Vue {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
+
+    .profile {
+      &__my-area {
+        position: relative !important;
+        top: 0 !important;
+      }
+    }
   }
 
   .profile {
@@ -192,26 +198,6 @@ export default class ProfilePage extends Vue {
         }
       }
     }
-  }
-}
-
-#profile-page-edit-view {
-  overflow: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 100;
-  background: rgba(#000, 0.5);
-
-  & > div {
-    display: flex;
-    align-items: center;
-    min-height: 100%;
   }
 }
 </style>
