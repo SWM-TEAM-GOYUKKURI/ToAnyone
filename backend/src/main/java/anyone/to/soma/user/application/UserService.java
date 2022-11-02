@@ -51,4 +51,12 @@ public class UserService {
         return foundUser;
 
     }
+
+    @Transactional
+    public void deleteUser(User user) {
+        if (!userRepository.existsById(user.getId())) {
+            throw new NoSuchRecordException();
+        }
+        userRepository.delete(user);
+    }
 }
