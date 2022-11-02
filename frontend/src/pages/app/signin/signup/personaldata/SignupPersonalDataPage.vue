@@ -38,7 +38,7 @@
 import { Vue } from "vue-class-component";
 import { RouteLocationNormalized } from "vue-router";
 import { SignupData, UserInfoBasic } from "@/interfaces/internal";
-import { bePUT } from "@/util/backend";
+import { bePUT, isSuccessful } from "@/util/backend";
 import { UserProfilePsychologicalExamItem, UserProfileUpdateRequest } from "@/interfaces/backend";
 import { doAfter } from "@/util/transition-helper";
 
@@ -112,7 +112,7 @@ export default class SignupPersonalDataPage extends Vue {
             credentials: this.$store.state.auth.token!,
           });
 
-          if(response.statusCode === 200) {
+          if(isSuccessful(response.statusCode)) {
             if(this.$store.state.auth.userBasicInfo) {
               const user: UserInfoBasic = { ...this.$store.state.auth.userBasicInfo, firstSignupPassed: true };
               this.$store.commit("auth/registerLoginState", {

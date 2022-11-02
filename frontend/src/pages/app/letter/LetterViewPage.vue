@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
-import { beGET, bePUT } from "@/util/backend";
+import { beGET, bePUT, isSuccessful } from "@/util/backend";
 import { LetterItemFull } from "@/interfaces/backend";
 
 @Options({
@@ -73,7 +73,7 @@ export default class LetterViewPage extends Vue {
     /* Load letter contents */
     const response = await beGET<LetterItemFull>(`/letter/inbox/${this.letterId}`, null, { credentials: this.$store.state.auth.token! });
 
-    if(response.statusCode === 200 && response.data) {
+    if(isSuccessful(response.statusCode) && response.data) {
       this.letterItem = response.data;
 
       this.dataLoaded = true;
@@ -85,7 +85,7 @@ export default class LetterViewPage extends Vue {
     /* Letter read state update */
     const readStateUpdateResponse = await bePUT(`/letter/inbox/${this.letterId}`, {}, { credentials: this.$store.state.auth.token! });
 
-    if(!(readStateUpdateResponse.statusCode === 204)) {
+    if(!isSuccessful(readStateUpdateResponse.statusCode)) {
       // TEMP ALERT
       alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
     }

@@ -31,7 +31,7 @@ import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
 import { RouteLocationNormalized } from "vue-router";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
-import { bePOST } from "@/util/backend";
+import { bePOST, isSuccessful } from "@/util/backend";
 import { LetterInboxItem, LetterWriteRequest } from "@/interfaces/backend";
 
 @Options({
@@ -111,7 +111,7 @@ export default class LetterWritePage extends Vue {
           credentials: this.$store.state.auth.token!,
         });
 
-        if(response.statusCode === 201) {
+        if(isSuccessful(response.statusCode)) {
           // HTTP 201 Created: Letter sent successfully
           this.letterTextContent = "";
         } else {
@@ -128,7 +128,7 @@ export default class LetterWritePage extends Vue {
           credentials: this.$store.state.auth.token!,
         });
 
-        if(response.statusCode === 201) {
+        if(isSuccessful(response.statusCode)) {
           this.letterTextInputOccured = false;
           this.$router.replace({ name: "letter-view" });
         } else {

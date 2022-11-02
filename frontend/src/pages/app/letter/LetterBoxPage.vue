@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterBoxItem from "@/components/app/letter/LetterBoxItem.vue";
-import { beGET /* , bePOST */ } from "@/util/backend";
+import { beGET, isSuccessful } from "@/util/backend";
 import { LetterInboxItemList } from "@/interfaces/backend";
 
 @Options({
@@ -51,7 +51,7 @@ export default class LetterBoxPage extends Vue {
   async loadInbox() {
     const response = await beGET<LetterInboxItemList>("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
 
-    if(response.statusCode === 200) {
+    if(isSuccessful(response.statusCode)) {
       if(response.data) {
         this._letterItems = response.data;
       } else {
