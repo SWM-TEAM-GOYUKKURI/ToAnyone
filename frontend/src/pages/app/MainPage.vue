@@ -100,7 +100,7 @@ export default class MainPage extends Vue {
         }
 
         &.primary {
-          background-color: fade-out($color-primary, 0.125);  // Slightly darker color
+          background-color: fade-out($color-primary, 0.1);  // Slightly darker color
         }
 
         .content {

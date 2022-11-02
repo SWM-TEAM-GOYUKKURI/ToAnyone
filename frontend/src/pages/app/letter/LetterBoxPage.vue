@@ -1,14 +1,16 @@
 <template>
   <div id="letter-box-wrapper">
-    <!-- <div v-if="devmode" @click="testlettertome">테스트 편지 받기</div> -->
-
     <v-progress-circular v-if="!requestCompleted"
-                        indeterminate />
+                         indeterminate />
 
     <div v-if="requestCompleted && letterItems.length > 0">
-      <letter-box-item v-for="item in letterItems"
-                        :key="item.letterId"
-                        :letterItem="item" />
+      <div class="letter-box__total">📫 총 <span class="t-primary" style="font-weight: bold">{{ letterItems.length }}</span>통의 편지가 있어요.</div>
+
+      <div class="letter-box__items">
+        <letter-box-item v-for="item in letterItems"
+                          :key="item.letterId"
+                          :letterItem="item" />
+      </div>
     </div>
     <div v-else-if="requestCompleted && letterItems.length <= 0">
       <span class="no-letters">아직 받은 편지가 없어요😖</span>
@@ -30,8 +32,6 @@ import { LetterInboxItemList } from "@/interfaces/backend";
 export default class LetterBoxPage extends Vue {
   _letterItems: LetterInboxItemList = [];
   requestCompleted = false;
-
-  get devmode(): boolean { return process.env.VUE_APP_DEVMODE === "true"; }
 
   get letterItems(): LetterInboxItemList {
     return Array.from(this._letterItems).sort((a, b) => {
@@ -62,23 +62,6 @@ export default class LetterBoxPage extends Vue {
       alert(`편지 보관 목록 불러오는 중 오류: ${response.statusCode}`);
     }
   }
-
-  /* async testlettertome() {
-    const response = await bePOST("/dev/letter", {
-      content: "테스트 편지",
-      senderEmail: this.$store.state.auth.userBasicInfo?.email,
-      receiverEmail: this.$store.state.auth.userBasicInfo?.email,
-    }, {
-      credentials: this.$store.state.auth.token!,
-    });
-
-    if(response.statusCode === 201) {
-      // HTTP 201 Created: Letter sent successfully
-      await this.loadInbox();
-    } else {
-      // Error handling
-    }
-  } */
 }
 </script>
 
@@ -94,6 +77,17 @@ export default class LetterBoxPage extends Vue {
   & > * {
     width: 100%;
     text-align: center;
+  }
+
+  .letter-box {
+    &__total {
+      font-size: 1.5em;
+      text-align: left;
+    }
+
+    &__items {
+      margin-top: 1.5em;
+    }
   }
 
   .no-letters {

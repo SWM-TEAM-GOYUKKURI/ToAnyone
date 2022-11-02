@@ -1,5 +1,5 @@
 <template>
-  <router-link class="letter-box-item animation-button"
+  <router-link class="letter-box-item button"
                :class="{ 'not-read': !letterItem.read }"
                :to="{ name: 'letter-view', params: { letterId: letterItem.id }}">
     <div class="letter-box-item__profile-area">
@@ -8,7 +8,7 @@
     </div>
 
     <div class="letter-box-item__content-area">
-      <div class="letter-box-item__content-area__sender">From. {{ letterItem.senderName }}</div>
+      <div class="letter-box-item__content-area__sender">From. <span style="font-weight: bold">{{ letterItem.senderName }}</span></div>
       <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
     </div>
   </router-link>
@@ -34,14 +34,9 @@ export default class LetterBoxItem extends Vue {
 <style lang="scss">
 .letter-box-item {
   cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  padding: 1em;
-  background-color: rgba($color-foreground, 0.33);
-  border-radius: 2em;
   margin: 1em 0;
-  box-shadow: 0 0.33em 0.75em rgba(black, 0.25);
-  text-align: left;
+  border-radius: 1.5em !important;
+  box-shadow: 0 0.33em 0.75em rgba($color-dark, 0.25);
 
   &.not-read {
     background-color: rgba($color-primary, 0.33);
@@ -49,21 +44,21 @@ export default class LetterBoxItem extends Vue {
 
   &__content-area {
     flex-grow: 1;
-    margin-left: 1.5em;
+    padding-left: 1em;
     overflow: hidden;
     white-space: nowrap;
 
     & > * {
+      text-align: left;
       text-overflow: ellipsis;
     }
 
     &__sender {
-      font-size: 2em;
-      font-weight: 700;
+      font-size: 1.66em;
     }
 
     &__preview-content {
-      font-size: 1.25em;
+      font-size: 1.2em;
       margin-top: 0.5em;
     }
   }
