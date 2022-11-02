@@ -10,6 +10,7 @@
     <div class="letter-box-item__content-area">
       <div class="letter-box-item__content-area__sender">From. <span style="font-weight: bold">{{ letterItem.senderName }}</span></div>
       <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
+      <div class="letter-box-item__content-area__send-date">{{ new Date(letterItem.sendDate).toLocaleDateString("ko-KR") }}에 전송됨</div>
     </div>
   </router-link>
 </template>
@@ -60,6 +61,14 @@ export default class LetterBoxItem extends Vue {
     &__preview-content {
       font-size: 1.2em;
       margin-top: 0.5em;
+    }
+
+    &__send-date {
+      display: block;
+      font-size: 0.8em;
+      margin-top: 0.5em;
+      text-align: right;
+      opacity: 0.8;
     }
   }
 }
