@@ -50,6 +50,7 @@ export default class LetterBoxItem extends Vue {
     white-space: nowrap;
 
     & > * {
+      overflow: hidden;
       text-align: left;
       text-overflow: ellipsis;
     }
