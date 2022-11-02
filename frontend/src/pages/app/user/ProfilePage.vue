@@ -9,7 +9,7 @@
           <span class="nickname"><strong>{{ $store.state.auth.userBasicInfo.nickname }}</strong></span>
           <hr />
           <span class="info"><strong>{{ tempData.age }}</strong> / <strong>{{ tempData.gender }}</strong></span>
-          <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong></span>
+          <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong> <span title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></span></span>
           <span class="info">업적 달성 <strong>{{ tempData.achievementsCount }}개</strong></span>
         </div>
 
@@ -27,8 +27,18 @@
         <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ tempData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
       </div>
 
-      <div class="profile_statistics__achievements">
+      <div class="profile__statistics__achievements">
         <h1><v-icon>mdi-trophy-variant</v-icon> 업적</h1>
+
+        <div v-for="(achiv, index) in achivements"
+             :key="index"
+             class="button item"
+             :class="{ disabled: !tempData.achivements[index] }">
+          <div class="content">
+            <span class="title">{{ achiv.name }}</span>
+            <span class="desc">{{ achiv.desc }}</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -48,6 +58,7 @@
 import { Options, Vue } from "vue-class-component";
 import InAppDialog from "@/components/InAppDialog.vue";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
+import Achievements from "@/data/achievements.json";
 
 @Options({
   components: {
@@ -56,6 +67,8 @@ import ProfileImage from "@/components/app/global/ProfileImage.vue";
   },
 })
 export default class ProfilePage extends Vue {
+  achivements = Achievements;
+
   tempData = {
     profileImageUrl: "https://picsum.photos/seed/toanyone/300",
     age: "00대",
@@ -67,6 +80,8 @@ export default class ProfilePage extends Vue {
     signinDays: 16,
     sentLetterCount: 42,
     receivedLetterCount: 51,
+
+    achivements: { 1: true, 2: false, 3: true, 4: true, 5: false, 6: false, 7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false, 14: false, 15: true, 16: true, 17: false, 18: false },
   };
 
   get signupDateFormatted(): string {
@@ -98,6 +113,7 @@ export default class ProfilePage extends Vue {
   .profile {
     &__my-area {
       position: sticky;
+      top: calc(1em + $app-navbar-height);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -141,37 +157,6 @@ export default class ProfilePage extends Vue {
           margin-top: 1em;
         }
       }
-
-      &__achievements {
-        &__item {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 0 0.75em;
-          border-left: solid currentColor 1px;
-          border-right: solid currentColor 1px;
-
-          & > * {
-            text-align: center;
-            margin: 0.25em 0;
-          }
-
-          .title {
-            font-size: 1.25em;
-          }
-
-          .content {
-            font-size: 1.5em;
-            font-weight: 700;
-
-            small {
-              font-size: 0.75em;
-              font-weight: 400;
-            }
-          }
-        }
-      }
     }
 
     &__statistics {
@@ -189,6 +174,21 @@ export default class ProfilePage extends Vue {
       &__statistics {
         .button {
           margin: 0.5em 0;
+        }
+      }
+
+      &__achievements {
+        .button {
+          margin: 0.5em 0;
+
+          .content {
+            display: inline-flex;
+            flex-direction: column;
+            line-height: 1.5;
+
+            .title { font-size: 1.1em; }
+            .desc { font-size: 0.85em; opacity: 0.8; }
+          }
         }
       }
     }
