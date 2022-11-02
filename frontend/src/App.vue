@@ -18,7 +18,7 @@ export default class App extends Vue {
           jwtCookie;
       };
 
-      if(to.name !== "login" && to.name !== "landing") {
+      if(!(to.name === "login" || to.name === "landing")) {
         // 로그인 페이지나 랜딩 페이지 외의 라우트로 이동하고 있는 경우...
 
         if(!isLoginStateReliable()) {
