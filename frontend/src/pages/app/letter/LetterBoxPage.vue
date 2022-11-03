@@ -90,6 +90,11 @@ export default class LetterBoxPage extends Vue {
   width: 75vw;
   margin: auto;
 
+  @media (max-width: $viewport-small-max-width) {
+    width: 90vw;
+    font-size: 0.9em;
+  }
+
   & > * {
     width: 100%;
     text-align: center;

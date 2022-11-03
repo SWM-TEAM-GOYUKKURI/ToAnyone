@@ -1,14 +1,19 @@
 <template>
   <router-link class="letter-box-item button"
                :class="{ 'not-read': !letterItem.read }"
-               :to="{ name: 'letter-view', params: { letterId: letterItem.id }}">
-    <div class="letter-box-item__profile-area">
+               :to="{ name: 'letter-view', params: { letterId: letterItem.id } }">
+    <div class="letter-box-item__profile-area vp-small-hide">
       <profile-image class="letter-box-item__profile-image"
                      :srcUrl="'https://picsum.photos/seed/toanyone' + null /*letterItem.sender.profileImageId */ + '/300'" />
     </div>
 
     <div class="letter-box-item__content-area">
-      <div class="letter-box-item__content-area__sender">{{ sentByMe ? "To. " : "From." }} <span style="font-weight: bold">{{ sentByMe ? letterItem.receiverName : letterItem.senderName }}</span></div>
+      <div class="letter-box-item__content-area__sender">
+        <span class="vp-small-hide">{{ sentByMe ? "To. " : "From." }}</span>
+        <span class="vp-small-show" style="margin-right: 0.5em"><v-icon v-if="sentByMe" size="small">mdi-arrow-right</v-icon><v-icon v-else size="small">mdi-arrow-left</v-icon></span>
+
+        <span style="font-weight: bold">{{ sentByMe ? letterItem.receiverName : letterItem.senderName }}</span>
+      </div>
       <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
       <div class="letter-box-item__content-area__send-date">{{ new Date(letterItem.sendDate).toLocaleDateString("ko-KR") }}에 전송됨</div>
     </div>
@@ -44,9 +49,12 @@ export default class LetterBoxItem extends Vue {
     background-color: rgba($color-primary, 0.33);
   }
 
+  &__profile-area {
+    padding-right: 1em;
+  }
+
   &__content-area {
     flex-grow: 1;
-    padding-left: 1em;
     overflow: hidden;
     white-space: nowrap;
 

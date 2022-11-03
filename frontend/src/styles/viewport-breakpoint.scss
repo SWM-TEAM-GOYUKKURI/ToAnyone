@@ -1,7 +1,7 @@
 .vp-small-show { display: none; }
-.vp-small-hide { display: initial !important; }
+.vp-small-hide { display: initial; }
 
 @media (max-width: $viewport-small-max-width) {
   .vp-small-show { display: initial !important; }
-  .vp-small-hide { display: none; }
+  .vp-small-hide { display: none !important; }
 }
