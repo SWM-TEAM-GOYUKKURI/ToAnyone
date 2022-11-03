@@ -8,6 +8,9 @@ import SignupPersonalDataPage from "@/pages/app/signin/signup/personaldata/Signu
 import BasicPersonalDataView from "@/pages/app/signin/signup/personaldata/BasicPersonalDataView.vue";
 import MentalHealthSurveyView from "@/pages/app/signin/signup/personaldata/MentalHealthSurveyView.vue";
 import ItemStorePage from "@/pages/app/store/ItemStorePage.vue";
+import ItemStoreStickersView from "@/pages/app/store/ItemStoreStickersView.vue";
+import ItemStoreFontsView from "@/pages/app/store/ItemStoreFontsView.vue";
+import ItemStorePapersView from "@/pages/app/store/ItemStorePapersView.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
 import PointHelpView from "@/pages/app/user/PointHelpView.vue";
@@ -108,6 +111,26 @@ const routes: Array<RouteRecordRaw> = [
         name: "item-store",
         meta: { title: "아이템 상점" },
         component: ItemStorePage,
+        children: [
+          {
+            path: "stickers",
+            name: "item-store-stickers",
+            meta: { title: "아이템 상점" },
+            component: ItemStoreStickersView,
+          },
+          {
+            path: "fonts",
+            name: "item-store-fonts",
+            meta: { title: "아이템 상점" },
+            component: ItemStoreFontsView,
+          },
+          {
+            path: "papers",
+            name: "item-store-papers",
+            meta: { title: "아이템 상점" },
+            component: ItemStorePapersView,
+          },
+        ],
       },
     ],
   },
