@@ -58,7 +58,8 @@ export default class AppNavbar extends Vue {
   height: $app-navbar-height;
   padding: $app-navbar-padding-y $app-navbar-padding-x;
 
-  backdrop-filter: blur(3px);
+  background: rgba($color-background, 0.9);
+  backdrop-filter: blur(4px);
 
   .app-navbar {
     &__left, &__right {
