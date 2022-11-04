@@ -28,10 +28,7 @@ public class LetterService {
     @Transactional
     public SingleLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
-
-        if (!letter.getReceiver().getId().equals(userId)) {
-            throw new ApplicationException("잘못된 권한입니다.");
-        }
+        letter.checkValidReader(userId);
 
         return SingleLetterResponse.of(letter, letter.getReceiver().getNickname(), letter.getReplyLetters());
     }
