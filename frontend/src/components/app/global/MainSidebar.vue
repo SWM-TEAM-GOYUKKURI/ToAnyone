@@ -15,8 +15,8 @@
         </div>
 
         <div class="main-sidebar__controls">
-          <button class="button bg-transparent fill-width narrow" @click="$emit('request-close')"><v-icon size="small">mdi-close</v-icon> <span>닫기</span></button>
-          <span> · </span>
+          <button v-if="!hideCloseButton" class="button bg-transparent fill-width narrow" @click="$emit('request-close')"><v-icon size="small">mdi-close</v-icon> <span>닫기</span></button>
+          <span v-if="!hideCloseButton"> · </span>
           <button class="button bg-transparent fill-width narrow" @click="onLogoutButtonClick"><v-icon size="small">mdi-logout</v-icon> <span>로그아웃</span></button>
         </div>
       </div>
@@ -34,6 +34,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
+import { LetterInboxItemList } from "@/interfaces/backend";
 import ProfileImage from "./ProfileImage.vue";
 
 @Options({
@@ -43,7 +44,8 @@ import ProfileImage from "./ProfileImage.vue";
 })
 export default class MainSidebar extends Vue {
   @Prop({ type: Boolean, default: false }) open!: boolean;
-  @Prop({ type: Number, default: 0 }) unreadCount!: number;
+  @Prop({ type: Boolean, default: false }) hideCloseButton!: boolean;
+  @Prop({ type: Number, default: 0 }) unreadLetters!: LetterInboxItemList;
 
   onLogoutButtonClick(): void {
     const choice = confirm("정말 로그아웃 하시겠어요?");

@@ -20,6 +20,7 @@
   </nav>
 
   <main-sidebar :open="mainSidebarOpen"
+                :hideCloseButton="this.isCurrentRouteMain && !this.windowSmallViewportOnMainPageMatches"
                 class="main-sidebar-nav"
                 @request-close="toggleSidebar" />
 </template>
