@@ -1,12 +1,17 @@
 package anyone.to.soma.user.domain;
 
 import anyone.to.soma.user.domain.type.LoginType;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.valueextraction.UnwrapByDefault;
+import java.time.Instant;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,16 +32,32 @@ public class User {
     @Nullable
     private String uniqueId;
 
-    private int receiveCount = 0;
+    @JsonUnwrapped
+    UserAchievement userAchievement = new UserAchievement();
+
+    private int receiveCount = 0 ;
 
     private boolean registrationFormFilled;
+
+    @CreatedDate
+    private Instant createdAt;
+
+    private Instant lastLogin;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
     public void receiveLetter() {
-        receiveCount++;
+        this.receiveCount++;
+    }
+
+    public void sendLetter() {
+        userAchievement.increaseSendLetterCount();
+    }
+
+    public void achieve() {
+        userAchievement.increaseAchievementCount();
     }
 
     public User(String email, String name, LoginType loginType, String uniqueId) {
@@ -68,4 +89,9 @@ public class User {
 
         return profile.getNickname();
     }
+
+    public void recordLastLogin(){
+        this.lastLogin = Instant.now();
+    }
+
 }

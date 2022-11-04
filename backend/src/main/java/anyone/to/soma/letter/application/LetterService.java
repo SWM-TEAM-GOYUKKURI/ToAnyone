@@ -33,7 +33,6 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        letter.read();
         return SingleLetterResponse.of(letter, letter.getReceiver().getNickname(), letter.getReplyLetters());
     }
 
@@ -52,7 +51,8 @@ public class LetterService {
         letter.send(randomReceiver);
 
         Long letterId = letterRepository.save(letter).getId();
-        randomReceiver.receiveLetter();
+        userRepository.increaseReceiveCount(randomReceiver.getId());
+        userRepository.increaseSendCount(sender.getId());
         return letterId;
     }
 
@@ -82,5 +82,20 @@ public class LetterService {
     public List<InboxLetterResponse> retrieveSentLetters(User sender) {
         List<Letter> sentLetters = letterRepository.findLettersBySenderId(sender.getId());
         return InboxLetterResponse.listOf(sentLetters, sender.getNickname());
+    }
+
+    @Transactional
+    public void readLetter(Long letterId, User reader) {
+        Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
+        letter.checkValidReader(reader.getId());
+
+        if (letter.getReplyLetters().isEmpty()) {
+            letter.read();
+            return;
+        }
+
+        List<ReplyLetter> replyLetters = letter.getReplyLetters();
+        replyLetters.sort((a, b) -> b.getId().compareTo(a.getId()));
+        replyLetters.get(0).read();
     }
 }

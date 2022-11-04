@@ -8,10 +8,7 @@ import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,6 +36,13 @@ public class UserController {
     ) {
         userService.updateUserProfile(user, request);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/me")
+    @LoginRequired
+    public ResponseEntity<User> retrieveUserProfileData(@LoginUser User user) {
+        userService.retrieveUserData(user);
+        return ResponseEntity.ok(user);
     }
 
 

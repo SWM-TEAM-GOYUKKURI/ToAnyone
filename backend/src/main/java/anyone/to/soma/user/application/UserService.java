@@ -28,6 +28,8 @@ public class UserService {
         }
 
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
+        user.recordLastLogin();
+
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
         return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());
     }
@@ -42,5 +44,11 @@ public class UserService {
         Profile profile = new Profile(request.getNickname(), request.getGender(), request.getAge(), request.getJob(), user);
         profile.addPsychologicalExam(request.getPsychologicalExams());
         user.updateProfile(profile);
+    }
+
+    public User retrieveUserData(User user) {
+        User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
+        return foundUser;
+
     }
 }
