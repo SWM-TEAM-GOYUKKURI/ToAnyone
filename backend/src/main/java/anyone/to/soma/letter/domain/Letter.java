@@ -83,4 +83,17 @@ public class Letter implements Serializable {
         }
 
     }
+
+    public User findReplyLetterSender(User user) {
+        if (this.sender.getId().equals(user.getId())) {
+            return this.receiver;
+        }
+
+        if (this.receiver.getId().equals(user.getId())) {
+            return this.sender;
+        }
+
+        throw new ApplicationException("편지를 전달할 사람이 없습니다.");
+
+    }
 }

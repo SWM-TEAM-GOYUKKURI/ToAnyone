@@ -72,13 +72,13 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.getReceiver().getNickname(), request.getDecorations());
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.findReplyLetterSender(sender).getNickname(), request.getDecorations());
         letter.reply(replyLetter);
     }
 
     public List<InboxLetterResponse> retrieveSentLetters(User sender) {
         List<Letter> sentLetters = letterRepository.findLettersBySenderId(sender.getId());
-        return InboxLetterResponse.listOf(sentLetters, sender.getNickname());
+        return InboxLetterResponse.sentLetterListOf(sentLetters, sender.getNickname());
     }
 
     @Transactional
