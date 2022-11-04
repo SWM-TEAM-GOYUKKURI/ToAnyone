@@ -28,15 +28,15 @@ public class InboxLetterResponse {
     private boolean isRead;
     private List<DecorationType> decorations;
 
-    public static InboxLetterResponse of(Letter letter, String receiverName) {
+    public static InboxLetterResponse of(Letter letter, String senderName) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         String content = letter.getContent();
-        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
+        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), letter.getReceiver().getNickname(), senderName, readPolicy(letter), letterDecorations);
     }
 
-    public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
+    public static List<InboxLetterResponse> listOf(List<Letter> letters, String senderName) {
         return letters.stream()
-                .map(s -> InboxLetterResponse.of(s, receiverName))
+                .map(s -> InboxLetterResponse.of(s, senderName))
                 .collect(Collectors.toList());
     }
 
