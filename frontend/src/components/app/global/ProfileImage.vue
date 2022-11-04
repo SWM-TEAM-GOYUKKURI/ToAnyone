@@ -1,6 +1,6 @@
 <template>
   <v-img class="profile-image"
-         :class="{ 'small': size === 'small', 'large': size === 'large' }"
+         :class="{ small: size === 'small', large: size === 'large' }"
          :src="srcUrl"
          aspect-ratio="1" />
 </template>

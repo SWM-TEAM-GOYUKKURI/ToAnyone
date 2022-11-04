@@ -64,10 +64,26 @@ hr {
     border: none;
   }
 
+  &.fill-width {
+    width: 100%;
+  }
+
   &.primary {
     background: $color-primary;
     color: $color-dark;
     font-weight: bold;
+  }
+
+  &.dark {
+    background: $color-dark;
+  }
+
+  &.dark-background {
+    background: $color-background;
+  }
+
+  &.bg-transparent {
+    background: transparent;
   }
 
   &.narrow {

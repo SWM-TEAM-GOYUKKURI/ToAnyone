@@ -1,3 +1,5 @@
+<!-- UNUSED -->
+
 <template>
     <div class="app-navbar__profile animation-button"
         @click="menuOpened = !menuOpened">

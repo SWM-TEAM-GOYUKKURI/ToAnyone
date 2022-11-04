@@ -56,9 +56,9 @@ export default class MainPage extends Vue {
 
 <style lang="scss">
 #home-page {
-  padding: 0 10vw 3vh 10vw;
+  padding: 0 calc($main-sidebar-width + 6vw) 3vh 6vw;
 
-  @media (max-width: $viewport-small-max-width) {
+  @media (max-width: $viewport-main-small-max-width) {
     padding: 0 5vw 3vh 5vw;
   }
 

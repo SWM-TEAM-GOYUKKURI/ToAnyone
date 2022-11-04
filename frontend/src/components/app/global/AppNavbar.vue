@@ -8,29 +8,33 @@
            key="1"
            @click="$router.back()"
            class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
-        <div class="app-navbar__title"
-             key="2">{{ navbarTitle }}</div>
+        <div class="app-navbar__title" key="2">{{ navbarTitle }}</div>
       </v-slide-x-transition>
     </div>
 
     <div class="app-navbar__right">
-      <app-navbar-profile-menu v-if="!$route.meta.hideNavbarMenu"
-                              :profileImageUrl="tempProfileImage" />
+      <button class="button bg-transparent" @click="toggleSidebar"><v-icon size="xx-large">mdi-menu</v-icon></button>
     </div>
   </nav>
+
+  <v-slide-x-reverse-transition>
+    <main-sidebar v-if="($route.name === 'main') || mainSidebarOpen"
+                  class="main-sidebar-nav"
+                  :class="{ 'vp-small__main-sidebar-nav-hide': !mainSidebarOpen }" />
+  </v-slide-x-reverse-transition>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import AppNavbarProfileMenu from "./AppNavbarProfileMenu.vue";
+import MainSidebar from "./MainSidebar.vue";
 
 @Options({
   components: {
-    AppNavbarProfileMenu,
+    MainSidebar,
   },
 })
 export default class AppNavbar extends Vue {
-  private tempProfileImage = "https://picsum.photos/seed/toanyone/300";
+  mainSidebarOpen = false;
 
   get navbarTitle(): string {
     return this.$route.meta ? (this.$route.meta.title as string ?? "To. Anyone") : "To. Anyone";
@@ -38,6 +42,10 @@ export default class AppNavbar extends Vue {
 
   get isCurrentRouteNotHome(): boolean {
     return this.$route.name !== "main";
+  }
+
+  toggleSidebar(): void {
+    this.mainSidebarOpen = !this.mainSidebarOpen;
   }
 }
 </script>
@@ -78,6 +86,14 @@ export default class AppNavbar extends Vue {
       cursor: pointer;
       font-size: 2em;
       margin-right: 0.5em;
+    }
+  }
+}
+
+.main-sidebar-nav {
+  @media (max-width: $viewport-main-small-max-width) {
+    &.vp-small__main-sidebar-nav-hide {
+      display: none;
     }
   }
 }
