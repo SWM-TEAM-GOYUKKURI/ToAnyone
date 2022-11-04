@@ -12,20 +12,16 @@
       <div style="text-align: right"><strong>To. {{ receiverNickname }}</strong></div>
     </div>
 
-    <div v-if="letterWriteMode"
-         class="letter-area__send-button animation-button"
-         :class="{ 'disabled': letterSendInProgress }"
-         @click="$emit('sendButtonClick')">
-         <v-fade-transition leave-absolute>
-            <div v-if="!letterSendInProgress">
-              <v-icon>mdi-send</v-icon>
-              <span>{{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
-            </div>
-            <div v-else>
-              <v-progress-circular indeterminate />
-            </div>
-         </v-fade-transition>
-    </div>
+    <button v-if="letterWriteMode"
+            class="letter-area__send-button button round primary"
+            :class="{ 'disabled': letterSendInProgress }"
+            @click="$emit('sendButtonClick')">
+      <v-fade-transition leave-absolute>
+        <span v-if="!letterSendInProgress"><v-icon>mdi-send</v-icon> {{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
+
+        <v-progress-circular v-else indeterminate size="large" />
+      </v-fade-transition>
+    </button>
   </div>
 </template>
 
@@ -71,8 +67,7 @@ export default class LetterArea extends Vue {
   position: relative;
   padding: 1em;
   font-size: 1.5em;
-  border-radius: 1em;
-  background-color: #E9E9CC;
+  background-color: #FFF7E8;
   box-shadow: 0 1em 1.5em rgba(black, 0.33);
 
   &__content-area {
@@ -98,35 +93,36 @@ export default class LetterArea extends Vue {
   }
 
   &__send-button {
-    cursor: pointer;
+    // cursor: pointer;
     position: absolute;
     right: -1.5em;
     bottom: -1.5em;
-    min-width: 250px;
-    padding: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $color-primary;
-    border-radius: 999em;
+    min-width: 270px;
+    min-height: 100px;
+    // padding: 1em;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // background-color: $color-primary;
+    // border-radius: 999em;
     box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
     z-index: 1;
 
-    &.disabled {
-      pointer-events: none;
-      background-color: gray;
-    }
+    // &.disabled {
+    //   pointer-events: none;
+    //   background-color: gray;
+    // }
 
-    & > div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
+    // & > div {
+    //   display: flex;
+    //   align-items: center;
+    //   justify-content: center;
+    //   width: 100%;
 
-      & > * {
-        margin: 0 0.25em;
-      }
-    }
+    //   & > * {
+    //     margin: 0 0.25em;
+    //   }
+    // }
   }
 }
 </style>
