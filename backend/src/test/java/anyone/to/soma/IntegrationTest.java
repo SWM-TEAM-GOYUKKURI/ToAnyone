@@ -1,7 +1,7 @@
 package anyone.to.soma;
 
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;

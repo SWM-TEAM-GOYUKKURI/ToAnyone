@@ -4,7 +4,7 @@ import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.user.domain.Profile;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,7 @@ public class UserService {
 
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         user.recordLastLogin();
+        userRepository.increaseLoginCount(user.getId());
 
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
         return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());

@@ -9,7 +9,7 @@ import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.utils.LetterDecorationRepository;
 import anyone.to.soma.utils.ReplyRepository;
 import org.junit.jupiter.api.AfterEach;

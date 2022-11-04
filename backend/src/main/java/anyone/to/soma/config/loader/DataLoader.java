@@ -4,7 +4,7 @@ import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;

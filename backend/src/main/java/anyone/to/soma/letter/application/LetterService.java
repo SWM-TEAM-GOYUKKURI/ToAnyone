@@ -9,7 +9,7 @@ import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

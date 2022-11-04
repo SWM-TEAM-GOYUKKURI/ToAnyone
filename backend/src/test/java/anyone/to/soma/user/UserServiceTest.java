@@ -6,7 +6,7 @@ import anyone.to.soma.letter.domain.LetterRepository;
 import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.type.Age;
 import anyone.to.soma.user.domain.type.Gender;
 import anyone.to.soma.user.domain.type.Job;

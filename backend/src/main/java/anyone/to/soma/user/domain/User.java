@@ -1,16 +1,15 @@
 package anyone.to.soma.user.domain;
 
 import anyone.to.soma.user.domain.type.LoginType;
+import anyone.to.soma.user.domain.vo.UserAchievement;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.valueextraction.UnwrapByDefault;
 import java.time.Instant;
 
 @Entity
@@ -43,6 +42,7 @@ public class User {
     private Instant createdAt;
 
     private Instant lastLogin;
+
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
