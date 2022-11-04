@@ -11,7 +11,12 @@
         <router-link :to="{ name: 'profile' }"><button class="button dark-background fill-width">프로필 보기</button></router-link>
 
         <div class="main-sidebar__unread">
-          <span class="title">✉️ 읽지 않은 편지 <span v-if="unreadCount >= 1" class="unread-count">{{ unreadCount }}</span></span>
+          <span class="title">✉️ 읽지 않은 편지 <span v-if="unreadLetters.length >= 1" class="unread-count">{{ unreadLetters.length }}</span></span>
+
+          <div v-for="letter in unreadLetters"
+               :key="letter.id">
+            {{ letter.content }}
+          </div>
         </div>
 
         <div class="main-sidebar__controls">
@@ -45,7 +50,10 @@ import ProfileImage from "./ProfileImage.vue";
 export default class MainSidebar extends Vue {
   @Prop({ type: Boolean, default: false }) open!: boolean;
   @Prop({ type: Boolean, default: false }) hideCloseButton!: boolean;
-  @Prop({ type: Number, default: 0 }) unreadLetters!: LetterInboxItemList;
+
+  get unreadLetters(): LetterInboxItemList {
+    return this.$store.state.user.unreadLetters;
+  }
 
   onLogoutButtonClick(): void {
     const choice = confirm("정말 로그아웃 하시겠어요?");
@@ -92,7 +100,7 @@ export default class MainSidebar extends Vue {
     .unread-count {
       padding: 0.25em;
       margin-left: 0.25em;
-      font-size: 0.7em;
+      font-size: 0.8em;
       color: $color-dark;
       background-color: $color-primary;
       border-radius: 99999rem;

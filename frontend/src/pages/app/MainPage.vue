@@ -48,9 +48,29 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { getAssetPath } from "@/util/path-transform";
+import { isSuccessful } from "@/util/backend";
+import { LetterInboxItemList } from "@/interfaces/backend";
 
 export default class MainPage extends Vue {
   getAssetPath = getAssetPath;
+
+  async created() {
+    // Load unread letters and save it
+    const inboxResponse = await this.$api.getInbox();
+    const sentInboxResponse = await this.$api.getSentInbox();
+
+    if(isSuccessful(inboxResponse.statusCode) && isSuccessful(sentInboxResponse.statusCode) && inboxResponse.data && sentInboxResponse.data) {
+      const unreadLetters: LetterInboxItemList = [
+        ...inboxResponse.data.filter((i) => !i.read),
+        ...sentInboxResponse.data.filter((i) => !i.read),
+      ];
+
+      this.$store.commit("user/updateUnreadLetters", unreadLetters);
+    } else {
+      // TEMP ALERT
+      alert(`편지 보관 목록을 불러오는 중 오류: ${inboxResponse.statusCode}, ${sentInboxResponse.statusCode}`);
+    }
+  }
 }
 </script>
 
