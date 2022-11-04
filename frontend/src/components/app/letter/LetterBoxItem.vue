@@ -9,7 +9,7 @@
 
     <div class="letter-box-item__content-area">
       <div class="letter-box-item__content-area__sender">
-        <span class="vp-small-hide">{{ sentByMe ? "To. " : "From." }}</span>
+        <span class="vp-small-hide">{{ sentByMe ? "To. " : "From. " }}</span>
         <span class="vp-small-show" style="margin-right: 0.5em"><v-icon v-if="sentByMe" size="small">mdi-arrow-right</v-icon><v-icon v-else size="small">mdi-arrow-left</v-icon></span>
 
         <span style="font-weight: bold">{{ sentByMe ? letterItem.receiverName : letterItem.senderName }}</span>
