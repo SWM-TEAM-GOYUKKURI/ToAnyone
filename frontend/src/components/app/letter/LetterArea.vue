@@ -14,7 +14,7 @@
 
     <button v-if="letterWriteMode"
             class="letter-area__send-button button round primary"
-            :class="{ 'disabled': letterSendInProgress }"
+            :class="{ 'disabled': letterSendInProgress || buttonDisabled }"
             @click="$emit('sendButtonClick')">
       <v-fade-transition leave-absolute>
         <span v-if="!letterSendInProgress"><v-icon>mdi-send</v-icon> {{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
@@ -45,6 +45,10 @@ export default class LetterArea extends Vue {
 
   get realSenderNickname(): string {
     return this.letterWriteMode ? this.$store.state.auth.userBasicInfo!.nickname : this.senderNickname;
+  }
+
+  get buttonDisabled(): boolean {
+    return !this.letterTextContent;
   }
 
   onEditorKeyDown(event: KeyboardEvent): void {
@@ -93,36 +97,13 @@ export default class LetterArea extends Vue {
   }
 
   &__send-button {
-    // cursor: pointer;
     position: absolute;
-    right: -1.5em;
-    bottom: -1.5em;
+    right: -50px;
+    bottom: -50px;
     min-width: 270px;
     min-height: 100px;
-    // padding: 1em;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // background-color: $color-primary;
-    // border-radius: 999em;
     box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
     z-index: 1;
-
-    // &.disabled {
-    //   pointer-events: none;
-    //   background-color: gray;
-    // }
-
-    // & > div {
-    //   display: flex;
-    //   align-items: center;
-    //   justify-content: center;
-    //   width: 100%;
-
-    //   & > * {
-    //     margin: 0 0.25em;
-    //   }
-    // }
   }
 }
 </style>
