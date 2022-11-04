@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios, { AxiosError, AxiosRequestHeaders } from "axios";
+import { LetterInboxItemList } from "@/interfaces/backend";
 
 const BE_URL: string = process.env.VUE_APP_BACKEND_URL;
 
@@ -81,4 +82,14 @@ export async function bePUT<T>(endpoint: string, data: Record<string, any>, head
 
 export function isSuccessful(statusCode: number): boolean {
   return statusCode >= 200 && statusCode <= 208;
+}
+
+export function filterUnreadLetters(...letters: LetterInboxItemList[]): LetterInboxItemList {
+  const result: LetterInboxItemList = [];
+
+  letters.forEach((l) => {
+    result.push(...l.filter((i) => !i.read));
+  });
+
+  return result;
 }
