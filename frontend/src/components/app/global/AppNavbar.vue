@@ -13,7 +13,9 @@
     </div>
 
     <div class="app-navbar__right">
-      <button class="button bg-transparent" @click="toggleSidebar"><v-icon size="xx-large">mdi-menu</v-icon></button>
+      <button v-if="!(($route.name === 'main') || $route.meta.hideNavbarMenu === true)"
+              class="button bg-transparent"
+              @click="toggleSidebar"><v-icon size="x-large">mdi-menu</v-icon></button>
     </div>
   </nav>
 
