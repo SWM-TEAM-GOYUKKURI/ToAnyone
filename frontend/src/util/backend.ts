@@ -1,42 +1,82 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import axios, { AxiosRequestHeaders } from "axios";
+import axios, { AxiosError, AxiosRequestHeaders } from "axios";
 
 const BE_URL: string = process.env.VUE_APP_BACKEND_URL;
 
-interface BECallReturn<T> {
+export interface BECallReturn<T> {
+  data?: T,
+  error: boolean,
   statusCode: number,
-  data: T,
 }
 
 export async function beGET<T>(endpoint: string, data?: Record<string, any> | null, headers?: AxiosRequestHeaders): Promise<BECallReturn<T>> {
-  const response = await axios.get<T>(`${BE_URL}/${endpoint}`, {
-    headers,
-    params: data,
-  });
-
-  return {
-    statusCode: response.status,
-    data: response.data,
+  const result: BECallReturn<T> = {
+    error: false,
+    statusCode: -1,
   };
+
+  try {
+    const response = await axios.get<T>(`${BE_URL}/${endpoint}`, {
+      headers,
+      params: data,
+    });
+
+    result.data = response.data;
+    result.statusCode = response.status;
+  } catch(error) {
+    result.error = true;
+
+    if(error instanceof AxiosError && error.response) {
+      result.statusCode = error.response.status;
+    }
+  }
+
+  return result;
 }
 
 export async function bePOST<T>(endpoint: string, data: Record<string, any>, headers?: AxiosRequestHeaders): Promise<BECallReturn<T>> {
-  const response = await axios.post<T>(`${BE_URL}/${endpoint}`, data, { headers });
-
-  return {
-    statusCode: response.status,
-    data: response.data,
+  const result: BECallReturn<T> = {
+    error: false,
+    statusCode: -1,
   };
+
+  try {
+    const response = await axios.post<T>(`${BE_URL}/${endpoint}`, data, { headers });
+
+    result.data = response.data;
+    result.statusCode = response.status;
+  } catch(error) {
+    result.error = true;
+
+    if(error instanceof AxiosError && error.response) {
+      result.statusCode = error.response.status;
+    }
+  }
+
+  return result;
 }
 
 export async function bePUT<T>(endpoint: string, data: Record<string, any>, headers?: AxiosRequestHeaders): Promise<BECallReturn<T>> {
-  const response = await axios.put<T>(`${BE_URL}/${endpoint}`, data, { headers });
-
-  return {
-    statusCode: response.status,
-    data: response.data,
+  const result: BECallReturn<T> = {
+    error: false,
+    statusCode: -1,
   };
+
+  try {
+    const response = await axios.put<T>(`${BE_URL}/${endpoint}`, data, { headers });
+
+    result.data = response.data;
+    result.statusCode = response.status;
+  } catch(error) {
+    result.error = true;
+
+    if(error instanceof AxiosError && error.response) {
+      result.statusCode = error.response.status;
+    }
+  }
+
+  return result;
 }
 
 export function isSuccessful(statusCode: number): boolean {

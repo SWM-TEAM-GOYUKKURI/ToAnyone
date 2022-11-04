@@ -43,21 +43,25 @@ export default class LoginView extends Vue {
     try {
       const response = (await bePOST<LoginGoogleResponse>("/login/google", {}, {
         credential: data.credential,
-      })).data;
+      }));
 
-      const user: UserInfoBasic = {
-        nickname: response.name,
-        email: response.email,
-        firstSignupPassed: response.registrationFormFilled,
-      };
+      if(response.data) {
+        const user: UserInfoBasic = {
+          nickname: response.data.name,
+          email: response.data.email,
+          firstSignupPassed: response.data.registrationFormFilled,
+        };
 
-      this.$store.commit("auth/registerLoginState", { user, token: response.token });
-      this.$cookies.set("userSession", response.token);
+        this.$store.commit("auth/registerLoginState", { user, token: response.data.token });
+        this.$cookies.set("userSession", response.data.token);
 
-      if(user.firstSignupPassed) {
-        window.location.href = this.$router.resolve({ name: "main" }).href;
+        if(user.firstSignupPassed) {
+          window.location.href = this.$router.resolve({ name: "main" }).href;
+        } else {
+          window.location.href = this.$router.resolve({ name: "signup-profile" }).href;
+        }
       } else {
-        window.location.href = this.$router.resolve({ name: "signup-profile" }).href;
+        alert("로그인하는 중 오류가 발생했어요. " + response.statusCode);
       }
     } catch(e) {
       alert("로그인하는 중 오류가 발생했어요. " + e);
