@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./plugins/router";
 import store from "./plugins/store";
 import vuetify from "./plugins/vuetify";
+import APICaller from "./plugins/be-api-caller";
 import "./plugins/axios/defaults";
 import "./plugins/service-worker/register";
 
@@ -19,5 +20,7 @@ app.use(VueCookies, {
   secure: true,
 });
 app.use(vuetify);
+
+app.config.globalProperties.$api = new APICaller();
 
 app.mount("#app");

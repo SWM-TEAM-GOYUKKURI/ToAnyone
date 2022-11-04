@@ -19,7 +19,13 @@ import AppNavbar from "@/components/app/global/AppNavbar.vue";
     AppNavbar,
   },
 })
-export default class AppPagesWrapper extends Vue { }
+export default class AppPagesWrapper extends Vue {
+  beforeMount(): void {
+    if(!this.$api.isAvailable() && this.$store.state.auth.token) {
+      this.$api.registerToken(this.$store.state.auth.token);
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
