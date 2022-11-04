@@ -4,7 +4,7 @@
       <v-slide-x-transition group
                             leave-absolute
                             origin="center center">
-        <a v-if="isCurrentRouteNotHome"
+        <a v-if="!isCurrentRouteMain"
            key="1"
            @click="$router.back()"
            class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
@@ -13,17 +13,15 @@
     </div>
 
     <div class="app-navbar__right">
-      <button v-if="!(($route.name === 'main') || $route.meta.hideNavbarMenu === true)"
+      <button v-if="!$route.meta.hideNavbarMenu"
               class="button bg-transparent"
               @click="toggleSidebar"><v-icon size="x-large">mdi-menu</v-icon></button>
     </div>
   </nav>
 
-  <v-slide-x-reverse-transition>
-    <main-sidebar v-if="($route.name === 'main') || mainSidebarOpen"
-                  class="main-sidebar-nav"
-                  :class="{ 'vp-small__main-sidebar-nav-hide': !mainSidebarOpen }" />
-  </v-slide-x-reverse-transition>
+  <main-sidebar :open="mainSidebarOpen"
+                class="main-sidebar-nav"
+                @request-close="toggleSidebar" />
 </template>
 
 <script lang="ts">
@@ -36,18 +34,33 @@ import MainSidebar from "./MainSidebar.vue";
   },
 })
 export default class AppNavbar extends Vue {
-  mainSidebarOpen = false;
+  _mainSidebarOpen = false;
+  windowSmallViewportOnMainPageMatches = false;
 
   get navbarTitle(): string {
     return this.$route.meta ? (this.$route.meta.title as string ?? "To. Anyone") : "To. Anyone";
   }
 
-  get isCurrentRouteNotHome(): boolean {
-    return this.$route.name !== "main";
+  get isCurrentRouteMain(): boolean {
+    return this.$route.name === "main";
+  }
+
+  get mainSidebarOpen(): boolean {
+    return (this.isCurrentRouteMain && !this.windowSmallViewportOnMainPageMatches) || // Main page + Large viewport
+           (this.isCurrentRouteMain && this.windowSmallViewportOnMainPageMatches && this._mainSidebarOpen) || // Main page + Small viewport + Sidebar button toggled
+           this._mainSidebarOpen; // Other pages + Sidebar button toggled
+  }
+
+  mounted(): void {
+    const smallViewportOnMainPageMatch = matchMedia("(max-width: 1000px)"); // Hardcoded, ref: @/styles/globals.scss
+    this.windowSmallViewportOnMainPageMatches = smallViewportOnMainPageMatch.matches;
+    smallViewportOnMainPageMatch.addEventListener("change", (ev) => {
+      this.windowSmallViewportOnMainPageMatches = ev.matches;
+    });
   }
 
   toggleSidebar(): void {
-    this.mainSidebarOpen = !this.mainSidebarOpen;
+    this._mainSidebarOpen = !this._mainSidebarOpen;
   }
 }
 </script>
@@ -88,14 +101,6 @@ export default class AppNavbar extends Vue {
       cursor: pointer;
       font-size: 2em;
       margin-right: 0.5em;
-    }
-  }
-}
-
-.main-sidebar-nav {
-  @media (max-width: $viewport-main-small-max-width) {
-    &.vp-small__main-sidebar-nav-hide {
-      display: none;
     }
   }
 }
