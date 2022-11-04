@@ -28,10 +28,16 @@ public class InboxLetterResponse {
     private boolean isRead;
     private List<DecorationType> decorations;
 
-    public static InboxLetterResponse of(Letter letter, String receiverName) {
+    public static List<InboxLetterResponse> sentLetterListOf(List<Letter> letters, String senderName) {
+        return letters.stream()
+                .map(s -> InboxLetterResponse.sentLetterOf(s, senderName))
+                .collect(Collectors.toList());
+    }
+
+    private static InboxLetterResponse sentLetterOf(Letter letter, String senderName) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         String content = letter.getContent();
-        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
+        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), letter.getReceiver().getNickname(), senderName, true, letterDecorations);
     }
 
     public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
@@ -40,9 +46,16 @@ public class InboxLetterResponse {
                 .collect(Collectors.toList());
     }
 
-    private static boolean readPolicy(Letter letter){
+    private static InboxLetterResponse of(Letter letter, String receiverName) {
+        List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
+        String content = letter.getContent();
+        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
+    }
+
+
+    private static boolean readPolicy(Letter letter) {
         List<ReplyLetter> replyLetters = letter.getReplyLetters();
-        if (replyLetters.isEmpty()){
+        if (replyLetters.isEmpty()) {
             return letter.isRead();
         }
 
