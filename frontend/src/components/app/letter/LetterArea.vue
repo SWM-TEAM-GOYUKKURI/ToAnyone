@@ -14,12 +14,14 @@
 
     <button v-if="letterWriteMode"
             class="letter-area__send-button button round primary"
-            :class="{ 'disabled': letterSendInProgress || buttonDisabled }"
-            @click="$emit('sendButtonClick')">
+            :class="{ 'disabled': buttonDisabled }"
+            @click="() => !buttonDisabled ? $emit('sendButtonClick') : null">
       <v-fade-transition leave-absolute>
-        <span v-if="!letterSendInProgress"><v-icon>mdi-send</v-icon> {{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
+        <span v-if="letterSendStatus === LetterSendStatus.NORMAL"><v-icon>mdi-send</v-icon> {{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
 
-        <v-progress-circular v-else indeterminate size="large" />
+        <v-progress-circular v-else-if="letterSendStatus === LetterSendStatus.SENDING" indeterminate size="large" />
+        <v-icon v-else-if="letterSendStatus === LetterSendStatus.DONE">mdi-check</v-icon>
+        <v-icon v-else-if="letterSendStatus === LetterSendStatus.ERROR">mdi-alert-circle</v-icon>
       </v-fade-transition>
     </button>
   </div>
@@ -30,15 +32,24 @@ import { Options, Vue } from "vue-class-component";
 import { Prop, PropSync } from "vue-property-decorator";
 import contenteditable from "vue-contenteditable";
 
+export enum LetterSendStatus {
+  NORMAL,
+  SENDING,
+  DONE,
+  ERROR,
+}
+
 @Options({
   components: {
     contenteditable,
   },
 })
 export default class LetterArea extends Vue {
+  LetterSendStatus = LetterSendStatus;
+
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
-  @Prop({ type: Boolean, default: false }) letterSendInProgress!: boolean;
+  @Prop({ default: LetterSendStatus.NORMAL }) letterSendStatus!: LetterSendStatus;
   @Prop({ type: String, default: "" }) senderNickname!: string;
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
@@ -48,7 +59,7 @@ export default class LetterArea extends Vue {
   }
 
   get buttonDisabled(): boolean {
-    return !this.letterTextContent;
+    return this.letterSendStatus !== LetterSendStatus.NORMAL || !this.letterTextContent;
   }
 
   onEditorKeyDown(event: KeyboardEvent): void {

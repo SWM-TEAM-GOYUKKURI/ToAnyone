@@ -9,7 +9,7 @@
                  id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
-                 :letterSendInProgress="letterSendInProgress"
+                 :letterSendStatus="letterSendStatus"
                  @textareaInput="onTextareaInput"
                  @sendButtonClick="onSendButtonClick" />
 
@@ -20,7 +20,7 @@
                  :letterWriteMode="true"
                  :letterReplyMode="true"
                  :receiverNickname="replyModeData.senderName"
-                 :letterSendInProgress="letterSendInProgress"
+                 :letterSendStatus="letterSendStatus"
                  @textareaInput="onTextareaInput"
                  @sendButtonClick="onSendButtonClick" />
   </div>
@@ -30,8 +30,8 @@
 import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
 import { RouteLocationNormalized } from "vue-router";
-import LetterArea from "@/components/app/letter/LetterArea.vue";
-import { bePOST, isSuccessful } from "@/util/backend";
+import LetterArea, { LetterSendStatus } from "@/components/app/letter/LetterArea.vue";
+import { isSuccessful } from "@/util/backend";
 import { LetterInboxItem, LetterWriteRequest } from "@/interfaces/backend";
 
 @Options({
@@ -43,7 +43,7 @@ import { LetterInboxItem, LetterWriteRequest } from "@/interfaces/backend";
 export default class LetterWritePage extends Vue {
   letterTextContent = "";
   letterTextInputOccured = false;
-  letterSendInProgress = false;
+  letterSendStatus = LetterSendStatus.NORMAL;
 
   replyMode = false;
   replyModeData: LetterInboxItem | null = null;
@@ -76,13 +76,14 @@ export default class LetterWritePage extends Vue {
     }
 
     if(answer) {
-      if(to.name === "letter-view" &&
-        from.name === "letter-reply" &&
-        this.replyMode &&
-        this.replyModeData) {
-        to.params = {
-          letterId: this.replyModeData.id.toString(),
-        };
+      if(to.name === "letter-view") {
+        if(from.name === "letter-reply" &&
+          this.replyMode &&
+          this.replyModeData) {
+          to.params = {
+            letterId: this.replyModeData.id.toString(),
+          };
+        }
       }
 
       return true;
@@ -96,29 +97,28 @@ export default class LetterWritePage extends Vue {
   }
 
   async onSendButtonClick() {
-    if(!this.letterSendInProgress && this.letterTextContent.length > 0) {
-      this.letterSendInProgress = true;
+    if(this.letterSendStatus === LetterSendStatus.NORMAL && this.letterTextContent.length > 0) {
+      this.letterSendStatus = LetterSendStatus.SENDING;
 
       if(!this.replyMode) {
         /* NORMAL WRITE MODE */
-
-        const requestData: LetterWriteRequest = {
+        const response = await this.$api.writeLetter({
           content: this.letterTextContent,
           decorations: [],
-        };
-
-        const response = await this.$api.writeLetter(requestData);
+        });
 
         if(isSuccessful(response.statusCode)) {
-          // HTTP 201 Created: Letter sent successfully
-          this.letterTextContent = "";
+          this.letterTextInputOccured = false;
+          this.letterSendStatus = LetterSendStatus.DONE;
+
+          alert("편지를 성공적으로 전송했어요.");
+          this.$router.replace({ name: "letter-box" });
         } else {
           // TEMP ALERT
           alert(`편지 전송 중 API 오류: ${response.statusCode}`);
         }
       } else if(this.replyMode && this.replyModeData) {
         /* REPLY MODE */
-
         const response = await this.$api.writeReplyLetter(this.replyModeData.id, {
           content: this.letterTextContent,
           decorations: [],
@@ -126,14 +126,15 @@ export default class LetterWritePage extends Vue {
 
         if(isSuccessful(response.statusCode)) {
           this.letterTextInputOccured = false;
+          this.letterSendStatus = LetterSendStatus.DONE;
+
+          alert("답장을 성공적으로 전송했어요.");
           this.$router.replace({ name: "letter-view" });
         } else {
           // TEMP ALERT
           alert(`편지 답장 전송 중 API 오류: ${response.statusCode}`);
         }
       }
-
-      this.letterSendInProgress = false;
     }
   }
 
