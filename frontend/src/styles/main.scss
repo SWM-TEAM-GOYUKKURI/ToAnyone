@@ -8,14 +8,16 @@ html, body {
   width: 100%;
   height: 100%;
   font-size: 1.05em;
-  overflow-x: hidden;
-  overflow-y: auto;
   word-break: keep-all;
 
   &, * {
     user-select: none;
     -webkit-user-drag: none;
   }
+}
+
+html {
+  overflow-y: overlay;
 }
 
 a {
