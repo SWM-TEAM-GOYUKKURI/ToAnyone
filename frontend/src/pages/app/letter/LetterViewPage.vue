@@ -38,11 +38,11 @@ export default class LetterViewPage extends Vue {
   letterItem!: LetterItemFull;
   dataLoaded = false;
 
-  get letterId(): string | null {
+  get letterId(): number | null {
     if(this.$route.params) {
-      return this.$route.params.letterId as string;
+      return parseInt(this.$route.params.letterId as string);
     } else {
-      return "";
+      return null;
     }
   }
 
@@ -70,24 +70,26 @@ export default class LetterViewPage extends Vue {
   }
 
   async mounted() {
-    /* Load letter contents */
-    const response = await beGET<LetterItemFull>(`/letter/inbox/${this.letterId}`, null, { credentials: this.$store.state.auth.token! });
+    if(this.letterId) {
+      /* Load letter contents */
+      const response = await this.$api.getLetter(this.letterId!);
 
-    if(isSuccessful(response.statusCode) && response.data) {
-      this.letterItem = response.data;
+      if(isSuccessful(response.statusCode) && response.data) {
+        this.letterItem = response.data;
 
-      this.dataLoaded = true;
-    } else {
-      // TEMP ALERT
-      alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
-    }
+        this.dataLoaded = true;
+      } else {
+        // TEMP ALERT
+        alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
+      }
 
-    /* Letter read state update */
-    const readStateUpdateResponse = await bePUT(`/letter/inbox/${this.letterId}`, {}, { credentials: this.$store.state.auth.token! });
+      /* Letter read state update */
+      const readStateUpdateResponse = await this.$api.updateLetterReadState(this.letterId!);
 
-    if(!isSuccessful(readStateUpdateResponse.statusCode)) {
-      // TEMP ALERT
-      alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
+      if(!isSuccessful(readStateUpdateResponse.statusCode)) {
+        // TEMP ALERT
+        alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
+      }
     }
   }
 

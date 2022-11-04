@@ -19,9 +19,7 @@ import { Options, Vue } from "vue-class-component";
 import * as GoogleLogin from "@/plugins/signin/google";
 import SignInWithGoogle from "@/components/signin/SignInWithGoogle.vue";
 import SignInWithKakao from "@/components/signin/SignInWithKakao.vue";
-import { LoginGoogleResponse } from "@/interfaces/backend";
 import { UserInfoBasic } from "@/interfaces/internal";
-import { bePOST } from "@/util/backend";
 
 @Options({
   components: {
@@ -41,9 +39,7 @@ export default class LoginView extends Vue {
 
   async onGoogleLogin(data: GoogleLogin.GoogleAuthResponse) {
     try {
-      const response = (await bePOST<LoginGoogleResponse>("/login/google", {}, {
-        credential: data.credential,
-      }));
+      const response = await this.$api.requestGoogleLogin(data.credential);
 
       if(response.data) {
         const user: UserInfoBasic = {

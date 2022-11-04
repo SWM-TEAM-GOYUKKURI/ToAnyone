@@ -52,7 +52,7 @@ export default class LetterBoxPage extends Vue {
 
   async loadInbox() {
     /* === Inbox === */
-    const response = await beGET<LetterInboxItemList>("/letter/inbox", null, { credentials: this.$store.state.auth.token! });
+    const response = await this.$api.getInbox();
 
     if(isSuccessful(response.statusCode)) {
       if(response.data) {
@@ -66,7 +66,7 @@ export default class LetterBoxPage extends Vue {
     }
 
     /* === Sent Letters === */
-    const sentLettersResponse = await beGET<LetterInboxItemList>("/letter/sent", null, { credentials: this.$store.state.auth.token! });
+    const sentLettersResponse = await this.$api.getSentInbox();
 
     if(isSuccessful(sentLettersResponse.statusCode)) {
       if(sentLettersResponse.data) {

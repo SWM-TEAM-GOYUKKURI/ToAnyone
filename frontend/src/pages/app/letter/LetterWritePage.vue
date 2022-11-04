@@ -102,14 +102,12 @@ export default class LetterWritePage extends Vue {
       if(!this.replyMode) {
         /* NORMAL WRITE MODE */
 
-        const responseData: LetterWriteRequest = {
+        const requestData: LetterWriteRequest = {
           content: this.letterTextContent,
           decorations: [],
         };
 
-        const response = await bePOST("/letter", responseData, {
-          credentials: this.$store.state.auth.token!,
-        });
+        const response = await this.$api.writeLetter(requestData);
 
         if(isSuccessful(response.statusCode)) {
           // HTTP 201 Created: Letter sent successfully
@@ -118,14 +116,12 @@ export default class LetterWritePage extends Vue {
           // TEMP ALERT
           alert(`편지 전송 중 API 오류: ${response.statusCode}`);
         }
-      } else {
+      } else if(this.replyMode && this.replyModeData) {
         /* REPLY MODE */
 
-        const response = await bePOST(`/letter/inbox/${this.replyModeData?.id}`, {
+        const response = await this.$api.writeReplyLetter(this.replyModeData.id, {
           content: this.letterTextContent,
           decorations: [],
-        }, {
-          credentials: this.$store.state.auth.token!,
         });
 
         if(isSuccessful(response.statusCode)) {

@@ -108,9 +108,7 @@ export default class SignupPersonalDataPage extends Vue {
             psychologicalExams: Object.entries(this.signupData.survey!).map((v) => { return { questionId: parseInt(v[0]), answerId: v[1] } as UserProfilePsychologicalExamItem; }),
           };
 
-          const response = await bePUT("/user", requestData, {
-            credentials: this.$store.state.auth.token!,
-          });
+          const response = await this.$api.putUserSignupData(requestData);
 
           if(isSuccessful(response.statusCode)) {
             if(this.$store.state.auth.userBasicInfo) {

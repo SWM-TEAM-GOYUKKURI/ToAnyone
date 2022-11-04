@@ -51,10 +51,6 @@ import { getAssetPath } from "@/util/path-transform";
 
 export default class MainPage extends Vue {
   getAssetPath = getAssetPath;
-
-  async mounted() {
-    console.log(await this.$api.getInbox());
-  }
 }
 </script>
 
