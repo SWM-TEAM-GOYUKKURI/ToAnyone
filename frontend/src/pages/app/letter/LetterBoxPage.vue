@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterBoxItem from "@/components/app/letter/LetterBoxItem.vue";
-import { beGET, isSuccessful } from "@/util/backend";
+import { filterUnreadLetters, isSuccessful } from "@/util/backend";
 import { LetterInboxItemList } from "@/interfaces/backend";
 
 @Options({
@@ -51,31 +51,23 @@ export default class LetterBoxPage extends Vue {
   }
 
   async loadInbox() {
-    /* === Inbox === */
+    /* === Inbox & Sent Letters Inbox === */
     const response = await this.$api.getInbox();
+    const sentLettersResponse = await this.$api.getSentInbox();
 
-    if(isSuccessful(response.statusCode)) {
-      if(response.data) {
-        this._letterItems = response.data;
+    if(isSuccessful(response.statusCode) && isSuccessful(sentLettersResponse.statusCode)) {
+      if(response.data && sentLettersResponse.data) {
+        this._letterItems = [...response.data, ...sentLettersResponse.data];
+
+        /* === Save unread letters to store === */
+        const unreadLetters = filterUnreadLetters(response.data, sentLettersResponse.data);
+        this.$store.commit("user/updateUnreadLetters", unreadLetters);
       } else {
         this._letterItems = [];
       }
     } else {
       // TEMP ALERT
-      alert(`편지 보관 목록 불러오는 중 오류: ${response.statusCode}`);
-    }
-
-    /* === Sent Letters === */
-    const sentLettersResponse = await this.$api.getSentInbox();
-
-    if(isSuccessful(sentLettersResponse.statusCode)) {
-      if(sentLettersResponse.data) {
-        this._letterItems = [...this.letterItems, ...sentLettersResponse.data];
-        this._sentLetterIds = sentLettersResponse.data.map((v) => v.id);
-      }
-    } else {
-      // TEMP ALERT
-      alert(`전송한 편지 목록 불러오는 중 오류: ${response.statusCode}`);
+      alert(`편지 보관 목록 및 전송한 편지 목록을 불러오는 중 오류: ${response.statusCode}, ${sentLettersResponse.statusCode}`);
     }
   }
 }
