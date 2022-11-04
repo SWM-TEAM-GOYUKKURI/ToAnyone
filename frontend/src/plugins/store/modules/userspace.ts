@@ -21,7 +21,7 @@ const userspaceStore: Module<UserspaceStoreState, RootStoreState> = {
   mutations: {
     updateUserInfo(state, payload: UserInfo) { state.user = payload; },
     updateUnreadLetters(state, payload: LetterInboxItemList) { state.unreadLetters = payload; },
-  }
+  },
 };
 
 export default userspaceStore;
