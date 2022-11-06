@@ -8,7 +8,7 @@
           <span class="nickname">{{ $store.state.auth.userBasicInfo.nickname }}</span>
         </div>
 
-        <router-link :to="{ name: 'profile' }"><button class="button dark-background fill-width">프로필 보기</button></router-link>
+        <router-link :to="{ name: 'profile' }"><button class="button dark-background fill-width" @click.self="$emit('request-close')">프로필 보기</button></router-link>
 
         <div class="main-sidebar__unread">
           <span class="title">✉️ 읽지 않은 편지 <span v-if="unreadLetters.length >= 1" class="unread-count">{{ unreadLetters.length }}</span></span>
