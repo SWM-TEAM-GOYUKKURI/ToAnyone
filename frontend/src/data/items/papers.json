@@ -1,3 +1,12 @@
 {
-    
+    "lightblue": {
+        "name": "연파랑",
+        "color": "#E8F7FF",
+        "price": 1000
+    },
+    "pink": {
+        "name": "분홍",
+        "color": "#FFE8F7",
+        "price": 1000
+    }
 }
