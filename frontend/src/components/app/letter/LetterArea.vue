@@ -1,7 +1,7 @@
 <template>
   <div class="letter-area">
     <div class="letter-area__content-area">
-      <div><strong>From. {{ realSenderNickname }}</strong></div>
+      <div>From. <strong>{{ realSenderNickname }}</strong></div>
       <contenteditable v-model="letterTextContent"
                        class="letter-area__content-area__text-area"
                        tag="div"
@@ -9,7 +9,7 @@
                        :no-html="true"
                        @input="$emit('textareaInput')"
                        @keydown.ctrl="onEditorKeyDown"></contenteditable>
-      <div style="text-align: right"><strong>To. {{ receiverNickname }}</strong></div>
+      <div style="text-align: right">To. <strong>{{ receiverNickname }}</strong></div>
     </div>
 
     <button v-if="letterWriteMode"
