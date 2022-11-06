@@ -58,6 +58,7 @@ export default class LetterBoxPage extends Vue {
     if(isSuccessful(response.statusCode) && isSuccessful(sentLettersResponse.statusCode)) {
       if(response.data && sentLettersResponse.data) {
         this._letterItems = [...response.data, ...sentLettersResponse.data];
+        this._sentLetterIds = sentLettersResponse.data.map((v) => v.id);
 
         /* === Save unread letters to store === */
         const unreadLetters = filterUnreadLetters(response.data, sentLettersResponse.data);
