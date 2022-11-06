@@ -71,7 +71,7 @@ export default class LetterWritePage extends Vue {
   beforeRouteLeave(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     let answer = true;
 
-    if(this.letterTextInputOccured) {
+    if(this.letterTextInputOccured && this.letterTextContent.length > 0) {
       answer = window.confirm("편지를 작성 중이에요. 정말로 나가실건가요?");
     }
 
