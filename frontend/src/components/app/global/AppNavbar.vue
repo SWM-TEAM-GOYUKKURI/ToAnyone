@@ -60,8 +60,12 @@ export default class AppNavbar extends Vue {
     });
   }
 
-  toggleSidebar(): void {
-    this._mainSidebarOpen = !this._mainSidebarOpen;
+  toggleSidebar(forceState?: boolean): void {
+    if(typeof forceState === "undefined") {
+      this._mainSidebarOpen = !this._mainSidebarOpen;
+    } else {
+      this._mainSidebarOpen = forceState;
+    }
   }
 }
 </script>

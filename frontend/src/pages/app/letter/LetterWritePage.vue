@@ -32,7 +32,7 @@ import contenteditable from "vue-contenteditable";
 import { RouteLocationNormalized } from "vue-router";
 import LetterArea, { LetterSendStatus } from "@/components/app/letter/LetterArea.vue";
 import { isSuccessful } from "@/util/backend";
-import { LetterInboxItem, LetterWriteRequest } from "@/interfaces/backend";
+import { LetterInboxItem } from "@/interfaces/backend";
 
 @Options({
   components: {
