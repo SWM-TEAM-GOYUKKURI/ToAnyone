@@ -2,13 +2,23 @@
   <div class="letter-area">
     <div class="letter-area__content-area">
       <div>From. <strong>{{ realSenderNickname }}</strong></div>
-      <contenteditable v-model="letterTextContent"
-                       class="letter-area__content-area__text-area"
-                       tag="div"
-                       :contenteditable="letterWriteMode"
-                       :no-html="true"
-                       @input="$emit('textareaInput')"
-                       @keydown.ctrl="onEditorKeyDown"></contenteditable>
+      <div class="letter-area__content-area__text-area-wrapper">
+        <contenteditable v-model="letterTextContent"
+                         ref="letterTextElement"
+                         class="text-area"
+                         tag="div"
+                         :contenteditable="letterWriteMode"
+                         :no-html="true"
+                         @input="onEditorInput"
+                         @keydown.ctrl="onEditorKeyDown" />
+
+        <div class="line-wrapper">
+          <div ref="letterTextElementFirstLine" class="line" /> <!-- First line is mandatory for height calculation -->
+          <div v-for="x in letterTextElementRequiredLines"
+               :key="x"
+               class="line" />
+        </div>
+      </div>
       <div style="text-align: right">To. <strong>{{ receiverNickname }}</strong></div>
     </div>
 
@@ -29,7 +39,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { Prop, PropSync } from "vue-property-decorator";
+import { Prop, PropSync, Watch } from "vue-property-decorator";
 import contenteditable from "vue-contenteditable";
 
 export enum LetterSendStatus {
@@ -54,12 +64,25 @@ export default class LetterArea extends Vue {
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
 
+  letterTextElementHeight = 0;
+  letterTextElementLineHeight = 0;
+  letterTextElementRequiredLines = 0;
+
   get realSenderNickname(): string {
     return this.letterWriteMode ? this.$store.state.auth.userBasicInfo!.nickname : this.senderNickname;
   }
 
   get buttonDisabled(): boolean {
     return this.letterSendStatus !== LetterSendStatus.NORMAL || !this.letterTextContent;
+  }
+
+  get letterTextElement(): HTMLDivElement {
+    return (this.$refs.letterTextElement as Vue).$el as HTMLDivElement;
+  }
+
+  mounted(): void {
+    this.letterTextElementHeight = this.letterTextElement.offsetHeight;
+    this.letterTextElementLineHeight = (this.$refs.letterTextElementFirstLine as HTMLDivElement).offsetHeight;
   }
 
   onEditorKeyDown(event: KeyboardEvent): void {
@@ -71,6 +94,20 @@ export default class LetterArea extends Vue {
           this.$emit("requestTempSave");
           break;
       }
+    }
+  }
+
+  onEditorInput(): void {
+    this.letterTextElementHeight = this.letterTextElement.offsetHeight;
+
+    this.$emit("textareaInput");
+  }
+
+  @Watch("letterTextElementHeight", { immediate: true })
+  onLetterTextElementHeightChange(): void {
+    const required = Math.floor(this.letterTextElementHeight / this.letterTextElementLineHeight);
+    if(required) {
+      this.letterTextElementRequiredLines = required;
     }
   }
 }
@@ -94,15 +131,35 @@ export default class LetterArea extends Vue {
     color: #310;
     padding-bottom: 2em;
 
-    &__text-area {
+    &__text-area-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: flex;
       flex-grow: 1;
       width: 100%;
-      margin: 0.5em 0;
+      margin: 0.5em 0 1em 0;
+      padding: 0 0.5em;
       line-height: 2;
 
-      &:focus, &:focus-visible, &:focus-within {
-        border: none;
-        outline: none;
+      .text-area {
+        flex-grow: 1;
+
+        &:focus, &:focus-visible, &:focus-within {
+          border: none;
+          outline: none;
+        }
+      }
+
+      .line-wrapper {
+        position: absolute;
+        width: calc(100% - (0.5em * 2)); // minus parent padding
+
+        &, & * { pointer-events: none; }
+
+        .line {
+          height: 2em; // font-size(1em) * line-height(2)
+          border-bottom: solid rgba($color-dark, 0.5) 2px;
+        }
       }
     }
   }
