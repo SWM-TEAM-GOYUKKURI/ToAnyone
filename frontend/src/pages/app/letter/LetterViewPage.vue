@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
-import { beGET, bePUT, isSuccessful } from "@/util/backend";
+import { isSuccessful } from "@/util/backend";
 import { LetterItemFull } from "@/interfaces/backend";
 
 @Options({
@@ -65,6 +65,7 @@ export default class LetterViewPage extends Vue {
 
   beforeMount(): void {
     if(!this.letterId) {
+      alert("편지 정보가 없습니다.");
       this.$router.replace({ name: "main" });
     }
   }
