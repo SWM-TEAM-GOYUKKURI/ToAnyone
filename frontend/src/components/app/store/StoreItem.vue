@@ -3,7 +3,7 @@
        @click="$emit('click')">
     <div class="store-item__preview">
       <img v-if="storeItemType === 'stickers'" :src="getAssetPath(`items/stickers/${storeItemKey}.png`)" />
-      <div v-else-if="storeItemType === 'papers'" :style="{ backgroundColor: storeItem.color }" />
+      <div v-else-if="storeItemType === 'papers'" class="store-item__preview__paper" :style="{ backgroundColor: storeItem.color }">To.<br/>Anyone</div>
       <div v-else-if="storeItemType === 'fonts'">준비 중</div>
     </div>
     <div class="store-item__name">{{ storeItem.name }}</div>
@@ -40,6 +40,13 @@ export default class StoreItem extends Vue {
       width: 100%;
       aspect-ratio: 1;
       border-radius: 0.5em;
+    }
+
+    &__paper {
+      text-align: left;
+      font-size: 1.1em;
+      padding: 0.5em;
+      color: $color-dark;
     }
   }
 
