@@ -44,13 +44,13 @@ export default class ItemStoreItemsView extends Vue {
   .store-item {
     width: 10em;
     height: 10em;
-    margin: 1em;
+    margin: 0.75em;
     background-color: rgba($color-secondary, 0.75);
 
     @media (max-width: $viewport-small-max-width) {
       width: 8em;
       height: 8em;
-      margin: 0.66em;
+      margin: 0.5em;
     }
   }
 }
