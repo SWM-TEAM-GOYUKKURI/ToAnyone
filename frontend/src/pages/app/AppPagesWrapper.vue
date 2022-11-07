@@ -27,7 +27,7 @@ export default class AppPagesWrapper extends Vue {
     }
   }
 
-  async created() {
+  async mounted() {
     // Load unread letters and save it
     const inboxResponse = await this.$api.getInbox();
     const sentInboxResponse = await this.$api.getSentInbox();
