@@ -1,18 +1,25 @@
 <template>
-  <div>ItemListView</div>
-  <div>
-    <div v-for="(item, key) in ITEMS"
-         :key="key">
-      <span>{{ item.name }}</span>
-    </div>
+  <div id="store-item-wrapper">
+    <store-item v-for="(item, key) in ITEMS"
+                :key="key"
+                :storeItem="item"
+                :storeItemType="itemType"
+                :storeItemKey="key">
+    </store-item>
   </div>
 </template>
 
 <script lang="ts">
+import { Options, Vue } from "vue-class-component";
 import { getStoreItems, ItemType, StoreItemBase, StoreItemList } from "@/util/item-loader";
 import { getAssetPath } from "@/util/path-transform";
-import { Vue } from "vue-class-component";
+import StoreItem from "@/components/app/store/StoreItem.vue";
 
+@Options({
+  components: {
+    StoreItem,
+  },
+})
 export default class ItemStoreItemsView extends Vue {
   getAssetPath = getAssetPath;
 
@@ -25,3 +32,26 @@ export default class ItemStoreItemsView extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+#store-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 1em;
+
+  .store-item {
+    width: 10em;
+    height: 10em;
+    margin: 1em;
+    background-color: rgba($color-secondary, 0.75);
+
+    @media (max-width: $viewport-small-max-width) {
+      width: 8em;
+      height: 8em;
+      margin: 0.66em;
+    }
+  }
+}
+</style>
