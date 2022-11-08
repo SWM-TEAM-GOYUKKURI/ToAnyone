@@ -1,12 +1,15 @@
 package anyone.to.soma.user.domain;
 
+import anyone.to.soma.user.domain.event.UserCreatedEvent;
 import anyone.to.soma.user.domain.type.LoginType;
+import anyone.to.soma.user.domain.vo.Point;
 import anyone.to.soma.user.domain.vo.UserAchievement;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -15,7 +18,7 @@ import java.time.Instant;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class User {
+public class User extends AbstractAggregateRoot<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +37,7 @@ public class User {
     @JsonUnwrapped
     UserAchievement userAchievement = new UserAchievement();
 
-    private int receiveCount = 0 ;
+    private int receiveCount = 0;
 
     private boolean registrationFormFilled;
 
@@ -42,6 +45,8 @@ public class User {
     private Instant createdAt;
 
     private Instant lastLogin;
+
+    private Point point = new Point();
 
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -90,8 +95,16 @@ public class User {
         return profile.getNickname();
     }
 
-    public void recordLastLogin(){
+    public void recordLastLogin() {
         this.lastLogin = Instant.now();
     }
 
+    public User created() {
+        this.registerEvent(new UserCreatedEvent(this.id, this.name, this.email));
+        return this;
+    }
+
+    public Long getPoint() {
+        return point.getValue();
+    }
 }

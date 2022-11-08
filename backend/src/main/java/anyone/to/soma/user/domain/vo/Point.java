@@ -21,7 +21,7 @@ public class Point {
         this.point = 0L;
     }
 
-    public Long getPoint() {
+    public Long getValue() {
         return point;
     }
 
