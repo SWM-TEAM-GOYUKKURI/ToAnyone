@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class UserAchievement {
 
     @Column(name = "achievement_count")
@@ -30,11 +30,11 @@ public class UserAchievement {
         return loginCount;
     }
 
-    public void increaseAchievementCount(){
+    public void increaseAchievementCount() {
         this.achievementCount++;
     }
 
-    public void increaseSendLetterCount(){
+    public void increaseSendLetterCount() {
         this.sendLetterCount++;
     }
 
