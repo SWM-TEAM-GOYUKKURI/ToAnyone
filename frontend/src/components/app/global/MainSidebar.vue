@@ -16,7 +16,7 @@
           <div class="main-sidebar__unread__contents">
             <div v-for="letter in unreadLetters"
                 :key="letter.id">
-              <router-link :to="{ name: 'letter-view', params: { letterId: letter.id } }"><button class="button narrow">{{ letter.content }}</button></router-link>
+              <router-link :to="{ name: 'letter-view', params: { letterId: letter.id } }"><button class="button narrow"><span>{{ letter.content }}</span></button></router-link>
             </div>
           </div>
         </div>
@@ -122,6 +122,16 @@ export default class MainSidebar extends Vue {
         width: 100%;
         margin: 0.5em 0;
         background-color: rgba($color-background, 0.4);
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        & > * {
+          margin: 0 !important;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          text-align: left;
+        }
       }
     }
   }
