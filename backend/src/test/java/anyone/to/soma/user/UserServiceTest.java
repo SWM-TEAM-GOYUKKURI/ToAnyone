@@ -76,6 +76,7 @@ class UserServiceTest extends IntegrationTest {
         );
     }
 
+
     @AfterEach
     void tearDown() {
         replyRepository.deleteAllInBatch();

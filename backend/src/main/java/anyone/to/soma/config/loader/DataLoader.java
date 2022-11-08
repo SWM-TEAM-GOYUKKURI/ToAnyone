@@ -33,7 +33,6 @@ public class DataLoader implements CommandLineRunner {
         for (int i = 0; i < 10; i++) {
             letterService.writeLetter(new LetterRequest("안녕하세요" + i, List.of(DecorationType.STAMP, DecorationType.FONT)), users.get(0));
         }
-
     }
 
 
