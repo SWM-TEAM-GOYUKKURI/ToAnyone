@@ -25,6 +25,4 @@ public class AchievementPolicy {
             userRepository.increaseUserPoint(userId, LEVEL_ONE.getPoint());
         }
     }
-
-
 }
