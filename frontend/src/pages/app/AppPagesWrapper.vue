@@ -13,7 +13,6 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import AppNavbar from "@/components/app/global/AppNavbar.vue";
-import { filterUnreadLetters, isSuccessful } from "@/util/backend";
 
 @Options({
   components: {
@@ -29,16 +28,9 @@ export default class AppPagesWrapper extends Vue {
 
   async mounted() {
     // Load unread letters and save it
-    const inboxResponse = await this.$api.getInbox();
-    const sentInboxResponse = await this.$api.getSentInbox();
-
-    if(isSuccessful(inboxResponse.statusCode) && isSuccessful(sentInboxResponse.statusCode) && inboxResponse.data && sentInboxResponse.data) {
-      const unreadLetters = filterUnreadLetters(inboxResponse.data, sentInboxResponse.data);
-
-      this.$store.commit("user/updateUnreadLetters", unreadLetters);
-    } else {
+    if(!(await this.$api.updateUnreadLetters(this))) {
       // TEMP ALERT
-      alert(`편지 보관 목록을 불러오는 중 오류: ${inboxResponse.statusCode}, ${sentInboxResponse.statusCode}`);
+      alert("편지 보관 목록을 업데이트하는 중 오류");
     }
   }
 }

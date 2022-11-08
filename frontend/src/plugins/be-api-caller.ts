@@ -1,5 +1,6 @@
+import { Vue } from "vue-class-component";
 import { LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
-import { BECallReturn, beGET, bePOST, bePUT } from "@/util/backend";
+import { BECallReturn, beGET, bePOST, bePUT, filterUnreadLetters, isSuccessful } from "@/util/backend";
 
 export default class APICaller {
   private token!: string;
@@ -42,5 +43,22 @@ export default class APICaller {
 
   async updateLetterReadState(targetLetterId: number): Promise<BECallReturn<null>> {
     return await bePUT(`/letter/inbox/${targetLetterId}`, {}, { credentials: this.token });
+  }
+
+  async updateUnreadLetters(vueThis: Vue): Promise<boolean> {
+    // THIS IS VERY UNEFFICIENT, IMPROPER, AND VERY HACKY WAY TO USE `Vue`,
+    // BUT WE HAVE NO TIME TO MAKE THIS PROPERLY, SO I JUST MADE THIS FUNCTION.
+
+    const inboxResponse = await this.getInbox();
+    const sentInboxResponse = await this.getSentInbox();
+
+    if(isSuccessful(inboxResponse.statusCode) && isSuccessful(sentInboxResponse.statusCode) && inboxResponse.data && sentInboxResponse.data) {
+      const unreadLetters = filterUnreadLetters(inboxResponse.data, sentInboxResponse.data);
+
+      vueThis.$store.commit("user/updateUnreadLetters", unreadLetters);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

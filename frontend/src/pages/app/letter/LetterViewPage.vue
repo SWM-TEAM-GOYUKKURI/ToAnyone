@@ -95,6 +95,13 @@ export default class LetterViewPage extends Vue {
         alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
         error = true;
       }
+
+      /* Update global unread letters */
+      // Load unread letters and save it
+      if(!(await this.$api.updateUnreadLetters(this))) {
+        // TEMP ALERT
+        alert("편지 보관 목록을 업데이트하는 중 오류");
+      }
     }
 
     if(error) {

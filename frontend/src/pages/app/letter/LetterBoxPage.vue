@@ -52,6 +52,8 @@ export default class LetterBoxPage extends Vue {
 
   async loadInbox() {
     /* === Inbox & Sent Letters Inbox === */
+    // Since some special procedures should be happen in this, just don't use `this.$api.updateUnreadLetters()`.
+
     const response = await this.$api.getInbox();
     const sentLettersResponse = await this.$api.getSentInbox();
 
