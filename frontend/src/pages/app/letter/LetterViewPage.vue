@@ -71,6 +71,8 @@ export default class LetterViewPage extends Vue {
   }
 
   async mounted() {
+    let error = false;
+
     if(this.letterId) {
       /* Load letter contents */
       const response = await this.$api.getLetter(this.letterId!);
@@ -82,6 +84,7 @@ export default class LetterViewPage extends Vue {
       } else {
         // TEMP ALERT
         alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
+        error = true;
       }
 
       /* Letter read state update */
@@ -90,7 +93,12 @@ export default class LetterViewPage extends Vue {
       if(!isSuccessful(readStateUpdateResponse.statusCode)) {
         // TEMP ALERT
         alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
+        error = true;
       }
+    }
+
+    if(error) {
+      this.$router.back();
     }
   }
 
