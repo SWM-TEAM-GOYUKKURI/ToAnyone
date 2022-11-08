@@ -13,9 +13,11 @@
         <div class="main-sidebar__unread">
           <span class="title">✉️ 읽지 않은 편지 <span v-if="unreadLetters.length >= 1" class="unread-count">{{ unreadLetters.length }}</span></span>
 
-          <div v-for="letter in unreadLetters"
-               :key="letter.id">
-            {{ letter.content }}
+          <div class="main-sidebar__unread__contents">
+            <div v-for="letter in unreadLetters"
+                :key="letter.id">
+              <router-link :to="{ name: 'letter-view', params: { letterId: letter.id } }"><button class="button narrow">{{ letter.content }}</button></router-link>
+            </div>
           </div>
         </div>
 
@@ -52,7 +54,9 @@ export default class MainSidebar extends Vue {
   @Prop({ type: Boolean, default: false }) hideCloseButton!: boolean;
 
   get unreadLetters(): LetterInboxItemList {
-    return this.$store.state.user.unreadLetters;
+    return this.$store.state.user.unreadLetters.sort((a, b) => {
+      return (a.sendDate >= b.sendDate) ? -1 : 1;
+    });
   }
 
   onLogoutButtonClick(): void {
@@ -95,6 +99,7 @@ export default class MainSidebar extends Vue {
   &__unread {
     flex-grow: 1;
     margin: 3em 0;
+    height: 30%; // Brainless, hardcoded height but just works(tm)
 
     .title { font-size: 1.2em; }
     .unread-count {
@@ -104,6 +109,20 @@ export default class MainSidebar extends Vue {
       color: $color-dark;
       background-color: $color-primary;
       border-radius: 99999rem;
+    }
+
+    &__contents {
+      overflow: hidden auto;
+      height: 100%;
+      margin-top: 0.5em;
+
+      .button {
+        justify-content: left;
+        text-align: left;
+        width: 100%;
+        margin: 0.5em 0;
+        background-color: rgba($color-background, 0.4);
+      }
     }
   }
 
