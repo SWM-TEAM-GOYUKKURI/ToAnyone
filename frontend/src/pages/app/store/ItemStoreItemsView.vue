@@ -13,7 +13,11 @@
     <in-app-dialog v-if="showItemDialog"
                   class="item-dialog">
       <div class="item-dialog__content">
-        <div class="item-dialog__content__preview" />
+        <div class="item-dialog__content__preview">
+          <store-item-preview :item="dialogData.item"
+                              :itemType="dialogData.itemType"
+                              :itemKey="dialogData.itemKey" />
+        </div>
         <div class="item-dialog__content__name">{{ dialogData.item.name }}</div>
         <div class="item-dialog__content__price">{{ getItemTypeName(dialogData.itemType) }} &bull; {{ dialogData.item.price.toLocaleString() }} 포인트</div>
       </div>
@@ -30,6 +34,7 @@ import { Options, Vue } from "vue-class-component";
 import { getStoreItems, ItemType, StoreItemBase, StoreItemList } from "@/util/item-loader";
 import InAppDialog from "@/components/InAppDialog.vue";
 import StoreItem from "@/components/app/store/StoreItem.vue";
+import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 
 interface StoreItemDialogData {
   item: StoreItemBase,
@@ -40,6 +45,7 @@ interface StoreItemDialogData {
 @Options({
   components: {
     StoreItem,
+    StoreItemPreview,
     InAppDialog,
   },
 })
@@ -100,7 +106,16 @@ export default class ItemStoreItemsView extends Vue {
   &__content {
     text-align: center;
 
-    & > * { margin: 0.33em 0; }
+    & > * { margin: 0.5em 0; }
+
+    &__preview {
+      width: 80%;
+      aspect-ratio: 1;
+      margin-left: auto;
+      margin-right: auto;
+
+      .paper { padding: 1em; }
+    }
 
     &__name {
       font-size: 1.2em;
