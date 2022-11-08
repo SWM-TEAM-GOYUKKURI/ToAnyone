@@ -4,10 +4,12 @@
       <v-slide-x-transition group
                             leave-absolute
                             origin="center center">
-        <a v-if="!isCurrentRouteMain"
-           key="1"
-           @click="$router.back()"
-           class="app-navbar__go-back"><v-icon>mdi-chevron-left</v-icon></a>
+        <div v-if="!isCurrentRouteMain"
+             class="app-navbar__navs"
+             key="1">
+          <a @click="$router.back()" class="back"><v-icon>mdi-chevron-left</v-icon></a>
+        </div>
+
         <div class="app-navbar__title" key="2">{{ navbarTitle }}</div>
       </v-slide-x-transition>
     </div>
@@ -102,10 +104,15 @@ export default class AppNavbar extends Vue {
       font-weight: 900;
     }
 
-    &__go-back {
+    &__navs {
       cursor: pointer;
       font-size: 2em;
-      margin-right: 0.5em;
+      margin-right: 0.25em;
+
+      & > * {
+        margin: 0 0.25em;
+        height: 100%;
+      }
     }
   }
 }
