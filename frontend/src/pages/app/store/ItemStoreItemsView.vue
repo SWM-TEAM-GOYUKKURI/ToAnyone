@@ -4,24 +4,48 @@
                 :key="key"
                 :storeItem="item"
                 :storeItemType="itemType"
-                :storeItemKey="key">
+                :storeItemKey="key"
+                @click="onStoreItemClick(item, itemType, key)">
     </store-item>
   </div>
+
+  <v-slide-y-reverse-transition>
+    <in-app-dialog v-if="showItemDialog"
+                  class="item-dialog">
+      <div class="item-dialog__content">
+        <div class="item-dialog__content__preview" />
+        <div class="item-dialog__content__name">{{ dialogData.item.name }}</div>
+        <div class="item-dialog__content__price">{{ getItemTypeName(dialogData.itemType) }} &bull; {{ dialogData.item.price.toLocaleString() }} 포인트</div>
+      </div>
+      <div class="item-dialog__controls">
+        <button class="button" @click="showItemDialog = false">닫기</button>
+        <button class="button primary" @click="onPurchaseButtonClick">구매</button>
+      </div>
+    </in-app-dialog>
+  </v-slide-y-reverse-transition>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { getStoreItems, ItemType, StoreItemBase, StoreItemList } from "@/util/item-loader";
-import { getAssetPath } from "@/util/path-transform";
+import InAppDialog from "@/components/InAppDialog.vue";
 import StoreItem from "@/components/app/store/StoreItem.vue";
+
+interface StoreItemDialogData {
+  item: StoreItemBase,
+  itemType: ItemType,
+  itemKey: string,
+}
 
 @Options({
   components: {
     StoreItem,
+    InAppDialog,
   },
 })
 export default class ItemStoreItemsView extends Vue {
-  getAssetPath = getAssetPath;
+  showItemDialog = false;
+  dialogData: StoreItemDialogData | null = null;
 
   get itemType(): ItemType {
     return this.$route.meta.type as ItemType;
@@ -29,6 +53,23 @@ export default class ItemStoreItemsView extends Vue {
 
   get ITEMS(): StoreItemList<StoreItemBase> {
     return getStoreItems(this.itemType);
+  }
+
+  getItemTypeName(itemType: ItemType): string {
+    switch(itemType) {
+      case "stickers": return "스티커";
+      case "papers": return "편지지";
+      case "fonts": return "글꼴";
+    }
+  }
+
+  onStoreItemClick(item: StoreItemBase, itemType: ItemType, itemKey: string): void {
+    this.showItemDialog = true;
+    this.dialogData = { item, itemType, itemKey };
+  }
+
+  onPurchaseButtonClick(): void {
+    // TODO: SHOULD BE "WAIT" for backend implementation
   }
 }
 </script>
@@ -51,6 +92,30 @@ export default class ItemStoreItemsView extends Vue {
       width: 8em;
       height: 8em;
       margin: 0.5em;
+    }
+  }
+}
+
+.item-dialog {
+  &__content {
+    text-align: center;
+
+    & > * { margin: 0.33em 0; }
+
+    &__name {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1em;
+
+    & > * {
+      margin: 0 0.5em;
     }
   }
 }
