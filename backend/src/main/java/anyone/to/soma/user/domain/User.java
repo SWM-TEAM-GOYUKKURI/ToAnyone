@@ -82,6 +82,11 @@ public class User extends AbstractAggregateRoot<User> {
         this.registrationFormFilled = false;
     }
 
+    @PostPersist
+    public void created() {
+        this.registerEvent(new UserCreatedEvent(this.id, this.name, this.email));
+    }
+
     public void updateProfile(Profile profile) {
         this.profile = profile;
         this.registrationFormFilled = true;
@@ -99,10 +104,7 @@ public class User extends AbstractAggregateRoot<User> {
         this.lastLogin = Instant.now();
     }
 
-    public User created() {
-        this.registerEvent(new UserCreatedEvent(this.id, this.name, this.email));
-        return this;
-    }
+
 
     public Long getPoint() {
         return point.getValue();
