@@ -105,6 +105,7 @@ export default class ItemStoreItemsView extends Vue {
     &__name {
       font-size: 1.2em;
       font-weight: bold;
+      margin: 0.5em 0;
     }
   }
 
