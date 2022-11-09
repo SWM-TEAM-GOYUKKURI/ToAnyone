@@ -11,7 +11,7 @@ export interface BECallReturn<T> {
   statusCode: number,
 }
 
-export async function beGET<T>(endpoint: string, data?: Record<string, any> | null, headers?: AxiosRequestHeaders): Promise<BECallReturn<T>> {
+export async function beGET<T>(endpoint: string, data?: Record<string, any> | null, headers?: Record<string, any>): Promise<BECallReturn<T>> {
   const result: BECallReturn<T> = {
     error: false,
     statusCode: -1,
@@ -36,7 +36,7 @@ export async function beGET<T>(endpoint: string, data?: Record<string, any> | nu
   return result;
 }
 
-export async function bePOST<T>(endpoint: string, data: Record<string, any>, headers?: AxiosRequestHeaders): Promise<BECallReturn<T>> {
+export async function bePOST<T>(endpoint: string, data: Record<string, any>, headers?: Record<string, any>): Promise<BECallReturn<T>> {
   const result: BECallReturn<T> = {
     error: false,
     statusCode: -1,
@@ -58,7 +58,7 @@ export async function bePOST<T>(endpoint: string, data: Record<string, any>, hea
   return result;
 }
 
-export async function bePUT<T>(endpoint: string, data: Record<string, any>, headers?: AxiosRequestHeaders): Promise<BECallReturn<T>> {
+export async function bePUT<T>(endpoint: string, data: Record<string, any>, headers?: Record<string, any>): Promise<BECallReturn<T>> {
   const result: BECallReturn<T> = {
     error: false,
     statusCode: -1,
