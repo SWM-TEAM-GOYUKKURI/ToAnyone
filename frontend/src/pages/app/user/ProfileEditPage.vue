@@ -17,6 +17,36 @@
                       density="compact"
                       :rules="[ v => !!v || '닉네임을 입력해주세요.', v => v.length >= 4 || '닉네임을 최소 4자 이상 입력해주세요.' ]" />
       </div>
+
+      <div class="profile-edit__form__age">
+        <span>나이대</span>
+        <v-select v-model="formData.age"
+                  :items="ageItems"
+                  item-title="title"
+                  item-value="value"
+                  single-line
+                  density="compact" />
+      </div>
+
+      <div class="profile-edit__form__gender">
+        <span>성별</span>
+        <v-select v-model="formData.gender"
+                  :items="genderItems"
+                  item-title="title"
+                  item-value="value"
+                  single-line
+                  density="compact" />
+      </div>
+
+      <div class="profile-edit__form__job">
+        <span>직업</span>
+        <v-select v-model="formData.job"
+                  :items="jobItems"
+                  item-title="title"
+                  item-value="value"
+                  single-line
+                  density="compact" />
+      </div>
     </div>
 
     <div class="profile-edit__controls">
@@ -30,13 +60,23 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
+import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS, NOT_SELECTED_ITEM } from "@/data/profile-data";
 
 export default class ProfileEditPage extends Vue {
+  readonly genderItems = GENDER_ITEMS;
+  readonly ageItems = AGE_ITEMS;
+  readonly jobItems = JOB_ITEMS;
+
   formData = { };
 
   mounted(): void {
     this.formData = {
       nickname: this.$store.state.auth.userBasicInfo?.nickname,
+
+      // BELOW should be filled with user info from API
+      age: NOT_SELECTED_ITEM.value,
+      gender: NOT_SELECTED_ITEM.value,
+      job: NOT_SELECTED_ITEM.value,
     };
   }
 
@@ -65,6 +105,17 @@ export default class ProfileEditPage extends Vue {
 
       & > :first-child {
         flex-grow: 1;
+      }
+    }
+
+    &__form {
+      & > * {
+        margin: 1em 0;
+
+        & > span {
+          display: inline-block;
+          margin-bottom: 0.5em;
+        }
       }
     }
 
