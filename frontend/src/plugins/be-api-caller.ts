@@ -53,9 +53,8 @@ export default class APICaller {
     const sentInboxResponse = await this.getSentInbox();
 
     if(isSuccessful(inboxResponse.statusCode) && isSuccessful(sentInboxResponse.statusCode) && inboxResponse.data && sentInboxResponse.data) {
-      const unreadLetters = filterUnreadLetters(inboxResponse.data, sentInboxResponse.data);
-
-      vueThis.$store.commit("user/updateUnreadLetters", unreadLetters);
+      vueThis.$store.commit("user/updateUnreadLetters", filterUnreadLetters(inboxResponse.data));
+      vueThis.$store.commit("user/updateUnreadSentLetters", filterUnreadLetters(sentInboxResponse.data));
       return true;
     } else {
       return false;

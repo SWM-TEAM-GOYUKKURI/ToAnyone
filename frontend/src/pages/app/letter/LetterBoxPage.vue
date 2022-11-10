@@ -63,8 +63,8 @@ export default class LetterBoxPage extends Vue {
         this._sentLetterIds = sentLettersResponse.data.map((v) => v.id);
 
         /* === Save unread letters to store === */
-        const unreadLetters = filterUnreadLetters(response.data, sentLettersResponse.data);
-        this.$store.commit("user/updateUnreadLetters", unreadLetters);
+        this.$store.commit("user/updateUnreadLetters", filterUnreadLetters(response.data));
+        this.$store.commit("user/updateUnreadSentLetters", filterUnreadLetters(sentLettersResponse.data));
       } else {
         this._letterItems = [];
       }
