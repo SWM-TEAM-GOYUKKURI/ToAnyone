@@ -37,9 +37,9 @@ export default class LetterBoxPage extends Vue {
 
   get letterItems(): LetterInboxItemList {
     return Array.from(this._letterItems).sort((a, b) => {
-      if(!a.read) return -1;
-
-      // TODO: sort by read status, receive date...
+      if(a.read && !b.read) return 1;
+      else if(a.read && b.read) return 0;
+      else if(!a.read && b.read) return -1;
 
       return 0;
     });
@@ -59,7 +59,7 @@ export default class LetterBoxPage extends Vue {
 
     if(isSuccessful(response.statusCode) && isSuccessful(sentLettersResponse.statusCode)) {
       if(response.data && sentLettersResponse.data) {
-        this._letterItems = [...response.data, ...sentLettersResponse.data];
+        this._letterItems = [...response.data, ...sentLettersResponse.data].sort((a, b) => new Date(b.sendDate).getTime() - new Date(a.sendDate).getTime());
         this._sentLetterIds = sentLettersResponse.data.map((v) => v.id);
 
         /* === Save unread letters to store === */
