@@ -18,7 +18,8 @@
                 :key="letter.id">
               <router-link :to="{ name: 'letter-view', params: { letterId: letter.id } }">
                 <button class="button narrow">
-                  <span>{{ letter.content }}</span>
+                  <span class="name">{{ letter.sentByMe ? letter.receiverName : letter.senderName }}</span>
+                  <span class="content">{{ letter.content }}</span>
                 </button>
               </router-link>
             </div>
@@ -45,8 +46,12 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import { LetterInboxItemList } from "@/interfaces/backend";
+import { LetterInboxItem } from "@/interfaces/backend";
 import ProfileImage from "./ProfileImage.vue";
+
+interface LetterInboxItemExt extends LetterInboxItem {
+  sentByMe: boolean,
+}
 
 @Options({
   components: {
@@ -57,8 +62,15 @@ export default class MainSidebar extends Vue {
   @Prop({ type: Boolean, default: false }) open!: boolean;
   @Prop({ type: Boolean, default: false }) hideCloseButton!: boolean;
 
-  get unreadLetters(): LetterInboxItemList {
-    return this.$store.state.user.unreadLetters.sort((a, b) => {
+  get unreadLetters(): LetterInboxItemExt[] {
+    const unreadLetters = this.$store.state.user.unreadLetters.map<LetterInboxItemExt>((v) => {
+      return { ...v, sentByMe: false };
+    });
+    const unreadSentLetters = this.$store.state.user.unreadSentLetters.map<LetterInboxItemExt>((v) => {
+      return { ...v, sentByMe: true };
+    });
+
+    return [...unreadLetters, ...unreadSentLetters].sort((a, b) => {
       return (a.sendDate >= b.sendDate) ? -1 : 1;
     });
   }
@@ -121,7 +133,8 @@ export default class MainSidebar extends Vue {
       margin-top: 0.5em;
 
       .button {
-        justify-content: left;
+        flex-direction: column;
+        align-items: stretch;
         text-align: left;
         width: 100%;
         margin: 0.5em 0;
@@ -131,11 +144,14 @@ export default class MainSidebar extends Vue {
         text-overflow: ellipsis;
 
         & > * {
-          margin: 0 !important;
+          margin: 0;
           text-overflow: ellipsis;
           overflow: hidden;
           text-align: left;
         }
+
+        .name { font-size: 0.9em; opacity: 0.75; }
+        .content { font-size: 1.1em; margin-top: 0.5em; }
       }
     }
   }
