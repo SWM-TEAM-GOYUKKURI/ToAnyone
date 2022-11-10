@@ -16,7 +16,11 @@
           <div class="main-sidebar__unread__contents">
             <div v-for="letter in unreadLetters"
                 :key="letter.id">
-              <router-link :to="{ name: 'letter-view', params: { letterId: letter.id } }"><button class="button narrow"><span>{{ letter.content }}</span></button></router-link>
+              <router-link :to="{ name: 'letter-view', params: { letterId: letter.id } }">
+                <button class="button narrow">
+                  <span>{{ letter.content }}</span>
+                </button>
+              </router-link>
             </div>
           </div>
         </div>
