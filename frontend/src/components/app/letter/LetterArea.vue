@@ -171,6 +171,7 @@ export default class LetterArea extends Vue {
     min-width: 270px;
     min-height: 100px;
     box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
+    background: $color-primary !important;
     z-index: 1;
   }
 }

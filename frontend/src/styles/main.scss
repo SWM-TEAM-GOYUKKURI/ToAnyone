@@ -99,7 +99,11 @@ hr {
     cursor: not-allowed;
     pointer-events: none;
     box-shadow: none;
-    background-color: rgba($color-primary, 0.8);
+    background-color: rgba($color-secondary, 0.8);
+
+    &.primary { background-color: rgba($color-primary, 0.8); }
+    &.dark { background-color: rgba($color-dark, 0.8); }
+    &.dark-background { background-color: rgba($color-background, 0.8); }
 
     & > * {
       opacity: 0.33;
