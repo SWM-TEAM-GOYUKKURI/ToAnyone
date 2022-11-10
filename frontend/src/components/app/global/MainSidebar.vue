@@ -71,7 +71,7 @@ export default class MainSidebar extends Vue {
     });
 
     return [...unreadLetters, ...unreadSentLetters].sort((a, b) => {
-      return (a.sendDate >= b.sendDate) ? -1 : 1;
+      return (new Date(a.sendDate) >= new Date(b.sendDate)) ? -1 : 1;
     });
   }
 
