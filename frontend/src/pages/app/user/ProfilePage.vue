@@ -59,7 +59,7 @@
 import { Options, Vue } from "vue-class-component";
 import InAppDialog from "@/components/InAppDialog.vue";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
-import Achievements from "@/data/achievements.json";
+import Achievements from "@/data/json/achievements.json";
 
 @Options({
   components: {

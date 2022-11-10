@@ -1,6 +1,6 @@
-import Stickers from "@/data/items/stickers.json";
-import Fonts from "@/data/items/fonts.json";
-import Papers from "@/data/items/papers.json";
+import Stickers from "@/data/json/items/stickers.json";
+import Fonts from "@/data/json/items/fonts.json";
+import Papers from "@/data/json/items/papers.json";
 
 export interface StoreItemBase {
   name: string,
