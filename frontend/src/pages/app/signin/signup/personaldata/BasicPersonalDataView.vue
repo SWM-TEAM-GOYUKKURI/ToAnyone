@@ -53,90 +53,13 @@
 </template>
 
 <script lang="ts">
-import { UserProfileAge, UserProfileGender, UserProfileJob } from "@/interfaces/backend";
 import { Vue } from "vue-class-component";
+import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS } from "@/data/profile-data";
 
 export default class PersonalDataView extends Vue {
-  readonly genderItems = Object.freeze([
-    {
-      value: UserProfileGender.MALE,
-      title: "남성",
-    }, {
-      value: UserProfileGender.FEMALE,
-      title: "여성",
-    }, {
-      value: UserProfileGender.NON_BINARY,
-      title: "논바이너리 / 기타",
-    }, {
-      value: UserProfileGender.NOT_SELECTED,
-      title: "선택하지 않음",
-    },
-  ]);
-
-  readonly ageItems = Object.freeze([
-    {
-      value: UserProfileAge.TEN,
-      title: "10대",
-    }, {
-      value: UserProfileAge.TWENTY,
-      title: "20대",
-    }, {
-      value: UserProfileAge.THIRTY,
-      title: "30대",
-    }, {
-      value: UserProfileAge.FORTY,
-      title: "40대",
-    }, {
-      value: UserProfileAge.FIFTY,
-      title: "50대 이상",
-    }, {
-      value: UserProfileAge.NOT_SELECTED,
-      title: "선택하지 않음",
-    },
-  ]);
-
-  readonly jobItems = Object.freeze([
-    {
-      value: UserProfileJob.STUDENT,
-      title: "초·중·고등학생",
-    }, {
-      value: UserProfileJob.STUDENT_UNIV,
-      title: "대학생",
-    }, {
-      value: UserProfileJob.MANAGEMENT,
-      title: "경영·관리",
-    }, {
-      value: UserProfileJob.OFFICE_TECH,
-      title: "사무·기술직",
-    }, {
-      value: UserProfileJob.PROFESSIONAL,
-      title: "전문직",
-    }, {
-      value: UserProfileJob.FREELANCER,
-      title: "프리랜서",
-    }, {
-      value: UserProfileJob.SIMPLE_LABOR,
-      title: "단순노무 (기능·작업 등)",
-    }, {
-      value: UserProfileJob.SELLER,
-      title: "판매·영업·마케팅",
-    }, {
-      value: UserProfileJob.SERVICE,
-      title: "서비스",
-    }, {
-      value: UserProfileJob.SELF_EMP,
-      title: "자영업",
-    }, {
-      value: UserProfileJob.HOME_MAKER,
-      title: "전업주부",
-    }, {
-      value: UserProfileJob.NOT_WORKING,
-      title: "무직·기타",
-    }, {
-      value: UserProfileJob.NOT_SELECTED,
-      title: "선택하지 않음",
-    },
-  ]);
+  readonly genderItems = GENDER_ITEMS;
+  readonly ageItems = AGE_ITEMS;
+  readonly jobItems = JOB_ITEMS;
 
   nicknameFieldHideHint = false;
 
