@@ -17,11 +17,11 @@
 
     <div class="signup-personal-data-survey__buttons">
       <button class="signup-personal-data-survey__buttons__back button"
-           @click="onBackButtonClick">〈&nbsp; 뒤로</button>
+           @click="onBackButtonClick"><span><v-icon>mdi-chevron-left</v-icon></span> <span>뒤로</span></button>
 
       <button class="signup-personal-data-survey__buttons__done button primary"
            :disabled="!formReqFulfilled"
-           @click="onDoneButtonClick">완료 &nbsp;<v-icon>mdi-check</v-icon></button>
+           @click="onDoneButtonClick"><span>완료 </span><span><v-icon>mdi-check</v-icon></span></button>
     </div>
   </div>
 </template>

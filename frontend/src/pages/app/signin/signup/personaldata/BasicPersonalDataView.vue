@@ -48,7 +48,7 @@
 
     <button class="signup-personal-data-basic__next-button button primary"
             :class="{ 'disabled': !formReqFulfilled }"
-            @click="onNextButtonClick">다음 &nbsp;〉</button>
+            @click="onNextButtonClick"><span>다음</span> <span><v-icon>mdi-chevron-right</v-icon></span></button>
   </div>
 </template>
 
