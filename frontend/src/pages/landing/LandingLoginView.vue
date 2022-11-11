@@ -45,13 +45,13 @@ export default class LoginView extends Vue {
         const user: UserInfoBasic = {
           nickname: response.data.name,
           email: response.data.email,
-          firstSignupPassed: response.data.registrationFormFilled,
+          registrationFormFilled: response.data.registrationFormFilled,
         };
 
         this.$store.commit("auth/registerLoginState", { user, token: response.data.token });
         this.$cookies.set("userSession", response.data.token);
 
-        if(user.firstSignupPassed) {
+        if(user.registrationFormFilled) {
           window.location.href = this.$router.resolve({ name: "main" }).href;
         } else {
           window.location.href = this.$router.resolve({ name: "signup-profile" }).href;

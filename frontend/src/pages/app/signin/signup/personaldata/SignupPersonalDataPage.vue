@@ -118,7 +118,7 @@ export default class SignupPersonalDataPage extends Vue {
 
           if(isSuccessful(response.statusCode)) {
             if(this.$store.state.auth.userBasicInfo) {
-              const user: UserInfoBasic = { ...this.$store.state.auth.userBasicInfo, firstSignupPassed: true };
+              const user: UserInfoBasic = this.$store.state.auth.userBasicInfo;
               this.$store.commit("auth/registerLoginState", {
                 user,
                 token: this.$store.state.auth.token,

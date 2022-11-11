@@ -29,7 +29,7 @@ export default class App extends Vue {
           window.location.replace("/hello");
         } else if(isLoginStateReliable() &&
           !to.name?.toString().startsWith("signup-profile") &&
-          !this.$store.state.auth.userBasicInfo?.firstSignupPassed) {
+          !this.$store.state.auth.userBasicInfo?.registrationFormFilled) {
           // 로그인 상태 정보는 정상적이지만 초기 회원가입 과정을 거치지 않은 경우...
 
           if(to.name !== "logout") {
