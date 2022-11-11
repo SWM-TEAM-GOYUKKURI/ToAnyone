@@ -137,7 +137,7 @@ export default class ProfilePage extends Vue {
   align-items: flex-start;
   margin: auto;
   width: 80vw;
-  min-height: calc(100vh - $app-navbar-height);
+  min-height: calc(100vh - var(--app-navbar-height));
 
   @media (max-width: $viewport-small-max-width) {
     flex-direction: column;
@@ -155,7 +155,7 @@ export default class ProfilePage extends Vue {
   .profile {
     &__my-area {
       position: sticky;
-      top: calc(1em + $app-navbar-height);
+      top: calc(1em + var(--app-navbar-height));
       display: flex;
       flex-direction: column;
       justify-content: center;

@@ -92,6 +92,7 @@ export default class MainSidebar extends Vue {
   flex-direction: column;
   align-items: stretch;
   width: $main-sidebar-width;
+  max-width: 100vw;
   height: 100%;
   padding: 1.5em;
   background-color: $color-secondary;

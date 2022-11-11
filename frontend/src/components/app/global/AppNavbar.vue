@@ -85,11 +85,15 @@ export default class AppNavbar extends Vue {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: $app-navbar-height;
-  padding: $app-navbar-padding-y $app-navbar-padding-x;
+  height: var(--app-navbar-height);
+  padding: var(--app-navbar-padding-y) var(--app-navbar-padding-x);
 
   background: rgba($color-background, 0.9);
   backdrop-filter: blur(4px);
+
+  @media (max-width: $viewport-small-max-width) {
+    font-size: 0.725em;
+  }
 
   .app-navbar {
     &__left, &__right {
@@ -97,6 +101,10 @@ export default class AppNavbar extends Vue {
       display: flex;
       align-items: center;
       height: 100%;
+    }
+
+    &__right > .button {
+      padding: 1em;
     }
 
     &__title {

@@ -1,3 +1,15 @@
 :root {
-  --main-sidebar-width: 20vw;
+  // Editable
+  --app-navbar-padding-x: 2rem;
+  --app-navbar-padding-y: 1rem;
+  --app-navbar-height-base: 64px;
+
+  // Computed
+  --app-navbar-height: calc(var(--app-navbar-height-base) + (var(--app-navbar-padding-y) * 2));
+
+  @media (max-width: $viewport-small-max-width) {
+    --app-navbar-padding-x: 1rem;
+    --app-navbar-padding-y: 0.5rem;
+    --app-navbar-height-base: 48px;
+  }
 }
