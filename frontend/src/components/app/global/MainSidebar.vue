@@ -5,7 +5,7 @@
            class="main-sidebar">
         <div class="main-sidebar__profile">
           <profile-image />
-          <span class="nickname">{{ $store.state.auth.userBasicInfo.nickname }}</span>
+          <span class="nickname">{{ $store.state.user.user.nickname }}</span>
         </div>
 
         <router-link :to="{ name: 'profile' }"><button class="button dark-background fill-width" @click.self="$emit('request-close', false)">프로필 보기</button></router-link>

@@ -1,11 +1,11 @@
 <template>
-  <app-navbar />
+  <app-navbar v-if="criticalDataLoaded" />
 
   <div id="app-wrapper">
-    <router-view v-slot="{ Component }">
+    <router-view v-if="criticalDataLoaded"
+                 v-slot="{ Component }">
       <v-fade-transition leave-absolute>
-        <component :is="Component"
-                   v-if="criticalDataLoaded" />
+        <component :is="Component" />
       </v-fade-transition>
     </router-view>
   </div>
@@ -33,7 +33,6 @@ export default class AppPagesWrapper extends Vue {
 
       if(response.data) {
         this.$store.commit("user/updateUserInfo", response.data);
-        console.log(response.data);
       }
     }
 

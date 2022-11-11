@@ -71,7 +71,7 @@ export default class ProfileEditPage extends Vue {
 
   mounted(): void {
     this.formData = {
-      nickname: this.$store.state.auth.userBasicInfo?.nickname,
+      nickname: this.$store.state.user.user!.nickname,
 
       // BELOW should be filled with user info from API
       age: NOT_SELECTED_ITEM.value,

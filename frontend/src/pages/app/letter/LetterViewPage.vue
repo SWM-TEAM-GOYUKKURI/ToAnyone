@@ -50,11 +50,11 @@ export default class LetterViewPage extends Vue {
     if(this.dataLoaded && this.letterItem) {
       if(this.letterItem.replyLetters && this.letterItem.replyLetters.length > 0) {
         const lastReplyLetter = this.letterItem.replyLetters[this.letterItem.replyLetters.length - 1];
-        if(lastReplyLetter.senderName === this.$store.state.auth.userBasicInfo!.nickname) {
+        if(lastReplyLetter.senderName === this.$store.state.user.user!.nickname) {
           return true;
         }
       } else {
-        if(this.letterItem.senderName === this.$store.state.auth.userBasicInfo!.nickname) {
+        if(this.letterItem.senderName === this.$store.state.user.user!.nickname) {
           return true;
         }
       }

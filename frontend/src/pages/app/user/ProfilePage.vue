@@ -6,7 +6,7 @@
                        size="large" />
 
         <div class="profile__my-area__me__info">
-          <span class="nickname"><strong>{{ $store.state.auth.userBasicInfo.nickname }}</strong></span>
+          <span class="nickname"><strong>{{ $store.state.user.user.nickname }}</strong></span>
           <hr />
           <span class="info"><strong>{{ tempData.age }}</strong> / <strong>{{ tempData.gender }}</strong></span>
           <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>

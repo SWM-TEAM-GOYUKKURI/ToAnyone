@@ -79,7 +79,7 @@ export default class PersonalDataView extends Vue {
 
   mounted(): void {
     // Fill nickname textfield with signin account username
-    this.formData.nickname = this.$store.state.auth.userBasicInfo!.nickname;
+    this.formData.nickname = this.$store.state.user.user!.nickname;
   }
 
   onNicknameFieldInput(): void {

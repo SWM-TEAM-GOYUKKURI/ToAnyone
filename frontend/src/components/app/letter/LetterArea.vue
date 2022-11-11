@@ -69,7 +69,7 @@ export default class LetterArea extends Vue {
   letterTextElementRequiredLines = 0;
 
   get realSenderNickname(): string {
-    return this.letterWriteMode ? this.$store.state.auth.userBasicInfo!.nickname : this.senderNickname;
+    return this.letterWriteMode ? this.$store.state.user.user!.nickname : this.senderNickname;
   }
 
   get buttonDisabled(): boolean {

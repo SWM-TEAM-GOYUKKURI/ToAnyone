@@ -5,7 +5,7 @@
         @click="menuOpened = !menuOpened">
       <profile-image class="app-navbar__profile__profile-image"
                     :srcUrl="profileImageUrl" />
-      <div class="app-navbar__profile__nickname">{{ $store.state.auth.userBasicInfo.nickname }}</div>
+      <div class="app-navbar__profile__nickname">{{ $store.state.user.user.nickname }}</div>
     </div>
 
     <v-slide-y-transition>
