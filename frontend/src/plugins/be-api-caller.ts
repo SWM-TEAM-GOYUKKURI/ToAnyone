@@ -1,6 +1,7 @@
 import { Vue } from "vue-class-component";
 import { LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
 import { BECallReturn, beGET, bePOST, bePUT, filterUnreadLetters, isSuccessful } from "@/util/backend";
+import { UserInfo } from "@/interfaces/internal";
 
 export default class APICaller {
   private token!: string;
@@ -23,6 +24,10 @@ export default class APICaller {
 
   async getSentInbox(): Promise<BECallReturn<LetterInboxItemList>> {
     return await beGET<LetterInboxItemList>("/letter/sent", null, { credentials: this.token });
+  }
+
+  async getUserInfo(): Promise<BECallReturn<UserInfo>> {
+    return await beGET<UserInfo>("/user/me", null, { credentials: this.token });
   }
 
   async putUserSignupData(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {

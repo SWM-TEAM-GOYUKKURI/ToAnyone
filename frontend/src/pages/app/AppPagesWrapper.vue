@@ -4,7 +4,8 @@
   <div id="app-wrapper">
     <router-view v-slot="{ Component }">
       <v-fade-transition leave-absolute>
-        <component :is="Component" />
+        <component :is="Component"
+                   v-if="criticalDataLoaded" />
       </v-fade-transition>
     </router-view>
   </div>
@@ -20,10 +21,23 @@ import AppNavbar from "@/components/app/global/AppNavbar.vue";
   },
 })
 export default class AppPagesWrapper extends Vue {
-  beforeCreate(): void {
+  criticalDataLoaded = false;
+
+  async beforeCreate() {
     if(!this.$api.isAvailable() && this.$store.state.auth.token) {
       this.$api.registerToken(this.$store.state.auth.token);
     }
+
+    if(!this.$store.state.user.user) {
+      const response = await this.$api.getUserInfo();
+
+      if(response.data) {
+        this.$store.commit("user/updateUserInfo", response.data);
+        console.log(response.data);
+      }
+    }
+
+    this.criticalDataLoaded = true;
   }
 
   async mounted() {
