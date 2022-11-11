@@ -1,12 +1,10 @@
 package anyone.to.soma.user;
 
 import anyone.to.soma.user.application.UserService;
-import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.event.UserCreatedEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
@@ -27,9 +25,8 @@ public class UserEventTest {
     @Autowired
     private UserService userService;
 
-
     @Test
-    void create_event_test(){
+    void create_event_test() {
         userService.signInGoogleAuthUser(JWT);
         assertThat(applicationEvents.stream(UserCreatedEvent.class).count()).isEqualTo(1);
     }
