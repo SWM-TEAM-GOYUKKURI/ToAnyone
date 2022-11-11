@@ -2,15 +2,15 @@
   <div id="profile-page-wrapper">
     <div class="profile__my-area">
       <div class="profile__my-area__me">
-        <profile-image :srcUrl="tempData.profileImageUrl"
+        <profile-image :srcUrl="builtData.profileImageUrl"
                        size="large" />
 
         <div class="profile__my-area__me__info">
           <span class="nickname"><strong>{{ $store.state.user.user.nickname }}</strong></span>
           <hr />
-          <span class="info"><strong>{{ tempData.age }}</strong> / <strong>{{ tempData.gender }}</strong></span>
-          <span class="info">보유 포인트 <strong>{{ tempData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>
-          <span class="info">업적 달성 <strong>{{ tempData.achievementsCount }}개</strong></span>
+          <span class="info"><strong>{{ builtData.age }}</strong> / <strong>{{ builtData.gender }}</strong></span>
+          <span class="info">보유 포인트 <strong>{{ builtData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>
+          <span class="info">업적 달성 <strong>{{ builtData.achievementsCount }}개</strong></span>
         </div>
 
         <router-link :to="{ name: 'profile-edit' }"><button class="profile__my-area__me__profile-edit button"><v-icon>mdi-account-edit</v-icon> <span>프로필 수정</span></button></router-link>
@@ -22,9 +22,9 @@
         <h1><v-icon>mdi-chart-timeline-variant</v-icon> 통계</h1>
 
         <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ signupDateFormatted }}</span>에 가입했어요.</span></div>
-        <div class="button narrow"><v-icon>mdi-login-variant</v-icon> <span>총 <span class="t-primary">{{ tempData.signinDays }}일</span> 동안 To. Anyone을 찾아왔어요.</span></div>
-        <div class="button narrow"><v-icon>mdi-email-send</v-icon> <span>지금까지 <span class="t-primary">{{ tempData.sentLetterCount }}통</span>의 편지를 보냈어요.</span></div>
-        <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ tempData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-login-variant</v-icon> <span>총 <span class="t-primary">{{ builtData.signinDays }}일</span> 동안 To. Anyone을 찾아왔어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-email-send</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.sentLetterCount }}통</span>의 편지를 보냈어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
       </div>
 
       <div class="profile__statistics__achievements">
@@ -33,13 +33,13 @@
         <div v-for="(achiv, index) in achivements"
              :key="index"
              class="button item"
-             :class="{ disabled: !tempData.achivements[index] }">
+             :class="{ disabled: !builtData.achivements[index] }">
           <div class="content">
             <span class="title">{{ achiv.name }}</span>
             <span class="desc">{{ achiv.desc }}</span>
           </div>
 
-          <v-icon v-if="tempData.achivements[index]" class="done">mdi-check</v-icon>
+          <v-icon v-if="builtData.achivements[index]" class="done">mdi-check</v-icon>
         </div>
       </div>
     </div>
@@ -60,6 +60,7 @@ import { Options, Vue } from "vue-class-component";
 import InAppDialog from "@/components/InAppDialog.vue";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
 import Achievements from "@/data/json/achievements.json";
+import { UserProfileAgeName, UserProfileGenderName } from "@/data/profile-data";
 
 @Options({
   components: {
@@ -70,7 +71,7 @@ import Achievements from "@/data/json/achievements.json";
 export default class ProfilePage extends Vue {
   achivements = Achievements;
 
-  tempData = {
+  builtData = {
     profileImageUrl: "https://picsum.photos/seed/toanyone/300",
     age: "00대",
     gender: "남성",
@@ -86,11 +87,44 @@ export default class ProfilePage extends Vue {
   };
 
   get signupDateFormatted(): string {
-    return `${this.tempData.signupDate.getFullYear()}년 ${this.tempData.signupDate.getMonth() + 1}월 ${this.tempData.signupDate.getDate()}일`;
+    return `${this.builtData.signupDate.getFullYear()}년 ${this.builtData.signupDate.getMonth() + 1}월 ${this.builtData.signupDate.getDate()}일`;
   }
 
-  mounted(): void {
-    // TODO: request to backend for user profile data
+  async mounted() {
+    // Request user info data and register to store
+    const response = await this.$api.getUserInfo();
+
+    if(response.data) {
+      this.$store.commit("user/updateUserInfo", response.data);
+    } else {
+      alert("사용자 정보를 불러오는 중 오류: " + response.statusCode);
+      return;
+    }
+
+    // Get achievements data
+    const achivResponse = await this.$api.getUserAchievementInfo();
+
+    if(!achivResponse.data) {
+      alert("사용자 업적 정보를 불러오는 중 오류: " + achivResponse.statusCode);
+      return;
+    }
+
+    // Build data to display
+    if(response.data) {
+      this.builtData = {
+        ...this.builtData,
+        age: UserProfileAgeName[response.data.profile.age],
+        gender: UserProfileGenderName[response.data.profile.gender],
+        points: response.data.point,
+        achievementsCount: response.data.achievementCountValue,
+        signupDate: new Date(response.data.createdAt),
+        signinDays: response.data.loginCountValue,
+        sentLetterCount: response.data.sendLetterCountValue,
+        receivedLetterCount: response.data.receiveCount,
+
+        // TODO: achivResponse (Achievements)
+      };
+    }
   }
 }
 </script>
