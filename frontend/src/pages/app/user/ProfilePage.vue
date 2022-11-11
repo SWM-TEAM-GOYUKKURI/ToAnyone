@@ -8,7 +8,11 @@
         <div class="profile__my-area__me__info">
           <span class="nickname"><strong>{{ $store.state.user.user.nickname }}</strong></span>
           <hr />
-          <span class="info"><strong>{{ builtData.age }}</strong> / <strong>{{ builtData.gender }}</strong></span>
+          <span class="info">
+            <strong v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED']">{{ builtData.age }}</strong>
+            <span v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED'] || builtData.gender !== UserProfileGenderName['NOT_SELECTED']">/</span>
+            <strong v-if="builtData.gender !== UserProfileGenderName['NOT_SELECTED']">{{ builtData.gender }}</strong>
+          </span>
           <span class="info">보유 포인트 <strong>{{ builtData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>
           <span class="info">업적 달성 <strong>{{ builtData.achievementsCount }}개</strong></span>
         </div>
@@ -70,6 +74,8 @@ import { UserProfileAgeName, UserProfileGenderName } from "@/data/profile-data";
 })
 export default class ProfilePage extends Vue {
   achivements = Achievements;
+  UserProfileAgeName = UserProfileAgeName;
+  UserProfileGenderName = UserProfileGenderName;
 
   builtData = {
     profileImageUrl: "https://picsum.photos/seed/toanyone/300",
