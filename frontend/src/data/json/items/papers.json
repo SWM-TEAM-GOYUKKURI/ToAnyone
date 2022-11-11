@@ -1,4 +1,10 @@
 {
+    "forsythia": {
+        "name": "개나리",
+        "color": "#FFF7E8",
+        "price": 1000,
+        "default": true
+    },
     "lightblue": {
         "name": "연파랑",
         "color": "#E8F7FF",
@@ -7,6 +13,36 @@
     "pink": {
         "name": "분홍",
         "color": "#FFE8F7",
+        "price": 1000
+    },
+    "mint": {
+        "name": "민트",
+        "color": "#CCFFE6",
+        "price": 1000
+    },
+    "lightpurple": {
+        "name": "연보라",
+        "color": "#B1BBFF",
+        "price": 1000
+    },
+    "peach": {
+        "name": "피치",
+        "color": "#FFCCCC",
+        "price": 1000
+    },
+    "white": {
+        "name": "화이트",
+        "color": "#FFFFFF",
+        "price": 1000
+    },
+    "beige": {
+        "name": "베이지",
+        "color": "#E8D4B9",
+        "price": 1000
+    },
+    "lilac": {
+        "name": "라일락",
+        "color": "#D9CCFF",
         "price": 1000
     }
 }

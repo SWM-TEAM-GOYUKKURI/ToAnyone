@@ -5,6 +5,7 @@ import Papers from "@/data/json/items/papers.json";
 export interface StoreItemBase {
   name: string,
   price: number,
+  default?: boolean,
 }
 
 export interface StoreItemStickers extends StoreItemBase {

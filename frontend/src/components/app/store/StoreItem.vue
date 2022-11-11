@@ -1,12 +1,15 @@
 <template>
   <div class="store-item button"
-       @click="$emit('click')">
+       :class="{ bought }"
+       @click="() => { if(!bought) $emit('itemClick') }"
+       @mouseenter="mouseEnter = true"
+       @mouseleave="mouseEnter = false">
     <div class="store-item__preview">
       <store-item-preview :item="storeItem"
                           :itemType="storeItemType"
                           :itemKey="storeItemKey" />
     </div>
-    <div class="store-item__name">{{ storeItem.name }}</div>
+    <div class="store-item__name">{{ bought ? (mouseEnter ? "구입 완료" : storeItem.name) : (mouseEnter ? `${storeItem.price.toLocaleString()} P` : storeItem.name) }}</div>
   </div>
 </template>
 
@@ -25,6 +28,9 @@ export default class StoreItem extends Vue {
   @Prop({ type: Object, required: true }) storeItem!: StoreItemBase;
   @Prop({ type: String, required: true }) storeItemType!: ItemType;
   @Prop({ type: String, required: true }) storeItemKey!: string;
+  @Prop({ type: Boolean, default: false }) bought!: boolean;
+
+  mouseEnter = false;
 }
 </script>
 
@@ -34,6 +40,14 @@ export default class StoreItem extends Vue {
   flex-direction: column;
 
   & > * { margin: 0 !important; }
+
+  &.bought {
+    cursor: initial;
+
+    & > * {
+      opacity: 0.33;
+    }
+  }
 
   &__preview {
     width: 80%;

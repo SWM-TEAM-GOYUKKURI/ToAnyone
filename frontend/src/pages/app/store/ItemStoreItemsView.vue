@@ -5,7 +5,8 @@
                 :storeItem="item"
                 :storeItemType="itemType"
                 :storeItemKey="key"
-                @click="onStoreItemClick(item, itemType, key)">
+                :bought="item.default || key in boughtItems"
+                @itemClick="onStoreItemClick(item, itemType, key)">
     </store-item>
   </div>
 
@@ -50,6 +51,7 @@ interface StoreItemDialogData {
   },
 })
 export default class ItemStoreItemsView extends Vue {
+  boughtItems = [];
   showItemDialog = false;
   dialogData: StoreItemDialogData | null = null;
 
