@@ -97,7 +97,6 @@ public class Letter extends AbstractAggregateRoot<Letter> {
         }
 
         throw new ApplicationException("편지를 전달할 사람이 없습니다.");
-
     }
 
     @PostPersist

@@ -57,14 +57,6 @@ public class User extends AbstractAggregateRoot<User> {
         this.receiveCount++;
     }
 
-    public void sendLetter() {
-        userAchievement.increaseSendLetterCount();
-    }
-
-    public void achieve() {
-        userAchievement.increaseAchievementCount();
-    }
-
     public User(String email, String name, LoginType loginType, String uniqueId) {
         this(null, email, name, loginType, uniqueId);
     }

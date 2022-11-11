@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import static anyone.to.soma.user.domain.type.DefaultAchievement.LEVEL_ONE;
-import static anyone.to.soma.user.domain.type.DefaultAchievement.LEVEL_THREE;
+import static anyone.to.soma.user.domain.type.DefaultAchievement.*;
 
 @Component
 @RequiredArgsConstructor
@@ -35,8 +34,8 @@ public class AchievementPolicy {
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
         if (userRepository.existsById(userId) && letterRepository.existsById(letterCreatedEvent.getId())) {
-            achievementRepository.save(new Achievement(LEVEL_ONE.getLevel(), LEVEL_ONE.getName(), LEVEL_ONE.getTag(), userId));
-            userRepository.increaseUserPoint(userId, LEVEL_ONE.getPoint());
+            achievementRepository.save(new Achievement(LEVEL_TWO.getLevel(), LEVEL_TWO.getName(), LEVEL_TWO.getTag(), userId));
+            userRepository.increaseUserPoint(userId, LEVEL_TWO.getPoint());
         }
     }
 
