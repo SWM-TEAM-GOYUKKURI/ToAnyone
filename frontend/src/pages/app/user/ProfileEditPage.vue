@@ -50,17 +50,22 @@
     </div>
 
     <div class="profile-edit__controls">
-      <button class="button"
-              @click="$router.back()">닫기</button>
-      <button class="button primary"
-              @click="onProfileEditButtonClick">수정</button>
+      <button class="button bg-transparent narrow"
+              @click="onDeleteAccountButtonClick">계정 삭제</button>
+
+      <div>
+        <button class="button"
+                @click="$router.back()">닫기</button>
+        <button class="button primary"
+                @click="onProfileEditButtonClick">수정</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
-import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS, NOT_SELECTED_ITEM } from "@/data/profile-data";
+import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS } from "@/data/profile-data";
 
 export default class ProfileEditPage extends Vue {
   readonly genderItems = GENDER_ITEMS;
@@ -72,16 +77,24 @@ export default class ProfileEditPage extends Vue {
   mounted(): void {
     this.formData = {
       nickname: this.$store.state.user.user!.nickname,
-
-      // BELOW should be filled with user info from API
-      age: NOT_SELECTED_ITEM.value,
-      gender: NOT_SELECTED_ITEM.value,
-      job: NOT_SELECTED_ITEM.value,
+      age: this.$store.state.user.user!.profile.age,
+      gender: this.$store.state.user.user!.profile.gender,
+      job: this.$store.state.user.user!.profile.job,
     };
   }
 
   onProfileEditButtonClick(): void {
     // TODO
+  }
+
+  onDeleteAccountButtonClick(): void {
+    // TODO: delete account
+    const choice = confirm("계정을 삭제할까요? 지금까지 보낸 편지 내역이 사라집니다.");
+
+    if(choice) {
+      // TODO
+      alert("준비 중입니다.");
+    }
   }
 }
 </script>
@@ -123,11 +136,24 @@ export default class ProfileEditPage extends Vue {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       width: 100%;
 
-      & > button {
+      & button {
         margin: 0 0.5em;
+      }
+
+      & > button {
+        // account delete button
+        font-size: 0.8em;
+        color: #F47 !important;
+      }
+
+      & > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
       }
     }
   }
