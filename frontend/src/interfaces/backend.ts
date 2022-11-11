@@ -86,3 +86,13 @@ export interface UserProfileUpdateRequest {
   nickname: string,
   psychologicalExams: UserProfilePsychologicalExamItem[],
 }
+
+export interface UserAchievementInfo {
+  id: number,
+  level: number,
+  name: string,
+  tag: string,
+  userId: number,
+}
+
+export type UserAchievementInfoResponse = UserAchievementInfo[];

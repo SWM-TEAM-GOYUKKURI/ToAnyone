@@ -1,5 +1,5 @@
 import { Vue } from "vue-class-component";
-import { LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
+import { LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserAchievementInfoResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
 import { BECallReturn, beGET, bePOST, bePUT, filterUnreadLetters, isSuccessful } from "@/util/backend";
 import { UserInfo } from "@/interfaces/internal";
 
@@ -28,6 +28,10 @@ export default class APICaller {
 
   async getUserInfo(): Promise<BECallReturn<UserInfo>> {
     return await beGET<UserInfo>("/user/me", null, { credentials: this.token });
+  }
+
+  async getUserAchievementInfo(): Promise<BECallReturn<UserAchievementInfoResponse>> {
+    return await beGET<UserAchievementInfoResponse>("/user/me/achievement", null, { credentials: this.token });
   }
 
   async putUserSignupData(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {
