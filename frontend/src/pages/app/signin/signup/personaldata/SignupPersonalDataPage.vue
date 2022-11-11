@@ -38,7 +38,7 @@
 import { Vue } from "vue-class-component";
 import { RouteLocationNormalized } from "vue-router";
 import { SignupData, UserInfoBasic } from "@/interfaces/internal";
-import { bePUT, isSuccessful } from "@/util/backend";
+import { isSuccessful } from "@/util/backend";
 import { UserProfilePsychologicalExamItem, UserProfileUpdateRequest } from "@/interfaces/backend";
 import { doAfter } from "@/util/transition-helper";
 
@@ -52,6 +52,12 @@ export default class SignupPersonalDataPage extends Vue {
     descPersist: false,
     form: false,
   };
+
+  beforeCreate(): void {
+    if(!this.$api.isAvailable() && this.$store.state.auth.token) {
+      this.$api.registerToken(this.$store.state.auth.token);
+    }
+  }
 
   mounted(): void {
     this.onRouteUpdate(this.$route);
