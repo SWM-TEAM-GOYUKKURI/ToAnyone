@@ -23,7 +23,34 @@
                  @textareaInput="onTextareaInput" />
 
     <div class="letter-write__options side">
-      <h2 style="margin: 0.25em">편지 전송 옵션</h2>
+      <div v-if="!replyMode">
+        <h2 style="margin: 0.25em 0.25em 0.75em 0.25em">편지 전송 옵션</h2>
+
+        <div class="option-container">
+          <span>나이대 매칭</span>
+          <v-radio-group v-model="letterSendOptions.age" inline>
+            <v-radio value="random" label="무작위" />
+            <v-radio value="same" label="같은 나이대 위주로" />
+          </v-radio-group>
+        </div>
+
+        <div class="option-container">
+          <span>성별 매칭</span>
+          <v-radio-group v-model="letterSendOptions.gender" inline>
+            <v-radio value="random" label="무작위" />
+            <v-radio value="same" label="같은 성별 위주로" />
+          </v-radio-group>
+        </div>
+
+        <div class="option-container">
+          <span>직업 매칭</span>
+          <v-radio-group v-model="letterSendOptions.job" inline>
+            <v-radio value="random" label="무작위" />
+            <v-radio value="same" label="같은 직업 위주로" />
+          </v-radio-group>
+        </div>
+      </div>
+
       <button class="letter-write__options__send-button button primary fill-width"
               :disabled="sendButtonDisabled"
               @click="onSendButtonClick">
@@ -57,6 +84,12 @@ export default class LetterWritePage extends Vue {
   replyModeData: LetterInboxItem | null = null;
 
   decorItemType: ItemType = "stickers";
+
+  letterSendOptions = {
+    age: "random",
+    gender: "random",
+    job: "random",
+  };
 
   get sendButtonIcon(): { icon: string, suffix: string } {
     switch(this.letterSendStatus) {
@@ -196,7 +229,7 @@ $viewport-letter-write-small-width: 1400px;
     overflow: auto;
     width: $contents-side-width;
     max-width: 350px;
-    min-height: 50vh;
+    min-height: 40vh;
     max-height: calc(100vh - var(--app-navbar-height) - 2rem);
     padding: 1em;
     background-color: rgba($color-secondary, 0.5);
@@ -225,6 +258,10 @@ $viewport-letter-write-small-width: 1400px;
     &__options {
       &__send-button {
         margin-top: 1em;
+      }
+
+      .option-container {
+        margin: 0.5em;
       }
     }
   }

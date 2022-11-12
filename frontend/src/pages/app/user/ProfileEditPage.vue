@@ -89,7 +89,7 @@ export default class ProfileEditPage extends Vue {
 
   onDeleteAccountButtonClick(): void {
     // TODO: delete account
-    const choice = confirm("계정을 삭제할까요? 지금까지 보낸 편지 내역이 사라집니다.");
+    const choice = confirm("계정을 삭제할까요? 계정을 삭제하면 지금까지 보낸 편지 내역과 포인트가 사라져요.");
 
     if(choice) {
       // TODO
