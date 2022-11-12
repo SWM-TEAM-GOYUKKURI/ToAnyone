@@ -1,11 +1,17 @@
 <template>
   <div id="letter-write-wrapper">
     <div class="letter-write__decors side">
-      <v-tabs grow>
-        <v-tab>스티커</v-tab>
-        <v-tab>편지지</v-tab>
-        <v-tab>글꼴</v-tab>
+      <v-tabs v-model="decorItemType" grow>
+        <v-tab value="stickers">스티커</v-tab>
+        <v-tab value="papers">편지지</v-tab>
+        <v-tab value="fonts">글꼴</v-tab>
       </v-tabs>
+
+      <v-window v-model="decorItemType" style="padding: 0.5em">
+        <v-window-item value="stickers">
+          <span>BACKEND SHOULD BE IMPLEMENTED</span>
+        </v-window-item>
+      </v-window>
     </div>
 
     <letter-area id="letter-write-area"
@@ -17,7 +23,8 @@
                  @textareaInput="onTextareaInput" />
 
     <div class="letter-write__options side">
-      <button class="button primary fill-width"
+      <h2 style="margin: 0.25em">편지 전송 옵션</h2>
+      <button class="letter-write__options__send-button button primary fill-width"
               :disabled="sendButtonDisabled"
               @click="onSendButtonClick">
         <v-icon>{{ sendButtonIcon.icon }}</v-icon> <span>{{ replyMode ? "답장" : "편지" }} {{ sendButtonIcon.suffix }}</span>
@@ -33,6 +40,7 @@ import { RouteLocationNormalized } from "vue-router";
 import LetterArea, { LetterSendStatus } from "@/components/app/letter/LetterArea.vue";
 import { isSuccessful } from "@/util/backend";
 import { LetterInboxItem } from "@/interfaces/backend";
+import { ItemType } from "@/util/item-loader";
 
 @Options({
   components: {
@@ -47,6 +55,8 @@ export default class LetterWritePage extends Vue {
 
   replyMode = false;
   replyModeData: LetterInboxItem | null = null;
+
+  decorItemType: ItemType = "stickers";
 
   get sendButtonIcon(): { icon: string, suffix: string } {
     switch(this.letterSendStatus) {
@@ -209,6 +219,14 @@ $viewport-letter-write-small-width: 1400px;
     min-height: $contents-min-height;
     //margin-right: calc((100vw - $decor-area-width - $letter-paper-area-width) / 2.5);
     margin: 0 auto;
+  }
+
+  .letter-write {
+    &__options {
+      &__send-button {
+        margin-top: 1em;
+      }
+    }
   }
 }
 </style>
