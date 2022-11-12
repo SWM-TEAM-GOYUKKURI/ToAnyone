@@ -2,20 +2,25 @@ package anyone.to.soma.user.application;
 
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
+import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.Profile;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.AchievementRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AchievementRepository achievementRepository;
     private final JWTProvider jwtProvider;
 
     @Transactional
@@ -29,6 +34,7 @@ public class UserService {
 
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         user.recordLastLogin();
+        userRepository.increaseLoginCount(user.getId());
 
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
         return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());
@@ -49,6 +55,11 @@ public class UserService {
     public User retrieveUserData(User user) {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
         return foundUser;
+    }
 
+    public List<Achievement> retrieveUserAchievement(User user) {
+        User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
+        List<Achievement> userAchievments = achievementRepository.findAllByUserId(foundUser.getId());
+        return userAchievments;
     }
 }

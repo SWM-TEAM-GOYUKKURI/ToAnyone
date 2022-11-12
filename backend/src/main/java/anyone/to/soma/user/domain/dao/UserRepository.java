@@ -1,5 +1,6 @@
-package anyone.to.soma.user.domain;
+package anyone.to.soma.user.domain.dao;
 
+import anyone.to.soma.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.userAchievement.sendLetterCount = u.userAchievement.sendLetterCount + 1 WHERE u.id=:userId")
     void increaseSendCount(@Param("userId") Long userId);
+
+    @Modifying
+    @Query("UPDATE User u SET u.userAchievement.loginCount = u.userAchievement.loginCount + 1 WHERE u.id=:userId")
+    void increaseLoginCount(@Param("userId") Long userId);
+
+    @Modifying
+    @Query("UPDATE User u SET u.point.point = u.point.point + :point WHERE u.id=:userId")
+    void increaseUserPoint(@Param("userId") Long userId, @Param("point") Long point);
+
 }

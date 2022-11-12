@@ -4,7 +4,7 @@ import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterRepository;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.utils.Fixtures;
 import anyone.to.soma.utils.Fixtures.UserStub;
 import org.junit.jupiter.api.Test;

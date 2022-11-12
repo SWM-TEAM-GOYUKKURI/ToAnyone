@@ -4,13 +4,13 @@ import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
+import anyone.to.soma.user.domain.dto.LoginResponse;
+import anyone.to.soma.user.domain.dto.ProfileRequest;
 import anyone.to.soma.user.domain.type.Age;
 import anyone.to.soma.user.domain.type.Gender;
 import anyone.to.soma.user.domain.type.Job;
 import anyone.to.soma.user.domain.type.LoginType;
-import anyone.to.soma.user.domain.dto.LoginResponse;
-import anyone.to.soma.user.domain.dto.ProfileRequest;
 import anyone.to.soma.utils.Fixtures;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,6 +77,7 @@ public class UserServiceMockTest {
         );
         verify(userRepository, times(1)).existsUserByUniqueId(anyString());
         verify(userRepository, times(1)).findUserByUniqueId(anyString());
+        verify(userRepository, times(1)).increaseLoginCount(any());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -99,6 +100,7 @@ public class UserServiceMockTest {
         verify(userRepository, times(1)).existsUserByUniqueId(anyString());
         verify(userRepository, times(1)).findUserByUniqueId(anyString());
         verify(userRepository, times(1)).save(any(User.class));
+        verify(userRepository, times(1)).increaseLoginCount(any());
         verifyNoMoreInteractions(userRepository);
     }
 

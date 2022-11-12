@@ -2,13 +2,15 @@ package anyone.to.soma.letter.domain;
 
 import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.exception.ApplicationException;
+import anyone.to.soma.letter.domain.event.LetterCreatedEvent;
+import anyone.to.soma.letter.domain.event.LetterReadEvent;
 import anyone.to.soma.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Letter implements Serializable {
+public class Letter extends AbstractAggregateRoot<Letter> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,6 +77,7 @@ public class Letter implements Serializable {
 
     public void read() {
         this.isRead = true;
+        this.registerEvent(new LetterReadEvent(this.id, this.receiver.getId(), this.isRead));
     }
 
     public void checkValidReader(Long reader) {
@@ -94,6 +97,10 @@ public class Letter implements Serializable {
         }
 
         throw new ApplicationException("편지를 전달할 사람이 없습니다.");
+    }
 
+    @PostPersist
+    public void created() {
+        this.registerEvent(new LetterCreatedEvent(this.id, this.sender.getId(), this.sender.getUserAchievement().getSendLetterCountValue(), this.receiver.getReceiveCount()));
     }
 }
