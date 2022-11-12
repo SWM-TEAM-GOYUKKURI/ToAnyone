@@ -107,6 +107,8 @@ export default class LetterViewPage extends Vue {
     if(error) {
       this.$router.back();
     }
+
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   goLetterReplyPage(): void {
@@ -128,6 +130,7 @@ export default class LetterViewPage extends Vue {
   .letter-view-area {
     min-height: 70vh;
     margin: 3rem auto;
+    max-width: 100%;
 
     &.reply {
       width: calc(var(--letter-area-width) - 2rem);
