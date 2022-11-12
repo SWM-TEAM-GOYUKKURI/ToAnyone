@@ -130,7 +130,7 @@ export default class LetterViewPage extends Vue {
     margin: 3rem auto;
 
     &.reply {
-      width: 70vw;
+      width: calc(var(--letter-area-width) - 2rem);
     }
   }
 
