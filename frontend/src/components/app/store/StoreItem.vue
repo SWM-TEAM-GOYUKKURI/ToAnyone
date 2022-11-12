@@ -9,7 +9,7 @@
                           :itemType="storeItemType"
                           :itemKey="storeItemKey" />
     </div>
-    <div class="store-item__name">{{ bought ? (mouseEnter ? "구입 완료" : storeItem.name) : (mouseEnter ? `${storeItem.price.toLocaleString()} P` : storeItem.name) }}</div>
+    <div class="store-item__name">{{ displayText }}</div>
   </div>
 </template>
 
@@ -29,8 +29,21 @@ export default class StoreItem extends Vue {
   @Prop({ type: String, required: true }) storeItemType!: ItemType;
   @Prop({ type: String, required: true }) storeItemKey!: string;
   @Prop({ type: Boolean, default: false }) bought!: boolean;
+  @Prop({ type: Boolean, default: false }) disableTextTransform!: boolean;
 
   mouseEnter = false;
+
+  get displayText(): string {
+    if(this.disableTextTransform) {
+      return this.storeItem.name;
+    } else {
+      if(this.mouseEnter) {
+        return this.bought ? "구입 완료" : `${this.storeItem.price.toLocaleString()} P`;
+      } else {
+        return this.storeItem.name;
+      }
+    }
+  }
 }
 </script>
 
