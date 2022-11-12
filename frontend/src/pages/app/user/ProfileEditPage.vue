@@ -85,6 +85,7 @@ export default class ProfileEditPage extends Vue {
 
   onProfileEditButtonClick(): void {
     // TODO
+    alert("프로필 수정은 추후 구현 예정입니다.");
   }
 
   onDeleteAccountButtonClick(): void {
@@ -93,7 +94,7 @@ export default class ProfileEditPage extends Vue {
 
     if(choice) {
       // TODO
-      alert("준비 중입니다.");
+      alert("계정 삭제는 추후 구현 예정입니다.");
     }
   }
 }

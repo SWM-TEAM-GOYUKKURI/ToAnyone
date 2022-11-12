@@ -79,6 +79,7 @@ export default class ItemStoreItemsView extends Vue {
 
   onPurchaseButtonClick(): void {
     // TODO: SHOULD BE "WAIT" for backend implementation
+    alert("아이템 구매는 추후 구현 예정입니다.");
   }
 }
 </script>
