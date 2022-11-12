@@ -17,7 +17,8 @@
         <div class="item-dialog__content__preview">
           <store-item-preview :item="dialogData.item"
                               :itemType="dialogData.itemType"
-                              :itemKey="dialogData.itemKey" />
+                              :itemKey="dialogData.itemKey"
+                              :fontPreviewExtended="true" />
         </div>
         <div class="item-dialog__content__name">{{ dialogData.item.name }}</div>
         <div class="item-dialog__content__price">{{ getItemTypeName(dialogData.itemType) }} &bull; {{ dialogData.item.price.toLocaleString() }} 포인트</div>
