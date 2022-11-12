@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.lang.Nullable;
 
@@ -41,8 +40,7 @@ public class User extends AbstractAggregateRoot<User> {
 
     private boolean registrationFormFilled;
 
-    @CreatedDate
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     private Instant lastLogin;
 
@@ -95,7 +93,6 @@ public class User extends AbstractAggregateRoot<User> {
     public void recordLastLogin() {
         this.lastLogin = Instant.now();
     }
-
 
 
     public Long getPoint() {
