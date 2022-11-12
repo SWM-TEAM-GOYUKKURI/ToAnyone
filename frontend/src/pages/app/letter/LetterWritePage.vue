@@ -185,6 +185,11 @@ export default class LetterWritePage extends Vue {
 
   async onSendButtonClick() {
     if(this.letterSendStatus === LetterSendStatus.NORMAL && this.letterTextContent.length > 0) {
+      if(this.letterTextContent.length < 30) {
+        alert("편지 내용을 30자 이상 작성해주세요.");
+        return;
+      }
+
       this.letterSendStatus = LetterSendStatus.SENDING;
 
       if(!this.replyMode) {
