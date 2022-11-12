@@ -16,7 +16,8 @@
           <v-tab value="fonts">글꼴</v-tab>
         </v-tabs>
 
-        <v-window v-model="decorItemType" style="overflow-x: auto; padding: 0.5em">
+        <v-window v-model="decorItemType"
+                  class="letter-write__decors__item-tab-wrapper">
           <v-window-item value="stickers">
             <div class="letter-write__decors__item-container">
               <span>BACKEND SHOULD BE IMPLEMENTED</span>
@@ -292,12 +293,14 @@ $viewport-letter-write-small-width: 1400px;
 
   .letter-write {
     &__decors {
+      &__item-tab-wrapper {
+        padding: 0.5em;
+      }
+
       &__item-container {
         display: flex;
         flex-direction: row;
-        flex-wrap: nowrap;
-        height: 100%;
-        width: fit-content;
+        flex-wrap: wrap;
       }
     }
 
@@ -335,12 +338,23 @@ $viewport-letter-write-small-width: 1400px;
 
       .vp-small-handle { display: flex; }
 
-      &.letter-write__decors {
-        height: 12rem;
-
-        .vp-small-handle { left: 25%; }
-      }
+      &.letter-write__decors .vp-small-handle { left: 25%; }
       &.letter-write__options .vp-small-handle { left: 75%; }
+    }
+
+    .letter-write {
+      &__decors {
+        &__item-tab-wrapper {
+          overflow-x: auto;
+          height: 8rem;
+        }
+
+        &__item-container {
+          flex-wrap: nowrap;
+          height: 100%;
+          width: fit-content;
+        }
+      }
     }
   }
 }
