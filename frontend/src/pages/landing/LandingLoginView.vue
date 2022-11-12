@@ -6,7 +6,6 @@
 
     <sign-in-with-google :loaded="googleLoadState"
                          :callback="onGoogleLogin" />
-    <sign-in-with-kakao />
 
     <div class="landing-login__controls">
       <button class="button narrow" @click="close"><v-icon>mdi-close</v-icon> <span>닫기</span></button>
@@ -18,13 +17,11 @@
 import { Options, Vue } from "vue-class-component";
 import * as GoogleLogin from "@/plugins/signin/google";
 import SignInWithGoogle from "@/components/signin/SignInWithGoogle.vue";
-import SignInWithKakao from "@/components/signin/SignInWithKakao.vue";
 import { UserInfoBasic } from "@/interfaces/internal";
 
 @Options({
   components: {
     SignInWithGoogle,
-    SignInWithKakao,
   },
 })
 export default class LoginView extends Vue {
