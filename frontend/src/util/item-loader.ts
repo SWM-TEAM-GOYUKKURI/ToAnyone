@@ -33,3 +33,16 @@ export function getStoreItems(type: ItemType): StoreItemList<StoreItemBase> {
 
   return {};
 }
+
+export function getDefaultItems(type: ItemType): StoreItemList<StoreItemBase> {
+  const items = getStoreItems(type);
+  const returnValue: StoreItemList<StoreItemBase> = {};
+
+  for(const itemIndex in items) {
+    if(items[itemIndex].default) {
+      returnValue[itemIndex] = items[itemIndex];
+    }
+  }
+
+  return returnValue;
+}
