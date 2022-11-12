@@ -1,17 +1,37 @@
 <template>
   <div id="letter-write-wrapper">
-    <div class="letter-write__decors side">
-      <v-tabs v-model="decorItemType" grow>
-        <v-tab value="stickers">스티커</v-tab>
-        <v-tab value="papers">편지지</v-tab>
-        <v-tab value="fonts">글꼴</v-tab>
-      </v-tabs>
+    <div class="letter-write__decors side"
+         :class="{ 'vp-small-appear': vpSmallShowDecors }">
+      <div v-show="!vpSmallShowOptions"
+           class="vp-small-handle"
+           title="데코레이션 아이템"
+           @click="vpSmallShowDecors = !vpSmallShowDecors">
+        <span>데코</span> <v-icon>{{ vpSmallShowDecors ? "mdi-chevron-down" : "mdi-chevron-up" }}</v-icon>
+      </div>
 
-      <v-window v-model="decorItemType" style="padding: 0.5em">
-        <v-window-item value="stickers">
-          <span>BACKEND SHOULD BE IMPLEMENTED</span>
-        </v-window-item>
-      </v-window>
+      <div style="height: -webkit-fill-available" >
+        <v-tabs v-model="decorItemType" grow>
+          <v-tab value="stickers">스티커</v-tab>
+          <v-tab value="papers">편지지</v-tab>
+          <v-tab value="fonts">글꼴</v-tab>
+        </v-tabs>
+
+        <v-window v-model="decorItemType" style="overflow-x: auto; padding: 0.5em">
+          <v-window-item value="stickers">
+            <div class="letter-write__decors__item-container">
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+            </div>
+          </v-window-item>
+        </v-window>
+      </div>
     </div>
 
     <letter-area id="letter-write-area"
@@ -22,7 +42,14 @@
                  :letterSendStatus="letterSendStatus"
                  @textareaInput="onTextareaInput" />
 
-    <div class="letter-write__options side">
+    <div v-show="!vpSmallShowDecors"
+         class="letter-write__options side"
+         title="편지 전송 및 옵션"
+         :class="{ 'vp-small-appear': vpSmallShowOptions }">
+      <div class="vp-small-handle" @click="vpSmallShowOptions = !vpSmallShowOptions">
+        <span>전송/옵션</span> <v-icon>{{ vpSmallShowOptions ? "mdi-chevron-down" : "mdi-chevron-up" }}</v-icon>
+      </div>
+
       <div v-if="!replyMode">
         <h2 style="margin: 0.25em 0.25em 0.75em 0.25em">편지 전송 옵션</h2>
 
@@ -90,6 +117,9 @@ export default class LetterWritePage extends Vue {
     gender: "random",
     job: "random",
   };
+
+  vpSmallShowDecors = false;
+  vpSmallShowOptions = false;
 
   get sendButtonIcon(): { icon: string, suffix: string } {
     switch(this.letterSendStatus) {
@@ -229,22 +259,28 @@ $viewport-letter-write-small-width: 1400px;
     overflow: auto;
     width: $contents-side-width;
     max-width: 350px;
-    min-height: 40vh;
     max-height: calc(100vh - var(--app-navbar-height) - 2rem);
     padding: 1em;
     background-color: rgba($color-secondary, 0.5);
-  }
 
-  #decor {
-    position: absolute;
-    left: 0;
-    width: $decor-area-width;
-    min-height: $contents-min-height;
-    background-color: rgba($color-secondary, 0.5);
-    border-top-right-radius: 1.5em;
-    border-bottom-right-radius: 1.5em;
-    padding: 1rem;
-    box-shadow: 0 1em 1.5em rgba(black, 0.33);
+    .vp-small-handle {
+      display: none;  // none <-> flex
+
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%) translateY(-100%);
+
+      width: 40%;
+      height: 48px;
+      color: $color-foreground;
+      background-color: $color-dark;
+      border-top-left-radius: 0.5em;
+      border-top-right-radius: 0.5em;
+    }
   }
 
   #letter-write-area {
@@ -255,6 +291,16 @@ $viewport-letter-write-small-width: 1400px;
   }
 
   .letter-write {
+    &__decors {
+      &__item-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        height: 100%;
+        width: fit-content;
+      }
+    }
+
     &__options {
       &__send-button {
         margin-top: 1em;
@@ -263,6 +309,38 @@ $viewport-letter-write-small-width: 1400px;
       .option-container {
         margin: 0.5em;
       }
+    }
+  }
+
+  @media (max-width: $viewport-letter-write-small-width) {
+    padding-bottom: 15rem;
+
+    .side {
+      position: fixed;
+      top: initial;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      transition: transform 0.5s cubic-bezier(0, 0, 0, 1);
+      width: var(--letter-area-width);
+      max-width: 100%;
+      overflow: initial;
+      background-color: $color-dark;
+      z-index: 10;
+
+      &.vp-small-appear {
+        transform: translateX(-50%);
+        will-change: transform;
+      }
+
+      .vp-small-handle { display: flex; }
+
+      &.letter-write__decors {
+        height: 12rem;
+
+        .vp-small-handle { left: 25%; }
+      }
+      &.letter-write__options .vp-small-handle { left: 75%; }
     }
   }
 }
