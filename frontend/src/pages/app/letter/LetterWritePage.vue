@@ -1,28 +1,28 @@
 <template>
   <div id="letter-write-wrapper">
-    <div id="decor">
-      꾸미기 아이템 영역<br>구현 중입니다.
+    <div class="letter-write__decors side">
+      <v-tabs grow>
+        <v-tab>스티커</v-tab>
+        <v-tab>편지지</v-tab>
+        <v-tab>글꼴</v-tab>
+      </v-tabs>
     </div>
 
-    <!-- Normal write -->
-    <letter-area v-if="!replyMode"
-                 id="letter-write-area"
+    <letter-area id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
+                 :letterReplyMode="replyMode"
+                 :receiverNickname="replyMode ? replyModeData.senderName : undefined"
                  :letterSendStatus="letterSendStatus"
-                 @textareaInput="onTextareaInput"
-                 @sendButtonClick="onSendButtonClick" />
+                 @textareaInput="onTextareaInput" />
 
-    <!-- Reply -->
-    <letter-area v-else
-                 id="letter-write-area"
-                 v-model:textContent="letterTextContent"
-                 :letterWriteMode="true"
-                 :letterReplyMode="true"
-                 :receiverNickname="replyModeData.senderName"
-                 :letterSendStatus="letterSendStatus"
-                 @textareaInput="onTextareaInput"
-                 @sendButtonClick="onSendButtonClick" />
+    <div class="letter-write__options side">
+      <button class="button primary fill-width"
+              :disabled="sendButtonDisabled"
+              @click="onSendButtonClick">
+        <v-icon>{{ sendButtonIcon.icon }}</v-icon> <span>{{ replyMode ? "답장" : "편지" }} {{ sendButtonIcon.suffix }}</span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -47,6 +47,19 @@ export default class LetterWritePage extends Vue {
 
   replyMode = false;
   replyModeData: LetterInboxItem | null = null;
+
+  get sendButtonIcon(): { icon: string, suffix: string } {
+    switch(this.letterSendStatus) {
+      case LetterSendStatus.NORMAL: return { icon: "mdi-send", suffix: "보내기" };
+      case LetterSendStatus.SENDING: return { icon: "mdi-progress-upload", suffix: "보내는 중" };
+      case LetterSendStatus.DONE: return { icon: "mdi-check", suffix: "보내기 완료!" };
+      case LetterSendStatus.ERROR: return { icon: "mdi-alert-circle", suffix: "보내기 오류" };
+    }
+  }
+
+  get sendButtonDisabled(): boolean {
+    return this.letterSendStatus !== LetterSendStatus.NORMAL || !this.letterTextContent;
+  }
 
   beforeCreate(): void {
     if(this.$route.params) {
@@ -153,13 +166,31 @@ export default class LetterWritePage extends Vue {
 </script>
 
 <style lang="scss" scoped>
+$decor-area-width: 20vw;
+$letter-paper-area-width: 60vw;
+$letter-paper-area-padding: 1em;
+$contents-min-height: 80vh;
+$contents-side-width: calc((85vw - var(--letter-area-width)) / 2);
+$viewport-letter-write-small-width: 1400px;
+
 #letter-write-wrapper {
-  $decor-area-width: 20vw;
-  $letter-paper-area-width: 60vw;
-  $letter-paper-area-padding: 1em;
-  $contents-min-height: 80vh;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 
   padding: 2rem 0 8rem 0;
+
+  .side {
+    position: sticky;
+    top: calc(var(--app-navbar-height) + 2rem);
+    overflow: auto;
+    width: $contents-side-width;
+    max-width: 350px;
+    min-height: 50vh;
+    max-height: calc(100vh - var(--app-navbar-height) - 2rem);
+    padding: 1em;
+    background-color: rgba($color-secondary, 0.5);
+  }
 
   #decor {
     position: absolute;
@@ -174,10 +205,10 @@ export default class LetterWritePage extends Vue {
   }
 
   #letter-write-area {
-    width: $letter-paper-area-width;
+    // width: $letter-paper-area-width;
     min-height: $contents-min-height;
-    margin-right: calc((100vw - $decor-area-width - $letter-paper-area-width) / 2.5);
-    margin-left: auto;
+    //margin-right: calc((100vw - $decor-area-width - $letter-paper-area-width) / 2.5);
+    margin: 0 auto;
   }
 }
 </style>

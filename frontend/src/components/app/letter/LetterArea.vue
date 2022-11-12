@@ -21,19 +21,6 @@
       </div>
       <div style="text-align: right">To. <strong>{{ receiverNickname }}</strong></div>
     </div>
-
-    <button v-if="letterWriteMode"
-            class="letter-area__send-button button round primary"
-            :class="{ 'disabled': buttonDisabled }"
-            @click="() => !buttonDisabled ? $emit('sendButtonClick') : null">
-      <v-fade-transition leave-absolute>
-        <span v-if="letterSendStatus === LetterSendStatus.NORMAL"><v-icon>mdi-send</v-icon> {{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
-
-        <v-progress-circular v-else-if="letterSendStatus === LetterSendStatus.SENDING" indeterminate size="large" />
-        <v-icon v-else-if="letterSendStatus === LetterSendStatus.DONE">mdi-check</v-icon>
-        <v-icon v-else-if="letterSendStatus === LetterSendStatus.ERROR">mdi-alert-circle</v-icon>
-      </v-fade-transition>
-    </button>
   </div>
 </template>
 
@@ -70,10 +57,6 @@ export default class LetterArea extends Vue {
 
   get realSenderNickname(): string {
     return this.letterWriteMode ? this.$store.state.user.user!.nickname : this.senderNickname;
-  }
-
-  get buttonDisabled(): boolean {
-    return this.letterSendStatus !== LetterSendStatus.NORMAL || !this.letterTextContent;
   }
 
   get letterTextElement(): HTMLDivElement {
@@ -124,13 +107,16 @@ export default class LetterArea extends Vue {
   box-shadow: 0 1em 1.5em rgba(black, 0.33);
 
   &__content-area {
+    white-space: pre-wrap;
+    word-break: break-all;
+
     display: flex;
     flex-grow: 1;
     flex-direction: column;
     width: 100%;
     overflow: hidden;
     color: $color-dark;
-    padding-bottom: 2em;
+    padding-bottom: 1em;
 
     &__text-area-wrapper {
       position: relative;
@@ -163,17 +149,6 @@ export default class LetterArea extends Vue {
         }
       }
     }
-  }
-
-  &__send-button {
-    position: absolute;
-    right: -50px;
-    bottom: -50px;
-    min-width: 270px;
-    min-height: 100px;
-    box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
-    background: $color-primary !important;
-    z-index: 1;
   }
 }
 </style>
