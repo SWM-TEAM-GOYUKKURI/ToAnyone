@@ -1,38 +1,40 @@
 <template>
   <div class="letter-area">
     <div class="letter-area__content-area">
-      <div><strong>From. {{ realSenderNickname }}</strong></div>
-      <contenteditable v-model="letterTextContent"
-                       class="letter-area__content-area__text-area"
-                       tag="div"
-                       :contenteditable="letterWriteMode"
-                       :no-html="true"
-                       @input="$emit('textareaInput')"
-                       @keydown.ctrl="onEditorKeyDown"></contenteditable>
-      <div style="text-align: right"><strong>To. {{ receiverNickname }}</strong></div>
-    </div>
+      <div>From. <strong>{{ realSenderNickname }}</strong></div>
+      <div class="letter-area__content-area__text-area-wrapper">
+        <contenteditable v-model="letterTextContent"
+                         ref="letterTextElement"
+                         class="text-area"
+                         tag="div"
+                         :contenteditable="letterWriteMode"
+                         :no-html="true"
+                         @input="onEditorInput"
+                         @keydown.ctrl="onEditorKeyDown" />
 
-    <div v-if="letterWriteMode"
-         class="letter-area__send-button animation-button"
-         :class="{ 'disabled': letterSendInProgress }"
-         @click="$emit('sendButtonClick')">
-         <v-fade-transition leave-absolute>
-            <div v-if="!letterSendInProgress">
-              <v-icon>mdi-send</v-icon>
-              <span>{{ letterReplyMode ? "답장" : "편지" }} 보내기</span>
-            </div>
-            <div v-else>
-              <v-progress-circular indeterminate />
-            </div>
-         </v-fade-transition>
+        <div class="line-wrapper">
+          <div ref="letterTextElementFirstLine" class="line" /> <!-- First line is mandatory for height calculation -->
+          <div v-for="x in letterTextElementRequiredLines"
+               :key="x"
+               class="line" />
+        </div>
+      </div>
+      <div style="text-align: right">To. <strong>{{ receiverNickname }}</strong></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { Prop, PropSync } from "vue-property-decorator";
+import { Prop, PropSync, Watch } from "vue-property-decorator";
 import contenteditable from "vue-contenteditable";
+
+export enum LetterSendStatus {
+  NORMAL,
+  SENDING,
+  DONE,
+  ERROR,
+}
 
 @Options({
   components: {
@@ -40,15 +42,30 @@ import contenteditable from "vue-contenteditable";
   },
 })
 export default class LetterArea extends Vue {
+  LetterSendStatus = LetterSendStatus;
+
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
-  @Prop({ type: Boolean, default: false }) letterSendInProgress!: boolean;
+  @Prop({ default: LetterSendStatus.NORMAL }) letterSendStatus!: LetterSendStatus;
   @Prop({ type: String, default: "" }) senderNickname!: string;
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
 
+  letterTextElementHeight = 0;
+  letterTextElementLineHeight = 0;
+  letterTextElementRequiredLines = 0;
+
   get realSenderNickname(): string {
-    return this.letterWriteMode ? this.$store.state.auth.userBasicInfo!.nickname : this.senderNickname;
+    return this.letterWriteMode ? this.$store.state.user.user!.nickname : this.senderNickname;
+  }
+
+  get letterTextElement(): HTMLDivElement {
+    return (this.$refs.letterTextElement as Vue).$el as HTMLDivElement;
+  }
+
+  mounted(): void {
+    this.letterTextElementHeight = this.letterTextElement.offsetHeight;
+    this.letterTextElementLineHeight = (this.$refs.letterTextElementFirstLine as HTMLDivElement).offsetHeight;
   }
 
   onEditorKeyDown(event: KeyboardEvent): void {
@@ -62,6 +79,20 @@ export default class LetterArea extends Vue {
       }
     }
   }
+
+  onEditorInput(): void {
+    this.letterTextElementHeight = this.letterTextElement.offsetHeight;
+
+    this.$emit("textareaInput");
+  }
+
+  @Watch("letterTextElementHeight", { immediate: true })
+  onLetterTextElementHeightChange(): void {
+    const required = Math.floor(this.letterTextElementHeight / this.letterTextElementLineHeight);
+    if(required) {
+      this.letterTextElementRequiredLines = required;
+    }
+  }
 }
 </script>
 
@@ -69,63 +100,53 @@ export default class LetterArea extends Vue {
 .letter-area {
   display: flex;
   position: relative;
+  width: var(--letter-area-width);
   padding: 1em;
   font-size: 1.5em;
-  border-radius: 1em;
-  background-color: #E9E9CC;
+  background-color: #FFF7E8;  // 기본값: 개나리 색상
   box-shadow: 0 1em 1.5em rgba(black, 0.33);
 
   &__content-area {
+    white-space: pre-wrap;
+    word-break: break-all;
+
     display: flex;
     flex-grow: 1;
     flex-direction: column;
     width: 100%;
     overflow: hidden;
-    font-family: serif;
-    color: #310;
-    padding-bottom: 2em;
+    color: $color-dark;
+    padding-bottom: 1em;
 
-    &__text-area {
+    &__text-area-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: flex;
       flex-grow: 1;
       width: 100%;
-      margin: 0.5em 0;
+      margin: 0.5em 0 1em 0;
+      padding: 0 0.5em;
       line-height: 2;
 
-      &:focus, &:focus-visible, &:focus-within {
-        border: none;
-        outline: none;
+      .text-area {
+        flex-grow: 1;
+
+        &:focus, &:focus-visible, &:focus-within {
+          border: none;
+          outline: none;
+        }
       }
-    }
-  }
 
-  &__send-button {
-    cursor: pointer;
-    position: absolute;
-    right: -1.5em;
-    bottom: -1.5em;
-    min-width: 250px;
-    padding: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $color-primary;
-    border-radius: 999em;
-    box-shadow: 0 0.33em 0.5em rgba(black, 0.25);
-    z-index: 1;
+      .line-wrapper {
+        position: absolute;
+        width: calc(100% - (0.5em * 2)); // minus parent padding
 
-    &.disabled {
-      pointer-events: none;
-      background-color: gray;
-    }
+        &, & * { pointer-events: none; }
 
-    & > div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-
-      & > * {
-        margin: 0 0.25em;
+        .line {
+          height: 2em; // font-size(1em) * line-height(2)
+          border-bottom: solid rgba($color-dark, 0.5) 2px;
+        }
       }
     }
   }

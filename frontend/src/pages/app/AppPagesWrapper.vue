@@ -1,8 +1,9 @@
 <template>
-  <app-navbar />
+  <app-navbar v-if="criticalDataLoaded" />
 
   <div id="app-wrapper">
-    <router-view v-slot="{ Component }">
+    <router-view v-if="criticalDataLoaded"
+                 v-slot="{ Component }">
       <v-fade-transition leave-absolute>
         <component :is="Component" />
       </v-fade-transition>
@@ -20,12 +21,36 @@ import AppNavbar from "@/components/app/global/AppNavbar.vue";
   },
 })
 export default class AppPagesWrapper extends Vue {
+  criticalDataLoaded = false;
 
+  async beforeCreate() {
+    if(!this.$api.isAvailable() && this.$store.state.auth.token) {
+      this.$api.registerToken(this.$store.state.auth.token);
+    }
+
+    if(!this.$store.state.user.user) {
+      const response = await this.$api.getUserInfo();
+
+      if(response.data) {
+        this.$store.commit("user/updateUserInfo", response.data);
+      }
+    }
+
+    this.criticalDataLoaded = true;
+  }
+
+  async mounted() {
+    // Load unread letters and save it
+    if(!(await this.$api.updateUnreadLetters(this))) {
+      // TEMP ALERT
+      alert("편지 보관 목록을 업데이트하는 중 오류");
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 #app-wrapper {
-  margin-top: $app-navbar-height;
+  margin-top: var(--app-navbar-height);
 }
 </style>

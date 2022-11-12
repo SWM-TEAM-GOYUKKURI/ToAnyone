@@ -18,23 +18,18 @@ export default class App extends Vue {
           jwtCookie;
       };
 
-      if(to.name !== "login") {
-        // 로그인 페이지 외의 라우트로 이동하고 있는 경우...
+      if(!(to.name === "login" || to.name === "landing")) {
+        // 로그인 페이지나 랜딩 페이지 외의 라우트로 이동하고 있는 경우...
 
         if(!isLoginStateReliable()) {
           // 로그인 상태 정보(store state + JWT cookie)가 비정상적일 때...
 
-          // if(this.$route.path !== "/") {     <- 현재 루트가 앱 메인 페이지로 사용 중이기 때문에 강제 이동 예외 라우트에서 제외
-          // 로그인 상태를 초기화하고 로그인 페이지로 강제 이동
+          // 로그인 상태를 초기화하고 랜딩 페이지로 강제 이동
           this.$store.commit("auth/registerLoginState", null);
-          // this.$router.replace({ name: "login" });
-          window.location.replace("/login");
-
-          // TODO: 랜딩 페이지 생성 시 이 로직이 변경될 수 있음(랜딩 페이지 관련 라우트는 강제 이동에서 제외)
-          // }
+          window.location.replace("/hello");
         } else if(isLoginStateReliable() &&
           !to.name?.toString().startsWith("signup-profile") &&
-          !this.$store.state.auth.userBasicInfo?.firstSignupPassed) {
+          !this.$store.state.auth.userBasicInfo?.registrationFormFilled) {
           // 로그인 상태 정보는 정상적이지만 초기 회원가입 과정을 거치지 않은 경우...
 
           if(to.name !== "logout") {
@@ -43,7 +38,7 @@ export default class App extends Vue {
           }
         }
       } else {
-        // 로그인 페이지로 이동하고 있는 경우...
+        // 로그인 페이지 또는 랜딩 페이지로 이동하고 있는 경우...
 
         if(isLoginStateReliable()) {
           // 로그인 상태 정보가 정상적일 때...
@@ -54,13 +49,5 @@ export default class App extends Vue {
       }
     });
   }
-
-  /* 앱 전역 instance created 훅 */
-  created(): void {
-    // to be filled
-  }
 }
 </script>
-
-<style lang="scss">
-</style>

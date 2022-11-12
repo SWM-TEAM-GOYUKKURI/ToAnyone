@@ -2,10 +2,12 @@
 
 import { Store } from "vuex";
 import { RootStoreState } from "@/plugins/store";
+import APICaller from "@/plugins/be-api-caller";
 
 declare module "@vue/runtime-core" {
   interface ComponentCustomProperties {
     $store: Store<RootStoreState>,
+    $api: APICaller,
   }
 }
 

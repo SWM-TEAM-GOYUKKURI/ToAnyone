@@ -15,6 +15,8 @@ export default class SignInWithGoogle extends Vue {
     return process.env.VUE_APP_SIGNIN_GOOGLE_CLIENT_ID;
   }
 
+  mounted(): void { this.onScriptLoadStateChange(); }
+
   @Watch("loaded")
   onScriptLoadStateChange() {
     if(this.loaded && window.google) {
@@ -25,7 +27,7 @@ export default class SignInWithGoogle extends Vue {
 
       window.google.accounts.id.renderButton(this.$refs.googleLoginButton, {
         type: "standard",
-        width: 400,
+        width: 250,
         theme: "outline",
         text: "signin_with",
       });

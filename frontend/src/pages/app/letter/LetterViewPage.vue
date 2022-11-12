@@ -18,15 +18,15 @@
 
     <a v-if="!lastLetterSentByMe"
        href="#"
-       class="letter-view__reply-button animation-button"
-       @click="goLetterReplyPage"><v-icon>mdi-reply</v-icon> 답장하기</a>
+       class="letter-view__reply-button button round"
+       @click="goLetterReplyPage"><v-icon>mdi-reply</v-icon> <span>답장하기</span></a>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import LetterArea from "@/components/app/letter/LetterArea.vue";
-import { beGET } from "@/util/backend";
+import { isSuccessful } from "@/util/backend";
 import { LetterItemFull } from "@/interfaces/backend";
 
 @Options({
@@ -38,11 +38,11 @@ export default class LetterViewPage extends Vue {
   letterItem!: LetterItemFull;
   dataLoaded = false;
 
-  get letterId(): string | null {
+  get letterId(): number | null {
     if(this.$route.params) {
-      return this.$route.params.letterId as string;
+      return parseInt(this.$route.params.letterId as string);
     } else {
-      return "";
+      return null;
     }
   }
 
@@ -50,11 +50,11 @@ export default class LetterViewPage extends Vue {
     if(this.dataLoaded && this.letterItem) {
       if(this.letterItem.replyLetters && this.letterItem.replyLetters.length > 0) {
         const lastReplyLetter = this.letterItem.replyLetters[this.letterItem.replyLetters.length - 1];
-        if(lastReplyLetter.senderName === this.$store.state.auth.userBasicInfo!.nickname) {
+        if(lastReplyLetter.senderName === this.$store.state.user.user!.nickname) {
           return true;
         }
       } else {
-        if(this.letterItem.senderName === this.$store.state.auth.userBasicInfo!.nickname) {
+        if(this.letterItem.senderName === this.$store.state.user.user!.nickname) {
           return true;
         }
       }
@@ -65,21 +65,50 @@ export default class LetterViewPage extends Vue {
 
   beforeMount(): void {
     if(!this.letterId) {
+      alert("편지 정보가 없습니다.");
       this.$router.replace({ name: "main" });
     }
   }
 
   async mounted() {
-    const response = await beGET<LetterItemFull>(`/letter/inbox/${this.$route.params.letterId}`, null, { credentials: this.$store.state.auth.token! });
+    let error = false;
 
-    if(response.statusCode === 200 && response.data) {
-      this.letterItem = response.data;
+    if(this.letterId) {
+      /* Load letter contents */
+      const response = await this.$api.getLetter(this.letterId!);
 
-      this.dataLoaded = true;
-    } else {
-      // TEMP ALERT
-      alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
+      if(isSuccessful(response.statusCode) && response.data) {
+        this.letterItem = response.data;
+
+        this.dataLoaded = true;
+      } else {
+        // TEMP ALERT
+        alert(`편지 데이터 불러오는 중 오류: ${response.statusCode}`);
+        error = true;
+      }
+
+      /* Letter read state update */
+      const readStateUpdateResponse = await this.$api.updateLetterReadState(this.letterId!);
+
+      if(!isSuccessful(readStateUpdateResponse.statusCode)) {
+        // TEMP ALERT
+        alert(`편지 읽기 상태 업데이트 중 오류: ${readStateUpdateResponse.statusCode}`);
+        error = true;
+      }
+
+      /* Update global unread letters */
+      // Load unread letters and save it
+      if(!(await this.$api.updateUnreadLetters(this))) {
+        // TEMP ALERT
+        alert("편지 보관 목록을 업데이트하는 중 오류");
+      }
     }
+
+    if(error) {
+      this.$router.back();
+    }
+
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   goLetterReplyPage(): void {
@@ -99,28 +128,22 @@ export default class LetterViewPage extends Vue {
   padding: 1rem 0;
 
   .letter-view-area {
-    width: 80vw;
-    min-height: 50vh;
+    min-height: 70vh;
     margin: 3rem auto;
+    max-width: 100%;
 
     &.reply {
-      width: 70vw;
+      width: calc(var(--letter-area-width) - 2rem);
     }
   }
 
   .letter-view {
     &__reply-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      padding: 1em 1.5em;
       font-size: 1.25em;
-      background-color: $color-secondary;
       box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.5);
-      border-radius: 999999rem;
       white-space: pre;
     }
   }
