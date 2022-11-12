@@ -1,1 +1,1 @@
-# Purifying Text
+# Text Purifier
