@@ -25,7 +25,7 @@
       <div class="profile__statistics__statistics">
         <h1><v-icon>mdi-chart-timeline-variant</v-icon> 통계</h1>
 
-        <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ signupDateFormatted }}</span>에 가입했어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ builtData.signupDateString }}</span>에 가입했어요.</span></div>
         <div class="button narrow"><v-icon>mdi-login-variant</v-icon> <span>총 <span class="t-primary">{{ builtData.signinDays }}일</span> 동안 To. Anyone을 찾아왔어요.</span></div>
         <div class="button narrow"><v-icon>mdi-email-send</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.sentLetterCount }}통</span>의 편지를 보냈어요.</span></div>
         <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
@@ -66,6 +66,20 @@ import ProfileImage from "@/components/app/global/ProfileImage.vue";
 import Achievements from "@/data/json/achievements.json";
 import { UserProfileAgeName, UserProfileGenderName } from "@/data/profile-data";
 
+interface ProfilePageData {
+  profileImageUrl?: string,
+  age: UserProfileAgeName,
+  gender: UserProfileGenderName,
+  points: number,
+  achievementsCount: number,
+  signupDate: Date,
+  signupDateString: string,
+  signinDays: number,
+  sentLetterCount: number,
+  receivedLetterCount: number,
+  achivements: Record<number, boolean>,
+}
+
 @Options({
   components: {
     InAppDialog,
@@ -77,24 +91,22 @@ export default class ProfilePage extends Vue {
   UserProfileAgeName = UserProfileAgeName;
   UserProfileGenderName = UserProfileGenderName;
 
-  builtData = {
+  builtData: ProfilePageData = {
     profileImageUrl: "https://picsum.photos/seed/toanyone/300",
-    age: "",
-    gender: "",
+    age: UserProfileAgeName.NOT_SELECTED,
+    gender: UserProfileGenderName.NOT_SELECTED,
     points: 0,
     achievementsCount: 0,
-
-    signupDate: new Date(),
+    signupDate: new Date("2000-01-01"),
     signinDays: 0,
     sentLetterCount: 0,
     receivedLetterCount: 0,
+    achivements: { },
 
-    achivements: { 1: true, 2: false, 3: true, 4: true, 5: false, 6: false, 7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false, 14: false, 15: true, 16: true, 17: false, 18: false },
+    get signupDateString(): string {
+      return `${this.signupDate.getFullYear()}년 ${this.signupDate.getMonth() + 1}월 ${this.signupDate.getDate()}일`;
+    },
   };
-
-  get signupDateFormatted(): string {
-    return `${this.builtData.signupDate.getFullYear()}년 ${this.builtData.signupDate.getMonth() + 1}월 ${this.builtData.signupDate.getDate()}일`;
-  }
 
   async mounted() {
     // Request user info data and register to store
@@ -115,6 +127,11 @@ export default class ProfilePage extends Vue {
       return;
     }
 
+    const achivList: Record<number, boolean> = {};
+    for(const achiv of achivResponse.data) {
+      achivList[achiv.level] = true;
+    }
+
     // Build data to display
     if(response.data) {
       this.builtData = {
@@ -127,8 +144,7 @@ export default class ProfilePage extends Vue {
         signinDays: response.data.loginCountValue,
         sentLetterCount: response.data.sendLetterCountValue,
         receivedLetterCount: response.data.receiveCount,
-
-        // TODO: achivResponse (Achievements)
+        achivements: achivList,
       };
     }
   }
@@ -245,7 +261,7 @@ export default class ProfilePage extends Vue {
             right: -0.3em;
             bottom: -0.3em;
             font-size: 10em;
-            opacity: 0.2;
+            opacity: 0.33;
           }
         }
       }
