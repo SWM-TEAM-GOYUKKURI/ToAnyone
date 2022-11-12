@@ -117,6 +117,7 @@ export default class LetterArea extends Vue {
 .letter-area {
   display: flex;
   position: relative;
+  width: var(--letter-area-width);
   padding: 1em;
   font-size: 1.5em;
   background-color: #FFF7E8;  // 기본값: 개나리 색상

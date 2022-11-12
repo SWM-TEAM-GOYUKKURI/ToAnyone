@@ -4,6 +4,8 @@
   --app-navbar-padding-y: 1rem;
   --app-navbar-height-base: 64px;
 
+  --letter-area-width: 600px;
+
   // Computed
   --app-navbar-height: calc(var(--app-navbar-height-base) + (var(--app-navbar-padding-y) * 2));
 
