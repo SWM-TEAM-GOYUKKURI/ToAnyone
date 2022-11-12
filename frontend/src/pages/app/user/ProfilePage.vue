@@ -79,15 +79,15 @@ export default class ProfilePage extends Vue {
 
   builtData = {
     profileImageUrl: "https://picsum.photos/seed/toanyone/300",
-    age: "00대",
-    gender: "남성",
-    points: 3000,
-    achievementsCount: 5,
+    age: "",
+    gender: "",
+    points: 0,
+    achievementsCount: 0,
 
-    signupDate: new Date("2022-06-01"),
-    signinDays: 16,
-    sentLetterCount: 42,
-    receivedLetterCount: 51,
+    signupDate: new Date(),
+    signinDays: 0,
+    sentLetterCount: 0,
+    receivedLetterCount: 0,
 
     achivements: { 1: true, 2: false, 3: true, 4: true, 5: false, 6: false, 7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false, 14: false, 15: true, 16: true, 17: false, 18: false },
   };
