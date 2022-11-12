@@ -126,8 +126,7 @@ export default class LetterViewPage extends Vue {
   padding: 1rem 0;
 
   .letter-view-area {
-    width: 80vw;
-    min-height: 50vh;
+    min-height: 70vh;
     margin: 3rem auto;
 
     &.reply {
