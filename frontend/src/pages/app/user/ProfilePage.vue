@@ -42,7 +42,7 @@
              :class="{ disabled: !builtData.achivements[index] }">
           <div class="content">
             <span class="title">{{ achiv.name }}</span>
-            <span class="desc">{{ achiv.desc }}</span>
+            <span class="desc"><strong>[ + {{ achiv.point.toLocaleString() }}P ]</strong> {{ achiv.desc }}</span>
           </div>
 
           <v-icon v-if="builtData.achivements[index]" class="done">mdi-check</v-icon>
