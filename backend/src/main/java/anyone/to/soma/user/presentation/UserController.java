@@ -48,6 +48,14 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @DeleteMapping("user")
+    @LoginRequired
+    public ResponseEntity<Void> deleteUser(@LoginUser User user) {
+        userService.deleteUser(user);
+        return ResponseEntity.noContent().build();
+
+    }
+
     @GetMapping("/user/me/achievement")
     @LoginRequired
     public ResponseEntity<List<Achievement>> retrieveUserAchievement(@LoginUser User user) {
