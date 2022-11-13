@@ -48,5 +48,5 @@ swagger:
 
 
 request:
-  origins: https://localhost:3000, https://code.miku.cloud:8443, https://dev.toanyone.im
+  origins: https://localhost:3000, https://code.miku.cloud:8443, https://dev.toanyone.im, https://toanyone.im
 

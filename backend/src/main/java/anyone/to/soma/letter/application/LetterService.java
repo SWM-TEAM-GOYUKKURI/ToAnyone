@@ -85,8 +85,8 @@ public class LetterService {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
         letter.checkValidReader(reader.getId());
 
-        if (letter.getReplyLetters().isEmpty() && reader.getEmail().equals(letter.getReceiver().getEmail())){
-            letter.read();
+        if (letter.getReplyLetters().isEmpty()){
+            if(reader.getEmail().equals(letter.getReceiver().getEmail())) letter.read();
             return;
         }
 
