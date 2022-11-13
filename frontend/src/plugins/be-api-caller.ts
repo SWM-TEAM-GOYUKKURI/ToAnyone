@@ -35,8 +35,7 @@ export default class APICaller {
   }
 
   async deleteUser(): Promise<BECallReturn<null>> {
-    // NOT YET IMPLEMENTED IN BACKEND
-    return await beDEL("/user/me", null, { credentials: this.token });
+    return await beDEL("/user", null, { credentials: this.token });
   }
 
   async putUserSignupData(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {
