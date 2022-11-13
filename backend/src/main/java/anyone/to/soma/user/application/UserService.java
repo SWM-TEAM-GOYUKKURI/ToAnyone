@@ -49,15 +49,23 @@ public class UserService {
         profile.addPsychologicalExam(request.getPsychologicalExams());
         user.updateProfile(profile);
     }
-
+    @Transactional(readOnly = true)
     public User retrieveUserData(User user) {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
         return foundUser;
     }
 
+    @Transactional(readOnly = true)
     public List<Achievement> retrieveUserAchievement(User user) {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
         List<Achievement> userAchievments = achievementRepository.findAllByUserId(foundUser.getId());
         return userAchievments;
     }
+
+    @Transactional()
+    public void updateUserImage(User user, String imageUrl) {
+        User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
+        foundUser.updateImage(imageUrl);
+    }
 }
+

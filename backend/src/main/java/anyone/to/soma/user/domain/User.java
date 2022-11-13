@@ -114,4 +114,8 @@ public class User extends AbstractAggregateRoot<User> {
     public Long getPoint() {
         return point.getValue();
     }
+
+    public void updateImage(String imageUrl) {
+        this.userImageUrl = imageUrl;
+    }
 }
