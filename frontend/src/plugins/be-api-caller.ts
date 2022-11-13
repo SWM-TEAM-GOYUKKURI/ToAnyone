@@ -1,6 +1,6 @@
 import { Vue } from "vue-class-component";
 import { LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserAchievementInfoResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
-import { BECallReturn, beGET, bePOST, bePUT, filterUnreadLetters, isSuccessful } from "@/util/backend";
+import { BECallReturn, beDEL, beGET, bePOST, bePUT, filterUnreadLetters, isSuccessful } from "@/util/backend";
 import { UserInfo } from "@/interfaces/internal";
 
 export default class APICaller {
@@ -34,8 +34,16 @@ export default class APICaller {
     return await beGET<UserAchievementInfoResponse>("/user/me/achievement", null, { credentials: this.token });
   }
 
-  async putUserSignupData(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {
+  async deleteUser(): Promise<BECallReturn<null>> {
+    return await beDEL("/user", null, { credentials: this.token });
+  }
+
+  async modifyUserProfile(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {
     return await bePUT("/user", data, { credentials: this.token });
+  }
+
+  async updateUserProfileImage(imageId: number): Promise<BECallReturn<null>> {
+    return await bePUT("/user/me/image", { userImageUrl: imageId.toString() }, { credentials: this.token });
   }
 
   async writeLetter(data: LetterWriteRequest): Promise<BECallReturn<null>> {

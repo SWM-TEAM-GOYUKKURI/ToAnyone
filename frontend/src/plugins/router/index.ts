@@ -11,6 +11,7 @@ import ItemStorePage from "@/pages/app/store/ItemStorePage.vue";
 import ItemStoreItemsView from "@/pages/app/store/ItemStoreItemsView.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
 import ProfileEditPage from "@/pages/app/user/ProfileEditPage.vue";
+import ProfileImageSelectView from "@/pages/app/user/ProfileImageSelectView.vue";
 import PointHelpView from "@/pages/app/user/PointHelpView.vue";
 import LetterWritePage from "@/pages/app/letter/LetterWritePage.vue";
 import LetterViewPage from "@/pages/app/letter/LetterViewPage.vue";
@@ -62,6 +63,15 @@ const routes: Array<RouteRecordRaw> = [
               hideNavbarMenu: true,
             },
             component: ProfileEditPage,
+          },
+          {
+            path: "edit/image",
+            name: "profile-edit-image",
+            meta: {
+              title: "프로필",
+              hideNavbarMenu: true,
+            },
+            component: ProfileImageSelectView,
           },
           {
             path: "pointhelp",

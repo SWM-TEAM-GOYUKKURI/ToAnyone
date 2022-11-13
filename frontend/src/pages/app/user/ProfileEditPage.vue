@@ -57,6 +57,7 @@
         <button class="button"
                 @click="$router.back()">닫기</button>
         <button class="button primary"
+                :disabled="!formReqFulfilled"
                 @click="onProfileEditButtonClick">수정</button>
       </div>
     </div>
@@ -66,16 +67,33 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS } from "@/data/profile-data";
+import { isSuccessful } from "@/util/backend";
+import { UserProfileAge, UserProfileGender, UserProfileJob, UserProfileUpdateRequest } from "@/interfaces/backend";
 
 export default class ProfileEditPage extends Vue {
   readonly genderItems = GENDER_ITEMS;
   readonly ageItems = AGE_ITEMS;
   readonly jobItems = JOB_ITEMS;
 
-  formData = { };
+  formData: UserProfileUpdateRequest = {
+    nickname: "",
+    age: UserProfileAge.NOT_SELECTED,
+    gender: UserProfileGender.NOT_SELECTED,
+    job: UserProfileJob.NOT_SELECTED,
+    psychologicalExams: [],
+  };
+
+  get formReqFulfilled(): boolean {
+    return (
+      !!this.formData.nickname &&
+      this.formData.nickname.length >= 4
+    );
+  }
 
   mounted(): void {
     this.formData = {
+      ...this.$store.state.user.user!.profile,
+
       nickname: this.$store.state.user.user!.nickname,
       age: this.$store.state.user.user!.profile.age,
       gender: this.$store.state.user.user!.profile.gender,
@@ -83,18 +101,48 @@ export default class ProfileEditPage extends Vue {
     };
   }
 
-  onProfileEditButtonClick(): void {
-    // TODO
-    alert("프로필 수정은 추후 구현 예정입니다.");
+  async onProfileEditButtonClick() {
+    /* Edit profile */
+    const response = await this.$api.modifyUserProfile(this.formData);
+
+    if(isSuccessful(response.statusCode)) {
+      alert("프로필 수정 성공!");
+    } else {
+      alert("프로필을 수정할 수 없습니다. " + response.statusCode);
+    }
+
+    /* Update user */
+    const userResponse = await this.$api.getUserInfo();
+
+    if(isSuccessful(userResponse.statusCode)) {
+      this.$store.commit("user/updateUserInfo", userResponse.data);
+      this.$emit("updateProfileDataRequest");
+      this.$router.back();
+    } else {
+      alert("사용자 정보를 가져올 수 없습니다. " + userResponse.statusCode);
+    }
   }
 
-  onDeleteAccountButtonClick(): void {
-    // TODO: delete account
-    const choice = confirm("계정을 삭제할까요? 계정을 삭제하면 지금까지 보낸 편지 내역과 포인트가 사라져요.");
+  async onDeleteAccountButtonClick() {
+    const choice = confirm("계정을 삭제할까요? 계정을 삭제하면 지금까지 보낸 편지 내역과 포인트가 사라지고 복구할 수 없어요.");
 
     if(choice) {
-      // TODO
-      alert("계정 삭제는 추후 구현 예정입니다.");
+      const prpt = prompt("계정 삭제 확인을 위해 \"계정 삭제\"라고 입력해주세요.");
+
+      if(prpt && prpt === "계정 삭제") {
+        const response = await this.$api.deleteUser();
+
+        if(isSuccessful(response.statusCode)) {
+          alert("계정을 삭제했어요. 언제든지 다시 가입할 수 있어요.\n\nTo. Anyone을 사용해 주셔서 감사합니다!");
+          window.location.href = this.$router.resolve({ name: "logout" }).href;
+        } else {
+          alert("서버 오류로 계정을 삭제할 수 없었어요. " + response.statusCode);
+        }
+      } else if(!prpt) {
+        alert("계정 삭제를 취소했어요.");
+      } else {
+        alert("확인 입력을 다르게 입력하셨어요. 계정 삭제를 진행하지 않을게요.");
+      }
     }
   }
 }

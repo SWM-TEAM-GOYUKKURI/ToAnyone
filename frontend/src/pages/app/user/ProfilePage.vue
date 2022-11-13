@@ -2,8 +2,10 @@
   <div id="profile-page-wrapper">
     <div class="profile__my-area">
       <div class="profile__my-area__me">
-        <profile-image :srcUrl="builtData.profileImageUrl"
-                       size="large" />
+        <profile-image :srcUrl="profileImageUrl"
+                       size="large"
+                       :profilePage="true"
+                       @profileImageEditClick="$router.push({ name: 'profile-edit-image' })" />
 
         <div class="profile__my-area__me__info">
           <span class="nickname"><strong>{{ $store.state.user.user.nickname }}</strong></span>
@@ -50,9 +52,10 @@
 
     <router-view v-slot="{ Component }">
       <v-slide-y-transition>
-        <in-app-dialog v-if="$route.name === 'profile-edit' || $route.name === 'point-help'"
-                      :fullscreenOnVPSmall="true">
-          <component :is="Component" />
+        <in-app-dialog v-if="$route.name === 'profile-edit' || $route.name === 'point-help' || $route.name === 'profile-edit-image'"
+                      :fullscreenOnVPSmall="$route.name === 'profile-edit-image' ? false : true">
+          <component :is="Component"
+                     @updateProfileDataRequest="onUpdateProfileDataRequest" />
         </in-app-dialog>
       </v-slide-y-transition>
     </router-view>
@@ -65,9 +68,10 @@ import InAppDialog from "@/components/InAppDialog.vue";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
 import Achievements from "@/data/json/achievements.json";
 import { UserProfileAgeName, UserProfileGenderName } from "@/data/profile-data";
+import { getPicsumUrl } from "@/util/path-transform";
 
 interface ProfilePageData {
-  profileImageUrl?: string,
+  profileImageId: number,
   age: UserProfileAgeName,
   gender: UserProfileGenderName,
   points: number,
@@ -91,7 +95,7 @@ export default class ProfilePage extends Vue {
   UserProfileGenderName = UserProfileGenderName;
 
   builtData: ProfilePageData = {
-    profileImageUrl: "https://picsum.photos/seed/toanyone/300",
+    profileImageId: 0,
     age: UserProfileAgeName.NOT_SELECTED,
     gender: UserProfileGenderName.NOT_SELECTED,
     points: 0,
@@ -102,6 +106,10 @@ export default class ProfilePage extends Vue {
     receivedLetterCount: 0,
     achivements: { },
   };
+
+  get profileImageUrl(): string {
+    return getPicsumUrl(this.builtData.profileImageId);
+  }
 
   get signupDateString(): string {
     return `${this.builtData.signupDate.getFullYear()}년 ${this.builtData.signupDate.getMonth() + 1}월 ${this.builtData.signupDate.getDate()}일`;
@@ -135,6 +143,7 @@ export default class ProfilePage extends Vue {
     if(response.data) {
       this.builtData = {
         ...this.builtData,
+        profileImageId: parseInt(response.data.userImageUrl),
         age: UserProfileAgeName[response.data.profile.age],
         gender: UserProfileGenderName[response.data.profile.gender],
         points: response.data.point,
@@ -144,6 +153,23 @@ export default class ProfilePage extends Vue {
         sentLetterCount: response.data.sendLetterCountValue,
         receivedLetterCount: response.data.receiveCount,
         achivements: achivList,
+      };
+    }
+  }
+
+  onUpdateProfileDataRequest(): void {
+    if(this.$store.state.user.user) {
+      this.builtData = {
+        ...this.builtData,
+        profileImageId: parseInt(this.$store.state.user.user.userImageUrl),
+        age: UserProfileAgeName[this.$store.state.user.user.profile.age],
+        gender: UserProfileGenderName[this.$store.state.user.user.profile.gender],
+        points: this.$store.state.user.user.point,
+        achievementsCount: this.$store.state.user.user.achievementCountValue,
+        signupDate: new Date(this.$store.state.user.user.createdAt),
+        signinDays: this.$store.state.user.user.loginCount,
+        sentLetterCount: this.$store.state.user.user.sendLetterCountValue,
+        receivedLetterCount: this.$store.state.user.user.receiveCount,
       };
     }
   }
