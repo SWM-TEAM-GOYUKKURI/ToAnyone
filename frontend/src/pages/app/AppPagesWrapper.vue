@@ -36,15 +36,13 @@ export default class AppPagesWrapper extends Vue {
       }
     }
 
-    this.criticalDataLoaded = true;
-  }
-
-  async mounted() {
     // Load unread letters and save it
     if(!(await this.$api.updateUnreadLetters(this))) {
       // TEMP ALERT
       alert("편지 보관 목록을 업데이트하는 중 오류");
     }
+
+    this.criticalDataLoaded = true;
   }
 }
 </script>
