@@ -30,7 +30,7 @@ public class AchievementPolicy {
         }
     }
 
-    @EventListener
+    @EventListener(condition = "#letterCreatedEvent.sentCount==0")
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
         if (userRepository.existsById(userId) && letterRepository.existsById(letterCreatedEvent.getId())) {
