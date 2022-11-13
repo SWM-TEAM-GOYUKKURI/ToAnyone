@@ -10,7 +10,7 @@
           <hr />
           <span class="info">
             <strong v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED']">{{ builtData.age }}</strong>
-            <span v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED'] || builtData.gender !== UserProfileGenderName['NOT_SELECTED']">/</span>
+            <span v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED'] && builtData.gender !== UserProfileGenderName['NOT_SELECTED']"> &bull; </span>
             <strong v-if="builtData.gender !== UserProfileGenderName['NOT_SELECTED']">{{ builtData.gender }}</strong>
           </span>
           <span class="info">보유 포인트 <strong>{{ builtData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>
