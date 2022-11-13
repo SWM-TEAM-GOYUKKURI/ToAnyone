@@ -30,6 +30,7 @@ public class AchievementPolicy {
         if (userRepository.existsById(userId)) {
             achievementRepository.save(new Achievement(LEVEL_ONE.getLevel(), LEVEL_ONE.getName(), LEVEL_ONE.getTag(), userId));
             userRepository.increaseUserPoint(userId, LEVEL_ONE.getPoint());
+            userRepository.increaseAchievementCount(userId);
         }
     }
 
@@ -40,6 +41,7 @@ public class AchievementPolicy {
         if (userRepository.existsById(userId) && letterRepository.countLetterBySenderId(userId)==1){
             achievementRepository.save(new Achievement(LEVEL_TWO.getLevel(), LEVEL_TWO.getName(), LEVEL_TWO.getTag(), userId));
             userRepository.increaseUserPoint(userId, LEVEL_TWO.getPoint());
+            userRepository.increaseAchievementCount(userId);
         }
     }
 
@@ -49,6 +51,7 @@ public class AchievementPolicy {
         if (userRepository.existsById(userId) && letterRepository.existsById(letterReadEvent.getId())) {
             achievementRepository.save(new Achievement(LEVEL_THREE.getLevel(), LEVEL_THREE.getName(), LEVEL_THREE.getTag(), userId));
             userRepository.increaseUserPoint(userId, LEVEL_THREE.getPoint());
+            userRepository.increaseAchievementCount(userId);
         }
     }
 }
