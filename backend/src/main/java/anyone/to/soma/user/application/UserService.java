@@ -34,7 +34,6 @@ public class UserService {
 
         User user = userRepository.findUserByUniqueId(uniqueId).orElseThrow(IllegalArgumentException::new);
         user.recordLastLogin();
-        userRepository.increaseLoginCount(user.getId());
 
         String accessToken = jwtProvider.createAccessToken(user.getEmail());
         return new LoginResponse(user.getName(), user.getEmail(), accessToken, user.isRegistrationFormFilled());

@@ -13,11 +13,15 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends AbstractAggregateRoot<User> {
+
+    private static final ZoneId ZONE_ID = ZoneId.of("Asia/Tokyo");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +47,7 @@ public class User extends AbstractAggregateRoot<User> {
     private Instant createdAt = Instant.now();
 
     private Instant lastLogin;
+    private int loginCount = 0;
 
     private Point point = new Point();
 
@@ -91,9 +96,18 @@ public class User extends AbstractAggregateRoot<User> {
     }
 
     public void recordLastLogin() {
-        this.lastLogin = Instant.now();
+        Instant now = Instant.now();
+        if (instantToDay(now) != instantToDay(lastLogin)) {
+            loginCount++;
+        }
+
+        this.lastLogin = now;
+
     }
 
+    private int instantToDay(Instant instant) {
+        return LocalDateTime.ofInstant(instant, ZONE_ID).getDayOfYear();
+    }
 
     public Long getPoint() {
         return point.getValue();

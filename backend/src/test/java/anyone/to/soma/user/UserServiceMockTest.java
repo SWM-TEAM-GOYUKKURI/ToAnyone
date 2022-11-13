@@ -77,7 +77,7 @@ public class UserServiceMockTest {
         );
         verify(userRepository, times(1)).existsUserByUniqueId(anyString());
         verify(userRepository, times(1)).findUserByUniqueId(anyString());
-        verify(userRepository, times(1)).increaseLoginCount(any());
+//        verify(userRepository, times(1)).increaseLoginCount(any());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -100,7 +100,7 @@ public class UserServiceMockTest {
         verify(userRepository, times(1)).existsUserByUniqueId(anyString());
         verify(userRepository, times(1)).findUserByUniqueId(anyString());
         verify(userRepository, times(1)).save(any(User.class));
-        verify(userRepository, times(1)).increaseLoginCount(any());
+//        verify(userRepository, times(1)).increaseLoginCount(any());
         verifyNoMoreInteractions(userRepository);
     }
 
