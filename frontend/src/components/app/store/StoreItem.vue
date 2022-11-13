@@ -75,6 +75,7 @@ export default class StoreItem extends Vue {
   &__name {
     font-size: 1.2em;
     padding-top: 0.5em;
+    white-space: nowrap;
   }
 }
 </style>
