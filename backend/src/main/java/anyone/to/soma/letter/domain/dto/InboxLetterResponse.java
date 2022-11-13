@@ -4,6 +4,7 @@ import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterDecoration;
 import anyone.to.soma.letter.domain.ReplyLetter;
+import anyone.to.soma.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,30 +25,37 @@ public class InboxLetterResponse {
     private String content;
     private LocalDateTime sendDate;
     private String receiverName;
+    private String receiverImageUrl;
     private String senderName;
+    private String senderImageUrl;
     private boolean isRead;
+    private boolean replied;
     private List<DecorationType> decorations;
 
-    public static List<InboxLetterResponse> sentLetterListOf(List<Letter> letters, String senderName) {
+    public static List<InboxLetterResponse> sentLetterListOf(List<Letter> letters, User sender) {
         return letters.stream()
-                .map(s -> InboxLetterResponse.sentLetterOf(s, senderName))
+                .map(s -> InboxLetterResponse.sentLetterOf(s, sender))
                 .collect(Collectors.toList());
     }
 
-    private static InboxLetterResponse sentLetterOf(Letter letter, String senderName) {
+    private static InboxLetterResponse sentLetterOf(Letter letter, User sender) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
-        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), letter.getReceiver().getNickname(), senderName, true, letterDecorations);
+        User receiver = letter.getReceiver();
+        boolean replied = letter.getReplyLetters().size() > 0;
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(), true, replied, letterDecorations);
     }
 
-    public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
+    public static List<InboxLetterResponse> listOf(List<Letter> letters, User receiver) {
         return letters.stream()
-                .map(s -> InboxLetterResponse.of(s, receiverName))
+                .map(s -> InboxLetterResponse.of(s, receiver))
                 .collect(Collectors.toList());
     }
 
-    private static InboxLetterResponse of(Letter letter, String receiverName) {
+    private static InboxLetterResponse of(Letter letter, User receiver) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
-        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
+        User sender = letter.getSender();
+        boolean replied = letter.getReplyLetters().size() > 0;
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(),readPolicy(letter), replied, letterDecorations);
     }
 
 

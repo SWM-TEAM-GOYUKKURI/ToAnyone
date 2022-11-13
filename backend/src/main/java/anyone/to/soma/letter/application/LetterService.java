@@ -30,14 +30,14 @@ public class LetterService {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
         letter.checkValidReader(userId);
 
-        return SingleLetterResponse.of(letter, letter.getReceiver().getNickname(), letter.getReplyLetters());
+        return SingleLetterResponse.of(letter, letter.getReceiver(), letter.getReplyLetters());
     }
 
     @Transactional(readOnly = true)
     public List<InboxLetterResponse> retrieveInboxAllLetters(Long receiverId) {
         List<Letter> letter = letterRepository.findLettersByReceiverId(receiverId);
         User receiver = userRepository.findById(receiverId).orElseThrow(NoSuchRecordException::new);
-        return InboxLetterResponse.listOf(letter, receiver.getNickname());
+        return InboxLetterResponse.listOf(letter, receiver);
     }
 
     @Transactional
@@ -77,7 +77,7 @@ public class LetterService {
 
     public List<InboxLetterResponse> retrieveSentLetters(User sender) {
         List<Letter> sentLetters = letterRepository.findLettersBySenderId(sender.getId());
-        return InboxLetterResponse.sentLetterListOf(sentLetters, sender.getNickname());
+        return InboxLetterResponse.sentLetterListOf(sentLetters, sender);
     }
 
     @Transactional

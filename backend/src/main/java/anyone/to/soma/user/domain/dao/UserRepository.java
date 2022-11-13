@@ -32,6 +32,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void increaseSendCount(@Param("userId") Long userId);
 
     @Modifying
+    @Query("UPDATE User u SET u.userAchievement.achievementCount = u.userAchievement.achievementCount + 1 WHERE u.id=:userId")
+    void increaseAchievementCount(@Param("userId") Long userId);
+
+    @Modifying
     @Query("UPDATE User u SET u.point.point = u.point.point + :point WHERE u.id=:userId")
     void increaseUserPoint(@Param("userId") Long userId, @Param("point") Long point);
 
