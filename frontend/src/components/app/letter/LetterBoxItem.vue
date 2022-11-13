@@ -14,9 +14,11 @@
 
         <span style="font-weight: bold">{{ sentByMe ? letterItem.receiverName : letterItem.senderName }}</span>
       </div>
-      <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
+      <div class="letter-box-item__content-area__preview-content"><strong v-if="letterItem.replied">답장 : </strong> {{ letterItem.content }}</div>
       <div class="letter-box-item__content-area__send-date"><span class="vp-small-show">{{ sentByMe ? "보낸 편지" : "받은 편지" }} &bull; </span>{{ new Date(letterItem.sendDate).toLocaleDateString("ko-KR") }}에 전송됨</div>
     </div>
+
+    <div v-if="!letterItem.read" class="letter-box-item__unread-icon" />
   </router-link>
 </template>
 
@@ -40,6 +42,7 @@ export default class LetterBoxItem extends Vue {
 <style lang="scss">
 .letter-box-item {
   cursor: pointer;
+  position: relative;
   margin: 1em 0;
   border-radius: 1.5em !important;
   box-shadow: 0 0.33em 0.75em rgba($color-dark, 0.25);
@@ -79,6 +82,17 @@ export default class LetterBoxItem extends Vue {
       text-align: right;
       opacity: 0.8;
     }
+  }
+
+  &__unread-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(25%, -25%);
+    width: 1.25em;
+    height: 1.25em;
+    border-radius: 11111em;
+    background-color: $color-primary;
   }
 }
 </style>
