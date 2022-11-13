@@ -14,7 +14,7 @@
 
         <span style="font-weight: bold">{{ sentByMe ? letterItem.receiverName : letterItem.senderName }}</span>
       </div>
-      <div class="letter-box-item__content-area__preview-content">{{ letterItem.content }}</div>
+      <div class="letter-box-item__content-area__preview-content"><strong v-if="letterItem.replied">답장 : </strong> {{ letterItem.content }}</div>
       <div class="letter-box-item__content-area__send-date"><span class="vp-small-show">{{ sentByMe ? "보낸 편지" : "받은 편지" }} &bull; </span>{{ new Date(letterItem.sendDate).toLocaleDateString("ko-KR") }}에 전송됨</div>
     </div>
   </router-link>
