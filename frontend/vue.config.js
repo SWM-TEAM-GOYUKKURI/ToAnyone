@@ -11,11 +11,11 @@ module.exports = defineConfig({
     loaderOptions: {
       sass: {
         additionalData: (content, loaderContext) => {
-          if(loaderContext.resourcePath.endsWith("/styles/variables.scss")) {
+          if(loaderContext.resourcePath.endsWith("/styles/globals.scss")) {
             return content;
           }
 
-          return `@import "@/styles/variables.scss"; ${content}`;
+          return `@import "@/styles/globals.scss"; ${content}`;
         },
       },
     },

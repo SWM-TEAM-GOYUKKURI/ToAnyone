@@ -1,0 +1,19 @@
+/* Font families */
+$font-family-ui: "MaruBuri", "NanumMyeongjo", "나눔명조", "Noto Serif CJK KR", "Noto Serif", serif;
+
+/* Color Palette */
+$color-dark: #171522;
+$color-background: #232339;
+$color-secondary: #53506B;
+$color-primary: #FFE07D;
+$color-foreground: #E5E5EB;
+
+// TEMP, to be deleted
+$color-tertiary: #3F3351;
+
+/* Global layout values */
+$main-sidebar-width: 300px;
+
+/* Viewport breakpoint */
+$viewport-small-max-width: 700px;
+$viewport-main-small-max-width: $viewport-small-max-width + $main-sidebar-width;

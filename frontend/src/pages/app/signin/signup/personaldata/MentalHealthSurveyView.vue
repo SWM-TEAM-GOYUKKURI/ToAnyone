@@ -16,12 +16,12 @@
     </div>
 
     <div class="signup-personal-data-survey__buttons">
-      <div class="signup-personal-data-survey__buttons__back animation-button"
-           @click="onBackButtonClick">〈&nbsp; 뒤로</div>
+      <button class="signup-personal-data-survey__buttons__back button"
+           @click="onBackButtonClick"><span><v-icon>mdi-chevron-left</v-icon></span> <span>뒤로</span></button>
 
-      <div class="signup-personal-data-survey__buttons__done animation-button"
-           :class="{ 'disabled': isFormValid }"
-           @click="onDoneButtonClick">확인 &nbsp;✓</div>
+      <button class="signup-personal-data-survey__buttons__done button primary"
+           :disabled="!formReqFulfilled"
+           @click="onDoneButtonClick"><span>완료 </span><span><v-icon>mdi-check</v-icon></span></button>
     </div>
   </div>
 </template>
@@ -75,9 +75,14 @@ export default class MentalHealthSurveyView extends Vue {
 
   mentalHealthData = {};
 
-  get isFormValid(): boolean {
-    return (Object.keys(this.mentalHealthData).length !== 10) &&
-          (Object.keys(this.mentalHealthData).every((p) => parseInt(p) >= 1 && parseInt(p) <= 10));
+  get formReqFulfilled(): boolean {
+    try {
+      return (Object.keys(this.mentalHealthData).length === 10) &&
+            (Object.keys(this.mentalHealthData).every((p) => parseInt(p) >= 1 && parseInt(p) <= 10)) &&
+            (Object.values<number>(this.mentalHealthData).every((p) => p >= 1 && p <= 4));
+    } catch(e) {
+      return false;
+    }
   }
 
   onBackButtonClick(): void {
@@ -85,7 +90,7 @@ export default class MentalHealthSurveyView extends Vue {
   }
 
   onDoneButtonClick(): void {
-    if(this.isFormValid) {
+    if(this.formReqFulfilled) {
       this.$emit("submitSurvey", this.mentalHealthData);
     }
   }
@@ -97,21 +102,6 @@ export default class MentalHealthSurveyView extends Vue {
   padding-bottom: 2rem;
 
   .signup-personal-data-survey {
-    @mixin button-style {
-      cursor: pointer;
-      display: inline-block;
-      padding: 1em 2em;
-      font-size: 1.1em;
-      border-radius: 99999px;
-      box-shadow: 0 0.33rem 0.5rem rgba(#000, 0.25);
-
-      &.disabled {
-        cursor: not-allowed;
-        pointer-events: none;
-        box-shadow: none;
-        opacity: 0.5;
-      }
-    }
 
     &__content {
       display: flex;
@@ -133,14 +123,9 @@ export default class MentalHealthSurveyView extends Vue {
       align-items: center;
       justify-content: space-between;
 
-      &__back {
-        @include button-style;
-        background: rgba($color-tertiary, 0.8);
-      }
-
-      &__done {
-        @include button-style;
-        background: rgba($color-secondary, 0.8);
+      & > .button {
+        padding-left: 3em;
+        padding-right: 3em;
       }
     }
   }

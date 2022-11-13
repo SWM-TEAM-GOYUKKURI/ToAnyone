@@ -1,10 +1,14 @@
+@import "./variables.scss";
+@import "./fonts.scss";
+@import "./viewport-breakpoint.scss";
+
 html, body {
+  font-family: $font-family-ui;
   background-color: $color-background;
   color: $color-foreground;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  font-size: 1.05em;
   word-break: keep-all;
 
   &, * {
@@ -13,9 +17,14 @@ html, body {
   }
 }
 
+html {
+  overflow-y: auto;
+}
+
 a {
   color: currentColor;
   text-decoration: none;
+  text-decoration-color: currentColor;
 }
 
 hr {
@@ -30,15 +39,82 @@ hr {
   height: 100%;
 }
 
-/* Often-used transitions */
-.animation-button {
-  transition: transform 0.25s cubic-bezier(0, 0, 0, 1);
+.t-primary {
+  color: $color-primary;
+}
 
-  &:hover {
-    transform: scale(1.02);
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1em 1.5em;
+  border-radius: 0.5em;
+  background: $color-secondary;
+
+  & > * {
+    text-align: center;
+    margin: 0 0.25em;
+    &:nth-child(1) { margin: 0 0.25em 0 0; }
+    &:nth-last-child(1) { margin: 0 0 0 0.25em; }
   }
 
-  &:active {
-    transform: scale(0.98);
+  &:is(button) {
+    cursor: pointer;
+    -webkit-appearance: none;
+    border: none;
   }
+
+  &.fill-width {
+    width: 100%;
+  }
+
+  &.primary {
+    background: $color-primary;
+    color: $color-dark;
+    font-weight: bold;
+  }
+
+  &.dark {
+    background: $color-dark;
+  }
+
+  &.dark-background {
+    background: $color-background;
+  }
+
+  &.bg-transparent {
+    background: transparent;
+  }
+
+  &.narrow {
+    padding: 0.5em 0.75em;
+    font-size: 0.95em;
+  }
+
+  &.round {
+    border-radius: 9999999rem !important;
+  }
+
+  &:disabled, &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    background-color: rgba($color-secondary, 0.8);
+
+    &.primary { background-color: rgba($color-primary, 0.8); }
+    &.dark { background-color: rgba($color-dark, 0.8); }
+    &.dark-background { background-color: rgba($color-background, 0.8); }
+
+    & > * {
+      opacity: 0.33;
+    }
+  }
+}
+
+/* Vuetify v-overlay hack */
+.v-overlay-container {
+  z-index: 1000000;
+
+  & * { z-index: 1000000 !important; }
 }

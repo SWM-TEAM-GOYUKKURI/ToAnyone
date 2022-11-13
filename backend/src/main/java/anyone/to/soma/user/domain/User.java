@@ -1,22 +1,27 @@
 package anyone.to.soma.user.domain;
 
+import anyone.to.soma.user.domain.event.UserCreatedEvent;
 import anyone.to.soma.user.domain.type.LoginType;
+import anyone.to.soma.user.domain.vo.Point;
+import anyone.to.soma.user.domain.vo.UserAchievement;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.valueextraction.UnwrapByDefault;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class User {
+public class User extends AbstractAggregateRoot<User> {
+
+    private static final ZoneId ZONE_ID = ZoneId.of("Asia/Tokyo");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +40,19 @@ public class User {
     @JsonUnwrapped
     UserAchievement userAchievement = new UserAchievement();
 
-    private int receiveCount = 0 ;
+    private int receiveCount = 0;
 
     private boolean registrationFormFilled;
 
-    @CreatedDate
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
-    private Instant lastLogin;
+    private Instant lastLogin = Instant.now();
+    private int loginCount = 0;
+
+    private Point point = new Point();
+
+    private String userImageUrl = "";
+
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
@@ -50,14 +60,6 @@ public class User {
 
     public void receiveLetter() {
         this.receiveCount++;
-    }
-
-    public void sendLetter() {
-        userAchievement.increaseSendLetterCount();
-    }
-
-    public void achieve() {
-        userAchievement.increaseAchievementCount();
     }
 
     public User(String email, String name, LoginType loginType, String uniqueId) {
@@ -77,6 +79,11 @@ public class User {
         this.registrationFormFilled = false;
     }
 
+    @PostPersist
+    public void created() {
+        this.registerEvent(new UserCreatedEvent(this.id, this.name, this.email));
+    }
+
     public void updateProfile(Profile profile) {
         this.profile = profile;
         this.registrationFormFilled = true;
@@ -90,8 +97,25 @@ public class User {
         return profile.getNickname();
     }
 
-    public void recordLastLogin(){
-        this.lastLogin = Instant.now();
+    public void recordLastLogin() {
+        Instant now = Instant.now();
+        if (this.lastLogin != null && instantToDay(now) != instantToDay(lastLogin)) {
+            loginCount++;
+        }
+
+        this.lastLogin = now;
+
     }
 
+    private int instantToDay(Instant instant) {
+        return LocalDateTime.ofInstant(instant, ZONE_ID).getDayOfYear();
+    }
+
+    public Long getPoint() {
+        return point.getValue();
+    }
+
+    public void updateImage(String imageUrl) {
+        this.userImageUrl = imageUrl;
+    }
 }

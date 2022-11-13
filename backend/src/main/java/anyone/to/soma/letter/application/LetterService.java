@@ -9,7 +9,7 @@ import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +28,7 @@ public class LetterService {
     @Transactional
     public SingleLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
-
-        if (!letter.getReceiver().getId().equals(userId)) {
-            throw new ApplicationException("잘못된 권한입니다.");
-        }
+        letter.checkValidReader(userId);
 
         return SingleLetterResponse.of(letter, letter.getReceiver().getNickname(), letter.getReplyLetters());
     }
@@ -49,7 +46,6 @@ public class LetterService {
         User randomReceiver = findRandomReceiver(sender);
         letter.attachDecorations(request.getDecorations());
         letter.send(randomReceiver);
-
         Long letterId = letterRepository.save(letter).getId();
         userRepository.increaseReceiveCount(randomReceiver.getId());
         userRepository.increaseSendCount(sender.getId());
@@ -75,13 +71,13 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.getReceiver().getNickname(), request.getDecorations());
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.findReplyLetterSender(sender).getNickname(), request.getDecorations());
         letter.reply(replyLetter);
     }
 
     public List<InboxLetterResponse> retrieveSentLetters(User sender) {
         List<Letter> sentLetters = letterRepository.findLettersBySenderId(sender.getId());
-        return InboxLetterResponse.listOf(sentLetters, sender.getNickname());
+        return InboxLetterResponse.sentLetterListOf(sentLetters, sender.getNickname());
     }
 
     @Transactional
@@ -89,8 +85,8 @@ public class LetterService {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
         letter.checkValidReader(reader.getId());
 
-        if (letter.getReplyLetters().isEmpty()) {
-            letter.read();
+        if (letter.getReplyLetters().isEmpty()){
+            if(reader.getEmail().equals(letter.getReceiver().getEmail())) letter.read();
             return;
         }
 

@@ -1,11 +1,17 @@
-/* Color Palette (this is subject to change) */
-$color-background: #1F1D36;
-$color-tertiary: #3F3351;
-$color-secondary: #864879;
-$color-primary: #E9A6A6;
-$color-foreground: #EEEEF5;
+:root {
+  // Editable
+  --app-navbar-padding-x: 2rem;
+  --app-navbar-padding-y: 1rem;
+  --app-navbar-height-base: 64px;
 
-/* Global layout values */
-$app-navbar-padding-x: 2rem;
-$app-navbar-padding-y: 1rem;
-$app-navbar-height: calc(64px + ($app-navbar-padding-y * 2));
+  --letter-area-width: 600px;
+
+  // Computed
+  --app-navbar-height: calc(var(--app-navbar-height-base) + (var(--app-navbar-padding-y) * 2));
+
+  @media (max-width: $viewport-small-max-width) {
+    --app-navbar-padding-x: 1rem;
+    --app-navbar-padding-y: 0.5rem;
+    --app-navbar-height-base: 48px;
+  }
+}

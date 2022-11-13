@@ -1,159 +1,270 @@
 <template>
   <div id="profile-page-wrapper">
     <div class="profile__my-area">
-      <div class="profile__my-area__image-nickname">
-        <profile-image :srcUrl="tempProfileImage" />
+      <div class="profile__my-area__me">
+        <profile-image :srcUrl="builtData.profileImageUrl"
+                       size="large" />
 
-        <div class="profile__my-area__image-nickname__info">
-          <span class="nickname">{{ $store.state.auth.userBasicInfo.nickname }}</span>
-          <span class="info"
-                title="이 정보는 다른 사람들에게 보여지지 않아요!">(나이대) / (성별)</span>
+        <div class="profile__my-area__me__info">
+          <span class="nickname"><strong>{{ $store.state.user.user.nickname }}</strong></span>
+          <hr />
+          <span class="info">
+            <strong v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED']">{{ builtData.age }}</strong>
+            <span v-if="builtData.age !== UserProfileAgeName['NOT_SELECTED'] && builtData.gender !== UserProfileGenderName['NOT_SELECTED']"> &bull; </span>
+            <strong v-if="builtData.gender !== UserProfileGenderName['NOT_SELECTED']">{{ builtData.gender }}</strong>
+          </span>
+          <span class="info">보유 포인트 <strong>{{ builtData.points }}P</strong> <router-link :to="{ name: 'point-help' }" title="포인트란?"><v-icon size="x-small">mdi-help-circle-outline</v-icon></router-link></span>
+          <span class="info">업적 달성 <strong>{{ builtData.achievementsCount }}개</strong></span>
         </div>
+
+        <router-link :to="{ name: 'profile-edit' }"><button class="profile__my-area__me__profile-edit button"><v-icon>mdi-account-edit</v-icon> <span>프로필 수정</span></button></router-link>
+      </div>
+    </div>
+
+    <div class="profile__statistics">
+      <div class="profile__statistics__statistics">
+        <h1><v-icon>mdi-chart-timeline-variant</v-icon> 통계</h1>
+
+        <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ signupDateString }}</span>에 가입했어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-login-variant</v-icon> <span>총 <span class="t-primary">{{ builtData.signinDays }}일</span> 동안 To. Anyone을 찾아왔어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-email-send</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.sentLetterCount }}통</span>의 편지를 보냈어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
       </div>
 
-      <div class="profile__my-area__achievements">
-        <div class="profile__my-area__achievements__item">
-          <span class="title">달성한 업적</span>
-          <span class="content">nn개 <small>/ nn개</small></span>
-        </div>
-        <div class="profile__my-area__achievements__item">
-          <span class="title">총 편지 작성 개수</span>
-          <span class="content">nn통</span>
+      <div class="profile__statistics__achievements">
+        <h1><v-icon>mdi-trophy-variant</v-icon> 업적</h1>
+
+        <div v-for="(achiv, index) in achivements"
+             :key="index"
+             class="button item"
+             :class="{ disabled: !builtData.achivements[index] }">
+          <div class="content">
+            <span class="title">{{ achiv.name }}</span>
+            <span class="desc">{{ achiv.desc }}</span>
+          </div>
+
+          <v-icon v-if="builtData.achivements[index]" class="done">mdi-check</v-icon>
         </div>
       </div>
     </div>
 
-    <!-- ↓ TODO: styling -->
-    <router-link :to="{ name: 'profile-edit' }" style="color: #FFFFAA">(프로필 수정 버튼)</router-link>
-
-    <h1>통계</h1>
-    <div>(icon) nnnn년 nn월 nn일<br />에 마음을 나누기 시작했어요</div>
-    <div>(icon) 총 nn일<br />To. Anyone을 찾아와주셨어요</div>
-    <div>(icon) nn통<br />의 편지를 보냈어요</div>
-    <div>(icon) nn통<br />의 편지를 받았어요</div>
-
-    <v-fade-transition>
-      <div v-if="$route.name == 'profile-edit'"
-           id="profile-page-edit-view">
-        <div>
-          <router-view />
-        </div>
-      </div>
-    </v-fade-transition>
+    <router-view v-slot="{ Component }">
+      <v-slide-y-transition>
+        <in-app-dialog v-if="$route.name === 'profile-edit' || $route.name === 'point-help'"
+                      :fullscreenOnVPSmall="true">
+          <component :is="Component" />
+        </in-app-dialog>
+      </v-slide-y-transition>
+    </router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import InAppDialog from "@/components/InAppDialog.vue";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
+import Achievements from "@/data/json/achievements.json";
+import { UserProfileAgeName, UserProfileGenderName } from "@/data/profile-data";
+
+interface ProfilePageData {
+  profileImageUrl?: string,
+  age: UserProfileAgeName,
+  gender: UserProfileGenderName,
+  points: number,
+  achievementsCount: number,
+  signupDate: Date,
+  signinDays: number,
+  sentLetterCount: number,
+  receivedLetterCount: number,
+  achivements: Record<number, boolean>,
+}
 
 @Options({
   components: {
+    InAppDialog,
     ProfileImage,
   },
 })
 export default class ProfilePage extends Vue {
-  private tempProfileImage = "https://picsum.photos/seed/toanyone/300";
+  achivements = Achievements;
+  UserProfileAgeName = UserProfileAgeName;
+  UserProfileGenderName = UserProfileGenderName;
 
-  mounted(): void {
-    // TODO: request to backend for user profile data
+  builtData: ProfilePageData = {
+    profileImageUrl: "https://picsum.photos/seed/toanyone/300",
+    age: UserProfileAgeName.NOT_SELECTED,
+    gender: UserProfileGenderName.NOT_SELECTED,
+    points: 0,
+    achievementsCount: 0,
+    signupDate: new Date("2000-01-01"),
+    signinDays: 0,
+    sentLetterCount: 0,
+    receivedLetterCount: 0,
+    achivements: { },
+  };
+
+  get signupDateString(): string {
+    return `${this.builtData.signupDate.getFullYear()}년 ${this.builtData.signupDate.getMonth() + 1}월 ${this.builtData.signupDate.getDate()}일`;
+  }
+
+  async mounted() {
+    // Request user info data and register to store
+    const response = await this.$api.getUserInfo();
+
+    if(response.data) {
+      this.$store.commit("user/updateUserInfo", response.data);
+    } else {
+      alert("사용자 정보를 불러오는 중 오류: " + response.statusCode);
+      return;
+    }
+
+    // Get achievements data
+    const achivResponse = await this.$api.getUserAchievementInfo();
+
+    if(!achivResponse.data) {
+      alert("사용자 업적 정보를 불러오는 중 오류: " + achivResponse.statusCode);
+      return;
+    }
+
+    const achivList: Record<number, boolean> = {};
+    for(const achiv of achivResponse.data) {
+      achivList[achiv.level] = true;
+    }
+
+    // Build data to display
+    if(response.data) {
+      this.builtData = {
+        ...this.builtData,
+        age: UserProfileAgeName[response.data.profile.age],
+        gender: UserProfileGenderName[response.data.profile.gender],
+        points: response.data.point,
+        achievementsCount: response.data.achievementCountValue,
+        signupDate: new Date(response.data.createdAt),
+        signinDays: response.data.loginCount,
+        sentLetterCount: response.data.sendLetterCountValue,
+        receivedLetterCount: response.data.receiveCount,
+        achivements: achivList,
+      };
+    }
   }
 }
 </script>
 
 <style lang="scss">
 #profile-page-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
   margin: auto;
   width: 80vw;
+  min-height: calc(100vh - var(--app-navbar-height));
+
+  @media (max-width: $viewport-small-max-width) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+
+    .profile {
+      &__my-area {
+        position: relative !important;
+        top: 0 !important;
+      }
+    }
+  }
 
   .profile {
     &__my-area {
+      position: sticky;
+      top: calc(1em + var(--app-navbar-height));
       display: flex;
-      justify-content: space-between;
-      padding: 1rem 2rem 1rem 1rem;
-      margin: 1rem;
-      background: rgba($color-secondary, 0.5);
-      border-radius: 10rem 2rem 2rem 10rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 1em;
+      margin: 1em 2em;
 
-      & > div {
+      &__me {
         display: flex;
-      }
-
-      &__image-nickname {
-        display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
 
         &__info {
-          cursor: help;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          align-items: flex-start;
-          margin-left: 1.5rem;
+          align-items: center;
           line-height: 1.5;
+
+          & > * {
+            text-align: center;
+            margin: 0.33em 0;
+          }
+
+          hr { width: 100%; }
 
           .nickname {
             font-size: 2em;
             font-weight: 700;
+            margin: 0.33em 0 0 0;
           }
 
           .info {
             font-size: 1.25em;
           }
         }
+
+        &__profile-edit {
+          margin-top: 1em;
+        }
+      }
+    }
+
+    &__statistics {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      width: max-content;
+
+      @media (max-width: $viewport-small-max-width) {
+        width: 100%;
+      }
+
+      & > * { margin: 1em 0; }
+
+      &__statistics {
+        .button {
+          margin: 0.5em 0;
+        }
       }
 
       &__achievements {
-        &__item {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 0 0.75em;
-          border-left: solid currentColor 1px;
-          border-right: solid currentColor 1px;
-
-          & > * {
-            text-align: center;
-            margin: 0.25em 0;
-          }
-
-          .title {
-            font-size: 1.25em;
-          }
+        .button {
+          position: relative;
+          margin: 0.5em 0;
+          overflow: hidden;
 
           .content {
-            font-size: 1.5em;
-            font-weight: 700;
+            display: inline-flex;
+            flex-direction: column;
+            line-height: 1.5;
 
-            small {
-              font-size: 0.75em;
-              font-weight: 400;
-            }
+            .title { font-size: 1.1em; }
+            .desc { font-size: 0.85em; opacity: 0.8; }
+          }
+
+          .done {
+            position: absolute;
+            right: -0.3em;
+            bottom: -0.3em;
+            font-size: 10em;
+            opacity: 0.33;
           }
         }
       }
     }
-  }
-}
-
-#profile-page-edit-view {
-  overflow: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 100;
-  background: rgba(#000, 0.5);
-
-  & > div {
-    display: flex;
-    align-items: center;
-    min-height: 100%;
   }
 }
 </style>

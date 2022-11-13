@@ -18,7 +18,7 @@ export default class LogoutPage extends Vue {
     // Unconditional logout
     this.$store.commit("auth/registerLoginState", null);
     this.$cookies.remove("userSession");
-    window.location.replace("/");
+    window.location.replace(this.$router.resolve({ name: "landing" }).href);
   }
 }
 </script>

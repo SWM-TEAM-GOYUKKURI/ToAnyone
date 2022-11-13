@@ -1,4 +1,4 @@
-import { UserProfileGender, UserProfileAge, UserProfileJob } from "./backend";
+import { UserProfileGender, UserProfileAge, UserProfileJob, UserProfileUpdateRequest } from "./backend";
 
 export interface SignupData {
   nickname?: string,
@@ -11,9 +11,21 @@ export interface SignupData {
 export interface UserInfoBasic {
   nickname: string,
   email: string,
-  firstSignupPassed: boolean,
+  registrationFormFilled: boolean,
 }
 
 export interface UserInfo extends UserInfoBasic {
-  profileImageId: number,
+  achievementCountValue: number,
+  createdAt: Date,
+  id: number,
+  lastLogin: Date,
+  loginCount: number,
+  loginType: "GOOGLE",
+  name: string,
+  point: number,
+  profile: UserProfileUpdateRequest,
+  receiveCount: number,
+  sendLetterCountValue: number,
+  uniqueId: string,
+  userImageUrl: "",
 }

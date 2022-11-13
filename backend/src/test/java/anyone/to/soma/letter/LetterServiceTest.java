@@ -9,7 +9,7 @@ import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.utils.LetterDecorationRepository;
 import anyone.to.soma.utils.ReplyRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -65,6 +65,18 @@ class LetterServiceTest extends IntegrationTest {
 
     @Test
     void retrieveInboxAllLettersTest() {
+        for (int i = 0; i < 3; i++) {
+            Letter letter = new Letter("content", user);
+            letter.send(user1);
+            letterRepository.save(letter);
+        }
+        List<InboxLetterResponse> inboxLetterResponses = letterService.retrieveInboxAllLetters(user1.getId());
+        assertThat(inboxLetterResponses.size()).isEqualTo(3);
+    }
+
+
+    @Test
+    void retrieveInboxAllLettersWithReplyTest() {
         for (int i = 0; i < 3; i++) {
             Letter letter = new Letter("content", user);
             letter.send(user1);

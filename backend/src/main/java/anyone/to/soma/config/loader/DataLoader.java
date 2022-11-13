@@ -4,7 +4,7 @@ import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.UserRepository;
+import anyone.to.soma.user.domain.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -33,7 +33,6 @@ public class DataLoader implements CommandLineRunner {
         for (int i = 0; i < 10; i++) {
             letterService.writeLetter(new LetterRequest("안녕하세요" + i, List.of(DecorationType.STAMP, DecorationType.FONT)), users.get(0));
         }
-
     }
 
 
