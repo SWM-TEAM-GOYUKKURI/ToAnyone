@@ -66,6 +66,7 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS } from "@/data/profile-data";
+import { isSuccessful } from "@/util/backend";
 
 export default class ProfileEditPage extends Vue {
   readonly genderItems = GENDER_ITEMS;
@@ -88,13 +89,26 @@ export default class ProfileEditPage extends Vue {
     alert("프로필 수정은 추후 구현 예정입니다.");
   }
 
-  onDeleteAccountButtonClick(): void {
-    // TODO: delete account
+  async onDeleteAccountButtonClick() {
     const choice = confirm("계정을 삭제할까요? 계정을 삭제하면 지금까지 보낸 편지 내역과 포인트가 사라져요.");
 
     if(choice) {
-      // TODO
-      alert("계정 삭제는 추후 구현 예정입니다.");
+      const prpt = prompt("계정 삭제 확인을 위해 \"계정 삭제\"라고 입력해주세요.");
+
+      if(prpt && prpt === "계정 삭제") {
+        const response = await this.$api.deleteUser();
+
+        if(isSuccessful(response.statusCode)) {
+          alert("계정을 삭제했어요. 언제든지 다시 가입할 수 있어요.\n\nTo. Anyone을 사용해 주셔서 감사합니다!");
+          window.location.href = this.$router.resolve({ name: "logout" }).href;
+        } else {
+          alert("서버 오류로 계정을 삭제할 수 없었어요. " + response.statusCode);
+        }
+      } else if(!prpt) {
+        alert("계정 삭제를 취소했어요.");
+      } else {
+        alert("확인 입력을 다르게 입력하셨어요. 계정 삭제를 진행하지 않을게요.");
+      }
     }
   }
 }

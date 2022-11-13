@@ -80,6 +80,28 @@ export async function bePUT<T>(endpoint: string, data: Record<string, any>, head
   return result;
 }
 
+export async function beDEL<T>(endpoint: string, data?: Record<string, any> | null, headers?: Record<string, any>): Promise<BECallReturn<T>> {
+  const result: BECallReturn<T> = {
+    error: false,
+    statusCode: -1,
+  };
+
+  try {
+    const response = await axios.delete<T>(`${BE_URL}/${endpoint}`, { data, headers });
+
+    result.data = response.data;
+    result.statusCode = response.status;
+  } catch(error) {
+    result.error = true;
+
+    if(error instanceof AxiosError && error.response) {
+      result.statusCode = error.response.status;
+    }
+  }
+
+  return result;
+}
+
 export function isSuccessful(statusCode: number): boolean {
   return statusCode >= 200 && statusCode <= 208;
 }
