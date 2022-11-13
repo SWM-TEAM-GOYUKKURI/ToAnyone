@@ -1,0 +1,9 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "To. Anyone",
+    "short_name": "To. Anyone",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#232339",
+    "description": "마음을 나누는 익명 편지 앱"
+}
