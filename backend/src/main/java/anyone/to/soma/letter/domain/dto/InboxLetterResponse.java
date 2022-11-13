@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +22,7 @@ public class InboxLetterResponse {
 
     private Long id;
     private String content;
-    private LocalDate sendDate;
+    private LocalDateTime sendDate;
     private String receiverName;
     private String senderName;
     private boolean isRead;
