@@ -1,6 +1,6 @@
 <template>
   <v-img class="profile-image"
-         :class="{ small: size === 'small', large: size === 'large' }"
+         :class="{ small: size === 'small', large: size === 'large', em: size === 'em' }"
          :src="srcUrl"
          aspect-ratio="1">
     <div v-if="profilePage"
@@ -18,7 +18,7 @@ import { Prop } from "vue-property-decorator";
 
 export default class ProfileImage extends Vue {
   @Prop({ type: String, default: getPicsumUrl(null) }) srcUrl!: string;
-  @Prop({ type: String, default: "normal" }) size!: "large" | "small" | "normal";
+  @Prop({ type: String, default: "normal" }) size!: "large" | "small" | "normal" | "em";
   @Prop({ type: Boolean, default: false }) profilePage!: boolean;
 }
 </script>
@@ -44,6 +44,13 @@ export default class ProfileImage extends Vue {
     max-width: 9rem;
     height: 9rem;
     max-height: 9rem;
+  }
+
+  &.em {
+    width: 1em;
+    max-width: 1em;
+    height: 1em;
+    max-height: 1em;
   }
 
   &__edit {

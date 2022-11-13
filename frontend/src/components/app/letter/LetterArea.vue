@@ -1,7 +1,7 @@
 <template>
   <div class="letter-area">
     <div class="letter-area__content-area">
-      <div>From. <strong>{{ realSenderNickname }}</strong></div>
+      <div class="fromto">From. <profile-image :srcUrl="getPicsumUrl(realSenderImageId)" size="em" /> <strong>{{ realSenderNickname }}</strong></div>
       <div class="letter-area__content-area__text-area-wrapper">
         <contenteditable v-model="letterTextContent"
                          ref="letterTextElement"
@@ -19,7 +19,7 @@
                class="line" />
         </div>
       </div>
-      <div style="text-align: right">To. <strong>{{ receiverNickname }}</strong></div>
+      <div class="fromto" style="justify-content: flex-end">To. <profile-image v-if="!letterWriteMode" :srcUrl="getPicsumUrl(realReceiverImageId)" size="em" /> <strong>{{ receiverNickname }}</strong></div>
     </div>
   </div>
 </template>
@@ -28,6 +28,8 @@
 import { Options, Vue } from "vue-class-component";
 import { Prop, PropSync, Watch } from "vue-property-decorator";
 import contenteditable from "vue-contenteditable";
+import ProfileImage from "@/components/app/global/ProfileImage.vue";
+import { getPicsumUrl } from "@/util/path-transform";
 
 export enum LetterSendStatus {
   NORMAL,
@@ -39,10 +41,12 @@ export enum LetterSendStatus {
 @Options({
   components: {
     contenteditable,
+    ProfileImage,
   },
 })
 export default class LetterArea extends Vue {
   LetterSendStatus = LetterSendStatus;
+  getPicsumUrl = getPicsumUrl;
 
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
@@ -57,6 +61,14 @@ export default class LetterArea extends Vue {
 
   get realSenderNickname(): string {
     return this.letterWriteMode ? this.$store.state.user.user!.nickname : this.senderNickname;
+  }
+
+  get realSenderImageId(): number {
+    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : 0; // 0 should be replaced with remote user
+  }
+
+  get realReceiverImageId(): number {
+    return !this.letterWriteMode ? 0 : 0; // 0 should be replaced with remote user
   }
 
   get letterTextElement(): HTMLDivElement {
@@ -105,6 +117,14 @@ export default class LetterArea extends Vue {
   font-size: 1.5em;
   background-color: #FFF7E8;  // 기본값: 개나리 색상
   box-shadow: 0 1em 1.5em rgba(black, 0.33);
+
+  .fromto {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
+    & > .profile-image { margin-right: 0.25em; }
+  }
 
   &__content-area {
     white-space: pre-wrap;
