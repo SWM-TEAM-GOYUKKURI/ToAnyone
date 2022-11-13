@@ -67,5 +67,13 @@ public class UserService {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
         foundUser.updateImage(imageUrl);
     }
+
+    @Transactional
+    public void deleteUser(User user) {
+        if (!userRepository.existsById(user.getId())) {
+            throw new NoSuchRecordException();
+        }
+        userRepository.delete(user);
+    }
 }
 
