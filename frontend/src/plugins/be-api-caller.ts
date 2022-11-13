@@ -38,7 +38,7 @@ export default class APICaller {
     return await beDEL("/user", null, { credentials: this.token });
   }
 
-  async putUserSignupData(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {
+  async modifyUserProfile(data: UserProfileUpdateRequest): Promise<BECallReturn<null>> {
     return await bePUT("/user", data, { credentials: this.token });
   }
 
