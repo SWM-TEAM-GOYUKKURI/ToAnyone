@@ -63,6 +63,8 @@ export default class LandingPage extends Vue {
       height: 100vh;
 
       background: url("@/assets/bg/bg-letter-pixabay-andrys_stienstra-darken.jpg");
+      background-size: cover;
+      background-position: center center;
       backdrop-filter: brightness(50%);
 
       & * { text-align: center; }
