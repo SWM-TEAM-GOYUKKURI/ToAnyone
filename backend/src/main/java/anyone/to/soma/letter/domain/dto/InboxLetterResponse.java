@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +22,7 @@ public class InboxLetterResponse {
 
     private Long id;
     private String content;
-    private LocalDate sendDate;
+    private LocalDateTime sendDate;
     private String receiverName;
     private String senderName;
     private boolean isRead;
@@ -36,8 +36,7 @@ public class InboxLetterResponse {
 
     private static InboxLetterResponse sentLetterOf(Letter letter, String senderName) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
-        String content = letter.getContent();
-        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), letter.getReceiver().getNickname(), senderName, true, letterDecorations);
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), letter.getReceiver().getNickname(), senderName, true, letterDecorations);
     }
 
     public static List<InboxLetterResponse> listOf(List<Letter> letters, String receiverName) {
@@ -48,8 +47,7 @@ public class InboxLetterResponse {
 
     private static InboxLetterResponse of(Letter letter, String receiverName) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
-        String content = letter.getContent();
-        return new InboxLetterResponse(letter.getId(), content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiverName, letter.getSender().getNickname(), readPolicy(letter), letterDecorations);
     }
 
 
@@ -61,5 +59,18 @@ public class InboxLetterResponse {
 
         replyLetters.sort((a, b) -> b.getId().compareTo(a.getId()));
         return replyLetters.get(0).isRead();
+
+    }
+
+    private static String contentPolicy(Letter letter) {
+        List<ReplyLetter> replyLetters = letter.getReplyLetters();
+        if (replyLetters.isEmpty()) {
+            String content = letter.getContent();
+            return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH));
+        }
+
+        replyLetters.sort((a, b) -> b.getId().compareTo(a.getId()));
+        String replyContent = replyLetters.get(0).getContent();
+        return replyContent.substring(0, Math.min(replyContent.length(), MAX_CONTENT_LENGTH));
     }
 }

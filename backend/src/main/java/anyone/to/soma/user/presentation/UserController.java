@@ -5,6 +5,7 @@ import anyone.to.soma.config.annotation.LoginUser;
 import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.dto.ImageUrlRequest;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,14 @@ public class UserController {
         return ResponseEntity.ok(achievements);
     }
 
+    @PutMapping("/user/me/image")
+    @LoginRequired
+    public ResponseEntity<Void> updateUserProfileImage(
+            @LoginUser User user,
+            @RequestBody ImageUrlRequest request
+    ) {
+        userService.updateUserImage(user, request.getUserImageUrl());
+        return ResponseEntity.noContent().build();
+    }
 
 }

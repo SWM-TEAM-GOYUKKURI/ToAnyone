@@ -8,17 +8,20 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends AbstractAggregateRoot<User> {
+
+    private static final ZoneId ZONE_ID = ZoneId.of("Asia/Tokyo");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +44,14 @@ public class User extends AbstractAggregateRoot<User> {
 
     private boolean registrationFormFilled;
 
-    @CreatedDate
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
-    private Instant lastLogin;
+    private Instant lastLogin = Instant.now();
+    private int loginCount = 0;
 
     private Point point = new Point();
+
+    private String userImageUrl = "";
 
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -93,12 +98,24 @@ public class User extends AbstractAggregateRoot<User> {
     }
 
     public void recordLastLogin() {
-        this.lastLogin = Instant.now();
+        Instant now = Instant.now();
+        if (this.lastLogin != null && instantToDay(now) != instantToDay(lastLogin)) {
+            loginCount++;
+        }
+
+        this.lastLogin = now;
+
     }
 
-
+    private int instantToDay(Instant instant) {
+        return LocalDateTime.ofInstant(instant, ZONE_ID).getDayOfYear();
+    }
 
     public Long getPoint() {
         return point.getValue();
+    }
+
+    public void updateImage(String imageUrl) {
+        this.userImageUrl = imageUrl;
     }
 }

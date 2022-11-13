@@ -15,19 +15,12 @@ public class UserAchievement {
     @Column(name = "send_letter_count")
     private int sendLetterCount = 0;
 
-    @Column(name = "login_count")
-    private int loginCount = 0;
-
     public int getAchievementCountValue() {
         return achievementCount;
     }
 
     public int getSendLetterCountValue() {
         return sendLetterCount;
-    }
-
-    public int getLoginCountValue() {
-        return loginCount;
     }
 
     public void increaseAchievementCount() {

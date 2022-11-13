@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class Letter extends AbstractAggregateRoot<Letter> {
     @Lob
     private String content;
 
-    private LocalDate sendDate;
+    private LocalDateTime sendDate;
 
     private boolean isRead;
 
@@ -52,7 +52,7 @@ public class Letter extends AbstractAggregateRoot<Letter> {
     private Letter(Long id, String content, User sender) {
         this.id = id;
         this.content = content;
-        this.sendDate = LocalDate.now();
+        this.sendDate = LocalDateTime.now();
         this.sender = sender;
         this.isRead = false;
     }

@@ -74,6 +74,18 @@ class LetterServiceTest extends IntegrationTest {
         assertThat(inboxLetterResponses.size()).isEqualTo(3);
     }
 
+
+    @Test
+    void retrieveInboxAllLettersWithReplyTest() {
+        for (int i = 0; i < 3; i++) {
+            Letter letter = new Letter("content", user);
+            letter.send(user1);
+            letterRepository.save(letter);
+        }
+        List<InboxLetterResponse> inboxLetterResponses = letterService.retrieveInboxAllLetters(user1.getId());
+        assertThat(inboxLetterResponses.size()).isEqualTo(3);
+    }
+
     @Test
     @Transactional
     void writeReplyLetter() {

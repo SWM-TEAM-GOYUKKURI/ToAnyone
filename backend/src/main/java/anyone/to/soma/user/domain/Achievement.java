@@ -4,14 +4,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "level"}))
 public class Achievement {
 
     @Id
@@ -24,6 +22,7 @@ public class Achievement {
 
     private String tag;
 
+    @Column(name = "user_id")
     private Long userId;
 
     public Achievement(int level, String name, String tag, Long userId) {
