@@ -51,6 +51,8 @@ public class User extends AbstractAggregateRoot<User> {
 
     private Point point = new Point();
 
+    private String userImageUrl = "";
+
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
@@ -97,7 +99,7 @@ public class User extends AbstractAggregateRoot<User> {
 
     public void recordLastLogin() {
         Instant now = Instant.now();
-        if (instantToDay(now) != instantToDay(lastLogin)) {
+        if (this.lastLogin != null && instantToDay(now) != instantToDay(lastLogin)) {
             loginCount++;
         }
 
