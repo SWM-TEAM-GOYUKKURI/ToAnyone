@@ -25,7 +25,7 @@
       <div class="profile__statistics__statistics">
         <h1><v-icon>mdi-chart-timeline-variant</v-icon> 통계</h1>
 
-        <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ builtData.signupDateString }}</span>에 가입했어요.</span></div>
+        <div class="button narrow"><v-icon>mdi-home-heart</v-icon> <span>To. Anyone에 <span class="t-primary">{{ signupDateString }}</span>에 가입했어요.</span></div>
         <div class="button narrow"><v-icon>mdi-login-variant</v-icon> <span>총 <span class="t-primary">{{ builtData.signinDays }}일</span> 동안 To. Anyone을 찾아왔어요.</span></div>
         <div class="button narrow"><v-icon>mdi-email-send</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.sentLetterCount }}통</span>의 편지를 보냈어요.</span></div>
         <div class="button narrow"><v-icon>mdi-email-receive</v-icon> <span>지금까지 <span class="t-primary">{{ builtData.receivedLetterCount }}통</span>의 편지를 받았어요.</span></div>
@@ -73,7 +73,6 @@ interface ProfilePageData {
   points: number,
   achievementsCount: number,
   signupDate: Date,
-  signupDateString: string,
   signinDays: number,
   sentLetterCount: number,
   receivedLetterCount: number,
@@ -102,11 +101,11 @@ export default class ProfilePage extends Vue {
     sentLetterCount: 0,
     receivedLetterCount: 0,
     achivements: { },
-
-    get signupDateString(): string {
-      return `${this.signupDate.getFullYear()}년 ${this.signupDate.getMonth() + 1}월 ${this.signupDate.getDate()}일`;
-    },
   };
+
+  get signupDateString(): string {
+    return `${this.builtData.signupDate.getFullYear()}년 ${this.builtData.signupDate.getMonth() + 1}월 ${this.builtData.signupDate.getDate()}일`;
+  }
 
   async mounted() {
     // Request user info data and register to store
