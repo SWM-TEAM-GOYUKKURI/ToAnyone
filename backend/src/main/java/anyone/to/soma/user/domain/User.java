@@ -46,7 +46,7 @@ public class User extends AbstractAggregateRoot<User> {
 
     private Instant createdAt = Instant.now();
 
-    private Instant lastLogin;
+    private Instant lastLogin = Instant.now();
     private int loginCount = 0;
 
     private Point point = new Point();

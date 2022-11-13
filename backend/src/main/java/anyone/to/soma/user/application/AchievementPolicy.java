@@ -37,7 +37,7 @@ public class AchievementPolicy {
     @TransactionalEventListener(condition = "#letterCreatedEvent.sentCount==0")
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
-        if (userRepository.existsById(userId) && letterRepository.existsById(letterCreatedEvent.getId())) {
+        if (userRepository.existsById(userId) && letterRepository.countLetterBySenderId(userId)==1){
             achievementRepository.save(new Achievement(LEVEL_TWO.getLevel(), LEVEL_TWO.getName(), LEVEL_TWO.getTag(), userId));
             userRepository.increaseUserPoint(userId, LEVEL_TWO.getPoint());
         }
