@@ -27,5 +27,5 @@ export interface UserInfo extends UserInfoBasic {
   receiveCount: number,
   sendLetterCountValue: number,
   uniqueId: string,
-  userImageUrl: string,
+  userImageUrl: string, // THIS WILL BE USED AS PICSUM PHOTO ID (number), DON'T TAKE CARE OF THE PROPERTY NAME
 }

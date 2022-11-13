@@ -42,6 +42,10 @@ export default class APICaller {
     return await bePUT("/user", data, { credentials: this.token });
   }
 
+  async updateUserProfileImage(imageId: number): Promise<BECallReturn<null>> {
+    return await bePUT("/user/me/image", { userImageUrl: imageId.toString() }, { credentials: this.token });
+  }
+
   async writeLetter(data: LetterWriteRequest): Promise<BECallReturn<null>> {
     return await bePOST("/letter", data, { credentials: this.token });
   }

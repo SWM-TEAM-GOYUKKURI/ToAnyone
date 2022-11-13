@@ -53,7 +53,7 @@
     <router-view v-slot="{ Component }">
       <v-slide-y-transition>
         <in-app-dialog v-if="$route.name === 'profile-edit' || $route.name === 'point-help' || $route.name === 'profile-edit-image'"
-                      :fullscreenOnVPSmall="true">
+                      :fullscreenOnVPSmall="$route.name === 'profile-edit-image' ? false : true">
           <component :is="Component"
                      @updateProfileDataRequest="onUpdateProfileDataRequest" />
         </in-app-dialog>
