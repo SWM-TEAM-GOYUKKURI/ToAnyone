@@ -29,6 +29,7 @@ public class InboxLetterResponse {
     private String senderName;
     private String senderImageUrl;
     private boolean isRead;
+    private boolean replied;
     private List<DecorationType> decorations;
 
     public static List<InboxLetterResponse> sentLetterListOf(List<Letter> letters, User sender) {
@@ -40,7 +41,8 @@ public class InboxLetterResponse {
     private static InboxLetterResponse sentLetterOf(Letter letter, User sender) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         User receiver = letter.getReceiver();
-        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(), true, letterDecorations);
+        boolean replied = letter.getReplyLetters().size() > 0;
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(), true, replied, letterDecorations);
     }
 
     public static List<InboxLetterResponse> listOf(List<Letter> letters, User receiver) {
@@ -52,7 +54,8 @@ public class InboxLetterResponse {
     private static InboxLetterResponse of(Letter letter, User receiver) {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         User sender = letter.getSender();
-        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(),readPolicy(letter), letterDecorations);
+        boolean replied = letter.getReplyLetters().size() > 0;
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(),readPolicy(letter), replied, letterDecorations);
     }
 
 
