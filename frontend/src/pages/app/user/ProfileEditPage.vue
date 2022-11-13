@@ -57,6 +57,7 @@
         <button class="button"
                 @click="$router.back()">닫기</button>
         <button class="button primary"
+                :disabled="!formReqFulfilled"
                 @click="onProfileEditButtonClick">수정</button>
       </div>
     </div>
@@ -67,16 +68,32 @@
 import { Vue } from "vue-class-component";
 import { AGE_ITEMS, GENDER_ITEMS, JOB_ITEMS } from "@/data/profile-data";
 import { isSuccessful } from "@/util/backend";
+import { UserProfileAge, UserProfileGender, UserProfileJob, UserProfileUpdateRequest } from "@/interfaces/backend";
 
 export default class ProfileEditPage extends Vue {
   readonly genderItems = GENDER_ITEMS;
   readonly ageItems = AGE_ITEMS;
   readonly jobItems = JOB_ITEMS;
 
-  formData = { };
+  formData: UserProfileUpdateRequest = {
+    nickname: "",
+    age: UserProfileAge.NOT_SELECTED,
+    gender: UserProfileGender.NOT_SELECTED,
+    job: UserProfileJob.NOT_SELECTED,
+    psychologicalExams: [],
+  };
+
+  get formReqFulfilled(): boolean {
+    return (
+      !!this.formData.nickname &&
+      this.formData.nickname.length >= 4
+    );
+  }
 
   mounted(): void {
     this.formData = {
+      ...this.$store.state.user.user!.profile,
+
       nickname: this.$store.state.user.user!.nickname,
       age: this.$store.state.user.user!.profile.age,
       gender: this.$store.state.user.user!.profile.gender,
@@ -84,9 +101,26 @@ export default class ProfileEditPage extends Vue {
     };
   }
 
-  onProfileEditButtonClick(): void {
-    // TODO
-    alert("프로필 수정은 추후 구현 예정입니다.");
+  async onProfileEditButtonClick() {
+    /* Edit profile */
+    const response = await this.$api.modifyUserProfile(this.formData);
+
+    if(isSuccessful(response.statusCode)) {
+      alert("프로필 수정 성공!");
+    } else {
+      alert("프로필을 수정할 수 없습니다. " + response.statusCode);
+    }
+
+    /* Update user */
+    const userResponse = await this.$api.getUserInfo();
+
+    if(isSuccessful(userResponse.statusCode)) {
+      this.$store.commit("user/updateUserInfo", userResponse.data);
+      this.$emit("updateProfileDataRequest");
+      this.$router.back();
+    } else {
+      alert("사용자 정보를 가져올 수 없습니다. " + userResponse.statusCode);
+    }
   }
 
   async onDeleteAccountButtonClick() {

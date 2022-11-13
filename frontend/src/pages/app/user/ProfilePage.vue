@@ -54,7 +54,8 @@
       <v-slide-y-transition>
         <in-app-dialog v-if="$route.name === 'profile-edit' || $route.name === 'point-help' || $route.name === 'profile-edit-image'"
                       :fullscreenOnVPSmall="true">
-          <component :is="Component" />
+          <component :is="Component"
+                     @updateProfileDataRequest="onUpdateProfileDataRequest" />
         </in-app-dialog>
       </v-slide-y-transition>
     </router-view>
@@ -152,6 +153,23 @@ export default class ProfilePage extends Vue {
         sentLetterCount: response.data.sendLetterCountValue,
         receivedLetterCount: response.data.receiveCount,
         achivements: achivList,
+      };
+    }
+  }
+
+  onUpdateProfileDataRequest(): void {
+    if(this.$store.state.user.user) {
+      this.builtData = {
+        ...this.builtData,
+        profileImageId: parseInt(this.$store.state.user.user.userImageUrl),
+        age: UserProfileAgeName[this.$store.state.user.user.profile.age],
+        gender: UserProfileGenderName[this.$store.state.user.user.profile.gender],
+        points: this.$store.state.user.user.point,
+        achievementsCount: this.$store.state.user.user.achievementCountValue,
+        signupDate: new Date(this.$store.state.user.user.createdAt),
+        signinDays: this.$store.state.user.user.loginCount,
+        sentLetterCount: this.$store.state.user.user.sendLetterCountValue,
+        receivedLetterCount: this.$store.state.user.user.receiveCount,
       };
     }
   }
