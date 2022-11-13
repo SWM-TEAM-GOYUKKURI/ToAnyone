@@ -24,7 +24,8 @@ public class AchievementPolicy {
     private final AchievementRepository achievementRepository;
     private final LetterRepository letterRepository;
 
-    @EventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener
     public void achieveLevelOne(UserCreatedEvent userCreatedEvent) {
         Long userId = userCreatedEvent.getUserId();
         if (userRepository.existsById(userId)) {
@@ -45,7 +46,8 @@ public class AchievementPolicy {
         }
     }
 
-    @EventListener(condition = "#letterReadEvent.read == true")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(condition = "#letterReadEvent.read == true")
     public void achieveLevelThree(LetterReadEvent letterReadEvent) {
         Long userId = letterReadEvent.getUserId();
         if (userRepository.existsById(userId) && letterRepository.existsById(letterReadEvent.getId())) {
