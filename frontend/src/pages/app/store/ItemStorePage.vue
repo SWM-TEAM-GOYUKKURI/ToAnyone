@@ -1,5 +1,7 @@
 <template>
   <div id="item-store-wrapper">
+    <div class="item-store__points">🪙 현재 보유 포인트 : <strong>{{ $store.state.user.user.point }} P</strong></div>
+
     <v-tabs class="item-store__tabs"
             grow>
       <v-tab link replace :to="{ name: 'item-store-stickers' }">스티커</v-tab>
@@ -37,6 +39,11 @@ $tabs-bar-height: 64px;
   }
 
   .item-store {
+    &__points {
+      text-align: right;
+      margin-bottom: 0.5em;
+    }
+
     &__tabs {
       --v-tabs-height: 64px;
 
