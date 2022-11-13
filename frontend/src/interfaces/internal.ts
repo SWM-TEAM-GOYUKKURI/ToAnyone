@@ -27,5 +27,5 @@ export interface UserInfo extends UserInfoBasic {
   receiveCount: number,
   sendLetterCountValue: number,
   uniqueId: string,
-  userImageUrl: "",
+  userImageUrl: string,
 }

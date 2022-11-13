@@ -4,7 +4,7 @@
       <div v-show="open"
            class="main-sidebar">
         <div class="main-sidebar__profile">
-          <profile-image />
+          <profile-image :srcUrl="profileImageUrl" />
           <span class="nickname">{{ $store.state.user.user.nickname }}</span>
         </div>
 
@@ -48,6 +48,7 @@ import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { LetterInboxItem } from "@/interfaces/backend";
 import ProfileImage from "./ProfileImage.vue";
+import { getPicsumUrl } from "@/util/path-transform";
 
 interface LetterInboxItemExt extends LetterInboxItem {
   sentByMe: boolean,
@@ -73,6 +74,10 @@ export default class MainSidebar extends Vue {
     return [...unreadLetters, ...unreadSentLetters].sort((a, b) => {
       return (new Date(a.sendDate) >= new Date(b.sendDate)) ? -1 : 1;
     });
+  }
+
+  get profileImageUrl(): string {
+    return getPicsumUrl(parseInt(this.$store.state.user.user!.userImageUrl));
   }
 
   onLogoutButtonClick(): void {
