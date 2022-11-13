@@ -120,7 +120,10 @@ export default class SignupPersonalDataPage extends Vue {
             if(this.$store.state.auth.userBasicInfo) {
               const user: UserInfoBasic = this.$store.state.auth.userBasicInfo;
               this.$store.commit("auth/registerLoginState", {
-                user,
+                user: {
+                  ...user,
+                  registrationFormFilled: true,
+                },
                 token: this.$store.state.auth.token,
               });
             }
