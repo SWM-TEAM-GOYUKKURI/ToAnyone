@@ -10,6 +10,9 @@ import anyone.to.soma.user.domain.event.UserCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import static anyone.to.soma.user.domain.type.DefaultAchievement.*;
 
@@ -30,7 +33,8 @@ public class AchievementPolicy {
         }
     }
 
-    @EventListener(condition = "#letterCreatedEvent.sentCount==0")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(condition = "#letterCreatedEvent.sentCount==0")
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
         if (userRepository.existsById(userId) && letterRepository.existsById(letterCreatedEvent.getId())) {

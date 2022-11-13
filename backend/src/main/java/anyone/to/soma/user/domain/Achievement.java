@@ -9,19 +9,20 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "level"}))
 public class Achievement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "level", unique = true)
     private int level;
 
     private String name;
 
     private String tag;
 
+    @Column(name = "user_id")
     private Long userId;
 
     public Achievement(int level, String name, String tag, Long userId) {
