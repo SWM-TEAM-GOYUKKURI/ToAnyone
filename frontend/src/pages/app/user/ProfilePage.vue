@@ -141,7 +141,7 @@ export default class ProfilePage extends Vue {
         points: response.data.point,
         achievementsCount: response.data.achievementCountValue,
         signupDate: new Date(response.data.createdAt),
-        signinDays: response.data.loginCountValue,
+        signinDays: response.data.loginCount,
         sentLetterCount: response.data.sendLetterCountValue,
         receivedLetterCount: response.data.receiveCount,
         achivements: achivList,
