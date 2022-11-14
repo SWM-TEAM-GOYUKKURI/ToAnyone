@@ -66,11 +66,11 @@ export default class LetterArea extends Vue {
   }
 
   get realSenderImageId(): number {
-    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : parseInt(this.senderProfileImageId); // 0 should be replaced with remote user
+    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : parseInt(this.senderProfileImageId);
   }
 
   get realReceiverImageId(): number {
-    return parseInt(this.receiverProfileImageId); // 0 should be replaced with remote user
+    return parseInt(this.receiverProfileImageId);
   }
 
   get letterTextElement(): HTMLDivElement {

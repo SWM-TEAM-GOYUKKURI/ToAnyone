@@ -14,9 +14,9 @@
                    class="letter-view-area reply"
                    :key="letter.id"
                    :senderNickname="letter.senderName"
-                   :senderProfileImageId="letterItem.receiverImageUrl"
+                   :senderProfileImageId="letterItem.receiverImageUrl /* This is intended for now */"
                    :receiverNickname="letter.receiverName"
-                   :receiverProfileImageId="letterItem.senderImageUrl"
+                   :receiverProfileImageId="letterItem.senderImageUrl /* This is intended for now */"
                    :textContent="letter.content" />
     </div>
 
