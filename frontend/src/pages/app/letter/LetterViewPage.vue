@@ -6,7 +6,8 @@
                  :senderProfileImageId="letterItem.senderImageUrl"
                  :receiverNickname="letterItem.receiverName"
                  :receiverProfileImageId="letterItem.receiverImageUrl"
-                 :textContent="letterItem.content" />
+                 :textContent="letterItem.content"
+                 @reportButtonClick="onReportButtonClick(letterId)" />
 
     <div v-if="dataLoaded && letterItem.replyLetters"
          class="letter-view__replies">
@@ -14,10 +15,11 @@
                    class="letter-view-area reply"
                    :key="letter.id"
                    :senderNickname="letter.senderName"
-                   :senderProfileImageId="letterItem.receiverImageUrl /* This is intended for now */"
+                   :senderProfileImageId="letter.senderImageUrl"
                    :receiverNickname="letter.receiverName"
-                   :receiverProfileImageId="letterItem.senderImageUrl /* This is intended for now */"
-                   :textContent="letter.content" />
+                   :receiverProfileImageId="letter.receiverImageUrl"
+                   :textContent="letter.content"
+                   @reportButtonClick="onReportButtonClick(letter.id, true)" />
     </div>
 
     <a v-if="!lastLetterSentByMe"
@@ -123,6 +125,11 @@ export default class LetterViewPage extends Vue {
         replyModeData: JSON.stringify({ ...this.letterItem, id: this.letterId }),
       },
     });
+  }
+
+  onReportButtonClick(letterId: number, isReplyLetter = false): void {
+    // TODO
+    alert("구현 예정입니다. " + letterId + " " + isReplyLetter);
   }
 }
 </script>
