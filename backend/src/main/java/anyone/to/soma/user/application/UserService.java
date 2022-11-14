@@ -62,7 +62,7 @@ public class UserService {
         return userAchievments;
     }
 
-    @Transactional()
+    @Transactional
     public void updateUserImage(User user, String imageUrl) {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
         foundUser.updateImage(imageUrl);

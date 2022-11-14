@@ -84,10 +84,9 @@ public class Letter extends AbstractAggregateRoot<Letter> {
         if (!sender.getId().equals(reader) && !receiver.getId().equals(reader)) {
             throw new ApplicationException("읽을 수 없는 사용자입니다.");
         }
-
     }
 
-    public User findReplyLetterSender(User user) {
+    public User findReplyLetterReceiver(User user) {
         if (this.sender.getId().equals(user.getId())) {
             return this.receiver;
         }

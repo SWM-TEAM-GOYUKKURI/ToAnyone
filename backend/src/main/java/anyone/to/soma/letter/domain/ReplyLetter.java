@@ -26,7 +26,8 @@ public class ReplyLetter {
 
     private LocalDate sendDate;
 
-    private boolean isRead;
+    private boolean senderRead = true;
+    private boolean receiverRead = false;
 
     private String senderName;
 
@@ -55,10 +56,17 @@ public class ReplyLetter {
         this.senderName = senderName;
         this.decorations = decorations;
         this.receiverName = receiverName;
-        this.isRead = false;
     }
 
     public void read() {
-        this.isRead = true;
+        this.receiverRead = true;
+    }
+
+    public boolean isReceiver(String nickName) {
+        return this.receiverName.equals(nickName);
+    }
+
+    public boolean isSender(String nickname) {
+        return this.senderName.equals(nickname);
     }
 }

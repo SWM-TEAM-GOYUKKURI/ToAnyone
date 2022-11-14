@@ -5,6 +5,7 @@ import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.LetterRepository;
 import anyone.to.soma.letter.domain.ReplyLetter;
+import anyone.to.soma.letter.domain.dao.ReplyLetterRepository;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
@@ -23,6 +24,7 @@ import java.util.Random;
 public class LetterService {
 
     private final LetterRepository letterRepository;
+    private final ReplyLetterRepository replyLetterRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -64,14 +66,14 @@ public class LetterService {
     }
 
     @Transactional
-    public void writeReplyLetter(Long letterId, LetterRequest request, User sender) {
+    public void writeReplyLetter(Long letterId, LetterRequest request, User replySender) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
 
-        if (!letter.getReceiver().getId().equals(sender.getId())) {
+        if (!letter.getReceiver().getId().equals(replySender.getId())) {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, sender.getNickname(), letter.findReplyLetterSender(sender).getNickname(), request.getDecorations());
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, replySender.getNickname(), letter.findReplyLetterReceiver(replySender).getNickname(), request.getDecorations());
         letter.reply(replyLetter);
     }
 
@@ -85,13 +87,15 @@ public class LetterService {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
         letter.checkValidReader(reader.getId());
 
-        if (letter.getReplyLetters().isEmpty()){
-            if(reader.getEmail().equals(letter.getReceiver().getEmail())) letter.read();
+        if (reader.getEmail().equals(letter.getReceiver().getEmail())) {
+            letter.read();
             return;
         }
 
         List<ReplyLetter> replyLetters = letter.getReplyLetters();
-        replyLetters.sort((a, b) -> b.getId().compareTo(a.getId()));
-        replyLetters.get(0).read();
+        replyLetters.stream()
+                .filter(replyLetter -> replyLetter.isReceiver(reader.getNickname()))
+                .forEach(ReplyLetter::read);
+        replyLetterRepository.saveAll(replyLetters);
     }
 }
