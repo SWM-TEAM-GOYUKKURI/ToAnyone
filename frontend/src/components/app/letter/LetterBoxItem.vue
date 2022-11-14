@@ -4,7 +4,7 @@
                :to="{ name: 'letter-view', params: { letterId: letterItem.id } }">
     <div class="letter-box-item__profile-area vp-small-hide">
       <profile-image class="letter-box-item__profile-image"
-                     :srcUrl="'https://picsum.photos/seed/toanyone' + null /*letterItem.sender.profileImageId */ + '/300'" />
+                     :srcUrl="profileImageUrl" />
     </div>
 
     <div class="letter-box-item__content-area">
@@ -27,6 +27,7 @@ import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
 import { LetterInboxItem } from "@/interfaces/backend";
+import { getPicsumUrl } from "@/util/path-transform";
 
 @Options({
   components: {
@@ -36,6 +37,10 @@ import { LetterInboxItem } from "@/interfaces/backend";
 export default class LetterBoxItem extends Vue {
   @Prop({ type: Object, required: true }) letterItem!: LetterInboxItem;
   @Prop({ type: Boolean, default: false, required: true }) sentByMe!: boolean;
+
+  get profileImageUrl(): string {
+    return getPicsumUrl(this.sentByMe ? parseInt(this.letterItem.receiverImageUrl) : parseInt(this.letterItem.senderImageUrl));
+  }
 }
 </script>
 

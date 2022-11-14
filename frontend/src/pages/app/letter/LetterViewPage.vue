@@ -3,7 +3,9 @@
     <letter-area v-if="dataLoaded"
                  class="letter-view-area"
                  :senderNickname="letterItem.senderName"
+                 :senderProfileImageId="letterItem.senderImageUrl"
                  :receiverNickname="letterItem.receiverName"
+                 :receiverProfileImageId="letterItem.receiverImageUrl"
                  :textContent="letterItem.content" />
 
     <div v-if="dataLoaded && letterItem.replyLetters"
@@ -12,7 +14,9 @@
                    class="letter-view-area reply"
                    :key="letter.id"
                    :senderNickname="letter.senderName"
+                   :senderProfileImageId="letterItem.receiverImageUrl"
                    :receiverNickname="letter.receiverName"
+                   :receiverProfileImageId="letterItem.senderImageUrl"
                    :textContent="letter.content" />
     </div>
 
@@ -128,7 +132,7 @@ export default class LetterViewPage extends Vue {
   padding: 1rem 0;
 
   .letter-view-area {
-    min-height: 70vh;
+    min-height: 500px;
     margin: 3rem auto;
     max-width: 100%;
 

@@ -52,7 +52,9 @@ export default class LetterArea extends Vue {
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
   @Prop({ default: LetterSendStatus.NORMAL }) letterSendStatus!: LetterSendStatus;
   @Prop({ type: String, default: "" }) senderNickname!: string;
+  @Prop({ type: String, default: "" }) senderProfileImageId!: string;
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
+  @Prop({ type: String, default: "" }) receiverProfileImageId!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
 
   letterTextElementHeight = 0;
@@ -64,11 +66,11 @@ export default class LetterArea extends Vue {
   }
 
   get realSenderImageId(): number {
-    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : 0; // 0 should be replaced with remote user
+    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : parseInt(this.senderProfileImageId); // 0 should be replaced with remote user
   }
 
   get realReceiverImageId(): number {
-    return !this.letterWriteMode ? 0 : 0; // 0 should be replaced with remote user
+    return parseInt(this.receiverProfileImageId); // 0 should be replaced with remote user
   }
 
   get letterTextElement(): HTMLDivElement {
