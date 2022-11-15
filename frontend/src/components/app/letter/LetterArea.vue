@@ -172,7 +172,7 @@ export default class LetterArea extends Vue {
 
         .line {
           height: 2em; // font-size(1em) * line-height(2)
-          border-bottom: solid rgba($color-dark, 0.5) 2px;
+          border-bottom: solid rgba($color-dark, 0.25) 2px;
         }
       }
     }
