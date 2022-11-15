@@ -22,15 +22,12 @@
                   class="letter-write__decors__item-tab-wrapper">
           <v-window-item value="stickers">
             <div class="letter-write__decors__item-container">
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
-              <span>BACKEND SHOULD BE IMPLEMENTED</span>
+              <!-- dummy -->
+              <div v-for="key in ['1','2','3','4','5','6','7','8','9']" :key="key" class="item" draggable="true">
+                <store-item-preview :item="{}"
+                                    :itemKey="key"
+                                    itemType="stickers" />
+              </div>
             </div>
           </v-window-item>
         </v-window>
@@ -97,6 +94,7 @@ import { Options, Vue } from "vue-class-component";
 import contenteditable from "vue-contenteditable";
 import { RouteLocationNormalized } from "vue-router";
 import LetterArea, { LetterSendStatus } from "@/components/app/letter/LetterArea.vue";
+import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { isSuccessful } from "@/util/backend";
 import { LetterInboxItem } from "@/interfaces/backend";
 import { ItemType } from "@/util/item-loader";
@@ -105,6 +103,7 @@ import { ItemType } from "@/util/item-loader";
   components: {
     contenteditable,
     LetterArea,
+    StoreItemPreview,
   },
 })
 export default class LetterWritePage extends Vue {
@@ -308,8 +307,16 @@ $viewport-letter-write-small-width: 1400px;
 
       &__item-container {
         display: flex;
+        justify-content: center;
         flex-direction: row;
         flex-wrap: wrap;
+
+        .item {
+          width: 96px;
+          height: 96px;
+
+          & img { width: 100%; height: 100%; }
+        }
       }
     }
 

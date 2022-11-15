@@ -3,8 +3,11 @@
     <letter-area v-if="dataLoaded"
                  class="letter-view-area"
                  :senderNickname="letterItem.senderName"
+                 :senderProfileImageId="letterItem.senderImageUrl"
                  :receiverNickname="letterItem.receiverName"
-                 :textContent="letterItem.content" />
+                 :receiverProfileImageId="letterItem.receiverImageUrl"
+                 :textContent="letterItem.content"
+                 @reportButtonClick="onReportButtonClick(letterId)" />
 
     <div v-if="dataLoaded && letterItem.replyLetters"
          class="letter-view__replies">
@@ -12,8 +15,11 @@
                    class="letter-view-area reply"
                    :key="letter.id"
                    :senderNickname="letter.senderName"
+                   :senderProfileImageId="letter.senderImageUrl"
                    :receiverNickname="letter.receiverName"
-                   :textContent="letter.content" />
+                   :receiverProfileImageId="letter.receiverImageUrl"
+                   :textContent="letter.content"
+                   @reportButtonClick="onReportButtonClick(letter.id, true)" />
     </div>
 
     <a v-if="!lastLetterSentByMe"
@@ -120,6 +126,11 @@ export default class LetterViewPage extends Vue {
       },
     });
   }
+
+  onReportButtonClick(letterId: number, isReplyLetter = false): void {
+    // TODO
+    alert("구현 예정입니다. " + letterId + " " + isReplyLetter);
+  }
 }
 </script>
 
@@ -128,7 +139,7 @@ export default class LetterViewPage extends Vue {
   padding: 1rem 0;
 
   .letter-view-area {
-    min-height: 70vh;
+    min-height: 500px;
     margin: 3rem auto;
     max-width: 100%;
 

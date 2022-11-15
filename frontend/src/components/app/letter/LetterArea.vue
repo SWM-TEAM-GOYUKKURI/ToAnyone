@@ -21,6 +21,10 @@
       </div>
       <div class="fromto" style="justify-content: flex-end">To. <profile-image v-if="!letterWriteMode" :srcUrl="getPicsumUrl(realReceiverImageId)" size="em" /> <strong>{{ receiverNickname }}</strong></div>
     </div>
+
+    <div v-if="!letterWriteMode" class="letter-area__controls">
+      <button class="button narrow report" title="편지 신고하기" @click="$emit('reportButtonClick')"><v-icon>mdi-alert-octagon</v-icon></button>
+    </div>
   </div>
 </template>
 
@@ -52,7 +56,9 @@ export default class LetterArea extends Vue {
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
   @Prop({ default: LetterSendStatus.NORMAL }) letterSendStatus!: LetterSendStatus;
   @Prop({ type: String, default: "" }) senderNickname!: string;
+  @Prop({ type: String, default: "" }) senderProfileImageId!: string;
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
+  @Prop({ type: String, default: "" }) receiverProfileImageId!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
 
   letterTextElementHeight = 0;
@@ -64,11 +70,11 @@ export default class LetterArea extends Vue {
   }
 
   get realSenderImageId(): number {
-    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : 0; // 0 should be replaced with remote user
+    return this.letterWriteMode ? parseInt(this.$store.state.user.user!.userImageUrl) : parseInt(this.senderProfileImageId);
   }
 
   get realReceiverImageId(): number {
-    return !this.letterWriteMode ? 0 : 0; // 0 should be replaced with remote user
+    return parseInt(this.receiverProfileImageId);
   }
 
   get letterTextElement(): HTMLDivElement {
@@ -111,6 +117,7 @@ export default class LetterArea extends Vue {
 <style lang="scss" scoped>
 .letter-area {
   display: flex;
+  flex-direction: column;
   position: relative;
   width: var(--letter-area-width);
   padding: 1em;
@@ -167,6 +174,27 @@ export default class LetterArea extends Vue {
           height: 2em; // font-size(1em) * line-height(2)
           border-bottom: solid rgba($color-dark, 0.5) 2px;
         }
+      }
+    }
+  }
+
+  &__controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.75em;
+
+    button {
+      font-size: 0.66em;
+
+      & > * { margin: 0; }
+
+      &.report {
+        background-color: #F99;
+        color: #633;
+        opacity: 0.5;
+        transition: opacity 0.33s;
+
+        &:hover { opacity: 1; }
       }
     }
   }

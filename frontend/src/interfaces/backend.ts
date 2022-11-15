@@ -25,8 +25,10 @@ interface LetterItemBase {
 
 export interface LetterInboxItem extends LetterItemBase {
   read: boolean,
+  senderImageUrl: string,
   receiverName: string,
-  replied?: boolean,
+  receiverImageUrl: string,
+  replied: boolean,
 }
 
 export type LetterInboxItemList = LetterInboxItem[];
