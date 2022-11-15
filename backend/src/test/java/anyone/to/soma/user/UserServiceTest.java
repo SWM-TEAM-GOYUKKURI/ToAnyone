@@ -2,13 +2,17 @@ package anyone.to.soma.user;
 
 import anyone.to.soma.IntegrationTest;
 import anyone.to.soma.auth.JWTProvider;
+import anyone.to.soma.decoration.DecorationType;
+import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.dao.LetterRepository;
 import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.PsychologicalExam;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.dao.UserRepository;
+import anyone.to.soma.user.domain.dto.ItemRequest;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
+import anyone.to.soma.user.domain.dto.PurchaseResponse;
 import anyone.to.soma.user.domain.type.Age;
 import anyone.to.soma.user.domain.type.Gender;
 import anyone.to.soma.user.domain.type.Job;
@@ -74,6 +78,26 @@ class UserServiceTest extends IntegrationTest {
                 () -> assertThat(updatedUser.getProfile().getJob()).isEqualTo(profileRequest.getJob()),
                 () -> assertThat(updatedUser.getProfile().getPsychologicalExams().size()).isEqualTo(profileRequest.getPsychologicalExams().size())
         );
+    }
+
+    @Test
+    void user_delete_test(){
+        Letter letter = new Letter("content", user);
+        letter.send(user1);
+        letterRepository.save(letter);
+        Letter letter1 = new Letter("content", user1);
+        letter1.send(user);
+        letterRepository.save(letter1);
+        userService.deleteUser(user);
+    }
+
+    @Test
+    @Transactional
+    void user_purchase_tiem_test(){
+        ItemRequest request = new ItemRequest(DecorationType.STAMP, 1L, 3000L);
+        user.increasePoint(10000L);
+        Long remainedPoint = userService.purchaseItem(user, request);
+        assertThat(remainedPoint).isEqualTo(7000L);
     }
 
 

@@ -53,10 +53,11 @@ public class User extends AbstractAggregateRoot<User> {
 
     private String userImageUrl = "";
 
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+
 
     public void receiveLetter() {
         this.receiveCount++;
@@ -115,7 +116,15 @@ public class User extends AbstractAggregateRoot<User> {
         return point.getValue();
     }
 
+    public void increasePoint(Long point) {
+        this.point.increase(point);
+    }
+
     public void updateImage(String imageUrl) {
         this.userImageUrl = imageUrl;
+    }
+
+    public void purchaseItem(Long price) {
+        point.minus(price);
     }
 }

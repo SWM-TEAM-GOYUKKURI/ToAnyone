@@ -5,8 +5,11 @@ import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.Profile;
 import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserItem;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
+import anyone.to.soma.user.domain.dao.UserItemRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
+import anyone.to.soma.user.domain.dto.ItemRequest;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AchievementRepository achievementRepository;
+    private final UserItemRepository userItemRepository;
+    private final UserDeleteEventPublisher userDeleteEventPublisher;
     private final JWTProvider jwtProvider;
 
     @Transactional
@@ -49,6 +54,7 @@ public class UserService {
         profile.addPsychologicalExam(request.getPsychologicalExams());
         user.updateProfile(profile);
     }
+
     @Transactional(readOnly = true)
     public User retrieveUserData(User user) {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
@@ -70,10 +76,25 @@ public class UserService {
 
     @Transactional
     public void deleteUser(User user) {
-        if (!userRepository.existsById(user.getId())) {
+        Long id = user.getId();
+        if (!userRepository.existsById(id)) {
             throw new NoSuchRecordException();
         }
+        userDeleteEventPublisher.publishEvent(id);
         userRepository.delete(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserItem> retrieveUserItems(Long userId) {
+        return userItemRepository.findUserItemsByUserId(userId);
+    }
+
+    @Transactional
+    public Long purchaseItem(User user, ItemRequest request) {
+        user.purchaseItem(request.getPrice());
+        UserItem userItem = new UserItem(request.getCategory(), request.getItemId(), user.getId());
+        userItemRepository.save(userItem);
+        return user.getPoint();
     }
 }
 

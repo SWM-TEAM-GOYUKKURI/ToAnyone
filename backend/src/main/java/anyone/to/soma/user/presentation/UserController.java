@@ -5,9 +5,8 @@ import anyone.to.soma.config.annotation.LoginUser;
 import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.User;
-import anyone.to.soma.user.domain.dto.ImageUrlRequest;
-import anyone.to.soma.user.domain.dto.LoginResponse;
-import anyone.to.soma.user.domain.dto.ProfileRequest;
+import anyone.to.soma.user.domain.UserItem;
+import anyone.to.soma.user.domain.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +70,23 @@ public class UserController {
     ) {
         userService.updateUserImage(user, request.getUserImageUrl());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user/me/items")
+    @LoginRequired
+    public ResponseEntity<List<UserItem>> retrieveUserItems(@LoginUser User user) {
+        List<UserItem> items = userService.retrieveUserItems(user.getId());
+        return ResponseEntity.ok(items);
+    }
+
+    @PostMapping("/items")
+    @LoginRequired
+    public ResponseEntity<PurchaseResponse> purchaseItem(
+            @LoginUser User user,
+            @RequestBody ItemRequest request
+    ) {
+        Long point = userService.purchaseItem(user, request);
+        return ResponseEntity.ok(new PurchaseResponse(point));
     }
 
 }

@@ -15,4 +15,7 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
 
     int countLetterBySenderId(Long senderId);
 
+    void deleteAllBySenderId(Long senderId);
+    void deleteAllByReceiverId(Long receiverId);
+
 }
