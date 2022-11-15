@@ -1,6 +1,6 @@
 package anyone.to.soma.user.application;
 
-import anyone.to.soma.letter.domain.LetterRepository;
+import anyone.to.soma.letter.domain.dao.LetterRepository;
 import anyone.to.soma.letter.domain.event.LetterCreatedEvent;
 import anyone.to.soma.letter.domain.event.LetterReadEvent;
 import anyone.to.soma.user.domain.Achievement;
@@ -8,7 +8,6 @@ import anyone.to.soma.user.domain.dao.AchievementRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.event.UserCreatedEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class AchievementPolicy {
     @TransactionalEventListener(condition = "#letterCreatedEvent.sentCount==0")
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
-        if (userRepository.existsById(userId) && letterRepository.countLetterBySenderId(userId)==1){
+        if (userRepository.existsById(userId) && letterRepository.countLetterBySenderId(userId) == 1) {
             achievementRepository.save(new Achievement(LEVEL_TWO.getLevel(), LEVEL_TWO.getName(), LEVEL_TWO.getTag(), userId));
             userRepository.increaseUserPoint(userId, LEVEL_TWO.getPoint());
             userRepository.increaseAchievementCount(userId);

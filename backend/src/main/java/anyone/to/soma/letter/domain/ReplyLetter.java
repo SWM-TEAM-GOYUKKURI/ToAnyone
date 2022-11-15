@@ -26,11 +26,13 @@ public class ReplyLetter {
 
     private LocalDate sendDate;
 
-    private boolean isRead;
+    private boolean senderRead = true;
+    private boolean receiverRead = false;
 
     private String senderName;
-
+    private String senderImageUrl;
     private String receiverName;
+    private String receiverImageUrl;
 
     @ElementCollection
     @CollectionTable(
@@ -43,22 +45,31 @@ public class ReplyLetter {
     @JsonIgnore
     private Letter letter;
 
-    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
-        this(null, content, sendDate, letter, senderName, receiverName, decorations);
+    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, String senderImageUrl, String receiverName, String receiverImageUrl, List<DecorationType> decorations) {
+        this(null, content, sendDate, letter, senderName, senderImageUrl, receiverName, receiverImageUrl, decorations);
     }
 
-    private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
+    private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, String senderImageUrl, String receiverName, String receiverImageUrl, List<DecorationType> decorations) {
         this.id = id;
         this.content = content;
         this.sendDate = sendDate;
         this.letter = letter;
         this.senderName = senderName;
+        this.senderImageUrl = senderImageUrl;
         this.decorations = decorations;
         this.receiverName = receiverName;
-        this.isRead = false;
+        this.receiverImageUrl = receiverImageUrl;
     }
 
     public void read() {
-        this.isRead = true;
+        this.receiverRead = true;
+    }
+
+    public boolean isReceiver(String nickName) {
+        return this.receiverName.equals(nickName);
+    }
+
+    public boolean isSender(String nickname) {
+        return this.senderName.equals(nickname);
     }
 }
