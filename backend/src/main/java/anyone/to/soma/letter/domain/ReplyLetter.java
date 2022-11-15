@@ -30,8 +30,9 @@ public class ReplyLetter {
     private boolean receiverRead = false;
 
     private String senderName;
-
+    private String senderImageUrl;
     private String receiverName;
+    private String receiverImageUrl;
 
     @ElementCollection
     @CollectionTable(
@@ -44,18 +45,20 @@ public class ReplyLetter {
     @JsonIgnore
     private Letter letter;
 
-    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
-        this(null, content, sendDate, letter, senderName, receiverName, decorations);
+    public ReplyLetter(String content, LocalDate sendDate, Letter letter, String senderName, String senderImageUrl, String receiverName, String receiverImageUrl, List<DecorationType> decorations) {
+        this(null, content, sendDate, letter, senderName, senderImageUrl, receiverName, receiverImageUrl, decorations);
     }
 
-    private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, String receiverName, List<DecorationType> decorations) {
+    private ReplyLetter(Long id, String content, LocalDate sendDate, Letter letter, String senderName, String senderImageUrl, String receiverName, String receiverImageUrl, List<DecorationType> decorations) {
         this.id = id;
         this.content = content;
         this.sendDate = sendDate;
         this.letter = letter;
         this.senderName = senderName;
+        this.senderImageUrl = senderImageUrl;
         this.decorations = decorations;
         this.receiverName = receiverName;
+        this.receiverImageUrl = receiverImageUrl;
     }
 
     public void read() {

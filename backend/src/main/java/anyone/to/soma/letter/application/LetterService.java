@@ -73,7 +73,8 @@ public class LetterService {
             throw new ApplicationException("잘못된 권한입니다.");
         }
 
-        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, replySender.getNickname(), letter.findReplyLetterReceiver(replySender).getNickname(), request.getDecorations());
+        User replyLetterReceiver = letter.findReplyLetterReceiver(replySender);
+        ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, replySender.getNickname(), replySender.getUserImageUrl(), replyLetterReceiver.getNickname(), replyLetterReceiver.getUserImageUrl(), request.getDecorations());
         letter.reply(replyLetter);
     }
 
