@@ -5,7 +5,9 @@ import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.Profile;
 import anyone.to.soma.user.domain.User;
+import anyone.to.soma.user.domain.UserItem;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
+import anyone.to.soma.user.domain.dao.UserItemRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
@@ -21,6 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AchievementRepository achievementRepository;
+    private final UserItemRepository userItemRepository;
     private final JWTProvider jwtProvider;
 
     @Transactional
@@ -74,6 +77,11 @@ public class UserService {
             throw new NoSuchRecordException();
         }
         userRepository.delete(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserItem> retrieveUserItems(Long userId) {
+        return userItemRepository.findUserItemsByUserId(userId);
     }
 }
 

@@ -58,6 +58,8 @@ public class User extends AbstractAggregateRoot<User> {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+
+
     public void receiveLetter() {
         this.receiveCount++;
     }
