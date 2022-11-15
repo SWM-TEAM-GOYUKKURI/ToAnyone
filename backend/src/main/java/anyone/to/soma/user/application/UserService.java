@@ -25,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AchievementRepository achievementRepository;
     private final UserItemRepository userItemRepository;
+    private final UserDeleteEventPublisher userDeleteEventPublisher;
     private final JWTProvider jwtProvider;
 
     @Transactional
@@ -53,6 +54,7 @@ public class UserService {
         profile.addPsychologicalExam(request.getPsychologicalExams());
         user.updateProfile(profile);
     }
+
     @Transactional(readOnly = true)
     public User retrieveUserData(User user) {
         User foundUser = userRepository.findById(user.getId()).orElseThrow(NoSuchRecordException::new);
@@ -74,9 +76,11 @@ public class UserService {
 
     @Transactional
     public void deleteUser(User user) {
-        if (!userRepository.existsById(user.getId())) {
+        Long id = user.getId();
+        if (!userRepository.existsById(id)) {
             throw new NoSuchRecordException();
         }
+        userDeleteEventPublisher.publishEvent(id);
         userRepository.delete(user);
     }
 

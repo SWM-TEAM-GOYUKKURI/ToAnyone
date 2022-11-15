@@ -3,6 +3,7 @@ package anyone.to.soma.user;
 import anyone.to.soma.IntegrationTest;
 import anyone.to.soma.auth.JWTProvider;
 import anyone.to.soma.decoration.DecorationType;
+import anyone.to.soma.letter.domain.Letter;
 import anyone.to.soma.letter.domain.dao.LetterRepository;
 import anyone.to.soma.user.application.UserService;
 import anyone.to.soma.user.domain.PsychologicalExam;
@@ -77,6 +78,17 @@ class UserServiceTest extends IntegrationTest {
                 () -> assertThat(updatedUser.getProfile().getJob()).isEqualTo(profileRequest.getJob()),
                 () -> assertThat(updatedUser.getProfile().getPsychologicalExams().size()).isEqualTo(profileRequest.getPsychologicalExams().size())
         );
+    }
+
+    @Test
+    void user_delete_test(){
+        Letter letter = new Letter("content", user);
+        letter.send(user1);
+        letterRepository.save(letter);
+        Letter letter1 = new Letter("content", user1);
+        letter1.send(user);
+        letterRepository.save(letter1);
+        userService.deleteUser(user);
     }
 
     @Test

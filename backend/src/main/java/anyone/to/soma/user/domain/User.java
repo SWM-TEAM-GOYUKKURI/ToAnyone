@@ -53,7 +53,6 @@ public class User extends AbstractAggregateRoot<User> {
 
     private String userImageUrl = "";
 
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
     private Profile profile;
