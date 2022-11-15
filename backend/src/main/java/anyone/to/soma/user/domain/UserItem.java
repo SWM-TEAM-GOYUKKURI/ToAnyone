@@ -18,15 +18,15 @@ public class UserItem {
     @JsonIgnore
     public Long id;
     public DecorationType category;
-    public String itemId;
+    public Long itemId;
 
     public Long userId;
 
-    public UserItem(DecorationType category, String itemId, Long userId) {
+    public UserItem(DecorationType category, Long itemId, Long userId) {
         this(null, category, itemId, userId);
     }
 
-    private UserItem(Long id, DecorationType category, String itemId, Long userId) {
+    private UserItem(Long id, DecorationType category, Long itemId, Long userId) {
         this.id = id;
         this.category = category;
         this.itemId = itemId;

@@ -11,10 +11,10 @@ import static lombok.AccessLevel.PROTECTED;
 public class ItemRequest {
 
     public DecorationType category;
-    public String itemId;
+    public Long itemId;
     public Long price;
 
-    public ItemRequest(DecorationType category, String itemId, Long price) {
+    public ItemRequest(DecorationType category, Long itemId, Long price) {
         this.category = category;
         this.itemId = itemId;
         this.price = price;

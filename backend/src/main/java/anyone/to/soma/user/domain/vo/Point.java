@@ -38,4 +38,8 @@ public class Point {
 
         this.point -= price;
     }
+
+    public void increase(Long point) {
+        this.point += point;
+    }
 }
