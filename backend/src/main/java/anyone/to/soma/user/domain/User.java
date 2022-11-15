@@ -120,4 +120,8 @@ public class User extends AbstractAggregateRoot<User> {
     public void updateImage(String imageUrl) {
         this.userImageUrl = imageUrl;
     }
+
+    public void purchaseItem(Long price) {
+        point.minus(price);
+    }
 }

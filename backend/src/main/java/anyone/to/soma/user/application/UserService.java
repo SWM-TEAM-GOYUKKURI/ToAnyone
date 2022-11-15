@@ -9,6 +9,7 @@ import anyone.to.soma.user.domain.UserItem;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
 import anyone.to.soma.user.domain.dao.UserItemRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
+import anyone.to.soma.user.domain.dto.ItemRequest;
 import anyone.to.soma.user.domain.dto.LoginResponse;
 import anyone.to.soma.user.domain.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
@@ -82,6 +83,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<UserItem> retrieveUserItems(Long userId) {
         return userItemRepository.findUserItemsByUserId(userId);
+    }
+
+    @Transactional
+    public Long purchaseItem(User user, ItemRequest request) {
+        user.purchaseItem(request.getPrice());
+        UserItem userItem = new UserItem(request.getCategory(), request.getItemId(), user.getId());
+        userItemRepository.save(userItem);
+        return user.getPoint();
     }
 }
 
