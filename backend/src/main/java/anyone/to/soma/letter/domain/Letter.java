@@ -102,6 +102,6 @@ public class Letter extends AbstractAggregateRoot<Letter> {
 
     @PostPersist
     public void created() {
-        this.registerEvent(new LetterCreatedEvent(this.id, this.sender.getId(), this.sender.getUserAchievement().getSendLetterCountValue(), this.receiver.getReceiveCount()));
+        this.registerEvent(new LetterCreatedEvent(this.id, this.sender.getId(), this.receiver.getId()));
     }
 }
