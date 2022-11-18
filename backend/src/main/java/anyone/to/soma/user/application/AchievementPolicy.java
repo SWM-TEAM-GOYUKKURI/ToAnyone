@@ -63,9 +63,7 @@ public class AchievementPolicy {
     public void achieveReply(ReplyCreatedEvent replyCreatedEvent) {
         Long userId = replyCreatedEvent.getUserId();
         User user = userRepository.findById(userId).orElseThrow();
-        if (replyLetterRepository.existsById(replyCreatedEvent.getReplyLetterId())) {
-            achieveReply(user.getUserAchievement().getSendReplyLetterCount(), userId);
-        }
+        achieveReply(user.getUserAchievement().getSendReplyLetterCount(), userId);
     }
 
     public void achieveReply(int replyCount, Long userId) {
