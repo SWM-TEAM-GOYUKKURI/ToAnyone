@@ -6,6 +6,7 @@ import anyone.to.soma.letter.domain.event.LetterCreatedEvent;
 import anyone.to.soma.letter.domain.event.LetterReadEvent;
 import anyone.to.soma.letter.domain.event.ReplyCreatedEvent;
 import anyone.to.soma.user.domain.Achievement;
+import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
 import anyone.to.soma.user.domain.dao.UserItemRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
@@ -40,12 +41,11 @@ public class AchievementPolicy {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(condition = "#letterCreatedEvent.sentCount==0")
+    @TransactionalEventListener
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
-        Long userId = letterCreatedEvent.getUserId();
-        int sentCount = letterCreatedEvent.getSentCount();
-        if (userRepository.existsById(userId) && sentCount == 1) {
-            achieve(LEVEL_TWO, userId);
+        User user = userRepository.findById(letterCreatedEvent.getSenderId()).orElseThrow();
+        if (user.getUserAchievement().getSendLetterCountValue() == 1) {
+            achieve(LEVEL_TWO, user.getId());
         }
     }
 
@@ -59,20 +59,12 @@ public class AchievementPolicy {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(condition = "#replyCreatedEvent.sendReplyCount==1")
-    public void achieveLevelFour(ReplyCreatedEvent replyCreatedEvent) {
-        Long userId = replyCreatedEvent.getUserId();
-        if (userRepository.existsById(userId) && replyLetterRepository.existsById(replyCreatedEvent.getReplyLetterId())) {
-            achieve(LEVEL_FOUR, userId);
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(condition = "#replyCreatedEvent.sendReplyCount>0")
     public void achieveReply(ReplyCreatedEvent replyCreatedEvent) {
         Long userId = replyCreatedEvent.getUserId();
-        if (userRepository.existsById(userId) && replyLetterRepository.existsById(replyCreatedEvent.getReplyLetterId())) {
-            achieveReply(replyCreatedEvent.getSendReplyCount(), userId);
+        User user = userRepository.findById(userId).orElseThrow();
+        if (replyLetterRepository.existsById(replyCreatedEvent.getReplyLetterId())) {
+            achieveReply(user.getUserAchievement().getSendReplyLetterCount(), userId);
         }
     }
 
@@ -102,11 +94,8 @@ public class AchievementPolicy {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void achieveReceiveLetter(LetterCreatedEvent letterCreatedEvent) {
-        int receiveCount = letterCreatedEvent.getReceiveCount();
-        Long userId = letterCreatedEvent.getUserId();
-        if (userRepository.existsById(userId)) {
-            achieveReceiveLetter(receiveCount, userId);
-        }
+        User user = userRepository.findById(letterCreatedEvent.getReceiverId()).orElseThrow();
+        achieveReceiveLetter(user.getReceiveCount(), user.getId());
     }
 
     public void achieveReceiveLetter(int receiveCount, Long userId) {
