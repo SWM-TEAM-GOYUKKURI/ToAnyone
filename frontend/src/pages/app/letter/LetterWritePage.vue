@@ -265,8 +265,8 @@ export default class LetterWritePage extends Vue {
   onItemDrop(event: DragEvent): void {
     const letterAreaElement = (this.$refs["letter-area"] as Vue).$el as HTMLElement;
     const [key, offsetX, offsetY] = event.dataTransfer!.getData("text/plain").split(",");
-    const relativeX = event.clientX - letterAreaElement.offsetLeft - parseInt(offsetX);
-    const relativeY = event.clientY - letterAreaElement.offsetTop - parseInt(offsetY);
+    const relativeX = event.pageX - letterAreaElement.offsetLeft - parseInt(offsetX);
+    const relativeY = event.pageY - letterAreaElement.offsetTop - parseInt(offsetY);
 
     this.letterDecorationStickers.push({
       x: relativeX,
