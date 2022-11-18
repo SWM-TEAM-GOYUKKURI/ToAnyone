@@ -8,4 +8,6 @@ import java.util.List;
 public interface UserItemRepository extends JpaRepository<UserItem, Long> {
 
     List<UserItem> findUserItemsByUserId(Long userId);
+
+    int countUserItemByUserId(Long userId);
 }

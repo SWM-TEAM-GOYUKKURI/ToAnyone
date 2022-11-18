@@ -7,8 +7,10 @@ import anyone.to.soma.letter.domain.event.LetterReadEvent;
 import anyone.to.soma.letter.domain.event.ReplyCreatedEvent;
 import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
+import anyone.to.soma.user.domain.dao.UserItemRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.event.UserCreatedEvent;
+import anyone.to.soma.user.domain.event.UserItemCreatedEvent;
 import anyone.to.soma.user.domain.type.DefaultAchievement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class AchievementPolicy {
     private final AchievementRepository achievementRepository;
     private final ReplyLetterRepository replyLetterRepository;
     private final LetterRepository letterRepository;
+    private final UserItemRepository userItemRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
@@ -76,6 +79,23 @@ public class AchievementPolicy {
         if (replyCount == 1) achieve(LEVEL_FOUR, userId);
         if (replyCount == 3) achieve(LEVEL_FIVE, userId);
         if (replyCount == 10) achieve(LEVEL_SIX, userId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener
+    public void achieveUserItem(UserItemCreatedEvent userItemCreatedEvent) {
+        Long userId = userItemCreatedEvent.getUserId();
+        int itemCount = userItemRepository.countUserItemByUserId(userId);
+        if (userRepository.existsById(userId)){
+            achieveUserItem(itemCount, userId);
+        }
+    }
+
+    private void achieveUserItem(int itemCount, Long userId){
+        if (itemCount == 1) achieve(LEVEL_SEVEN, userId);
+        if (itemCount == 3) achieve(LEVEL_EIGHT, userId);
+        if (itemCount == 10) achieve(LEVEL_NINE, userId);
+        if (itemCount == 30) achieve(LEVEL_TEN, userId);
     }
 
 
