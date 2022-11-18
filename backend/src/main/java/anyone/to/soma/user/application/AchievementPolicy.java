@@ -43,7 +43,8 @@ public class AchievementPolicy {
     @TransactionalEventListener(condition = "#letterCreatedEvent.sentCount==0")
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
-        if (userRepository.existsById(userId) && letterRepository.countLetterBySenderId(userId) == 1) {
+        int sentCount = letterCreatedEvent.getSentCount();
+        if (userRepository.existsById(userId) && sentCount == 1) {
             achieve(LEVEL_TWO, userId);
         }
     }
@@ -75,7 +76,7 @@ public class AchievementPolicy {
         }
     }
 
-    private void achieveReply(int replyCount, Long userId){
+    private void achieveReply(int replyCount, Long userId) {
         if (replyCount == 1) achieve(LEVEL_FOUR, userId);
         if (replyCount == 3) achieve(LEVEL_FIVE, userId);
         if (replyCount == 10) achieve(LEVEL_SIX, userId);
@@ -86,18 +87,34 @@ public class AchievementPolicy {
     public void achieveUserItem(UserItemCreatedEvent userItemCreatedEvent) {
         Long userId = userItemCreatedEvent.getUserId();
         int itemCount = userItemRepository.countUserItemByUserId(userId);
-        if (userRepository.existsById(userId)){
+        if (userRepository.existsById(userId)) {
             achieveUserItem(itemCount, userId);
         }
     }
 
-    private void achieveUserItem(int itemCount, Long userId){
+    private void achieveUserItem(int itemCount, Long userId) {
         if (itemCount == 1) achieve(LEVEL_SEVEN, userId);
         if (itemCount == 3) achieve(LEVEL_EIGHT, userId);
         if (itemCount == 10) achieve(LEVEL_NINE, userId);
         if (itemCount == 30) achieve(LEVEL_TEN, userId);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener
+    public void achieveReceiveLetter(LetterCreatedEvent letterCreatedEvent) {
+        int receiveCount = letterCreatedEvent.getReceiveCount();
+        Long userId = letterCreatedEvent.getUserId();
+        if (userRepository.existsById(userId)) {
+            achieveReceiveLetter(receiveCount, userId);
+        }
+    }
+
+    private void achieveReceiveLetter(int receiveCount, Long userId) {
+        if (receiveCount == 1) achieve(LEVEL_ELEVEN, userId);
+        if (receiveCount == 3) achieve(LEVEL_TWELVE, userId);
+        if (receiveCount == 10) achieve(LEVEL_THIRTEEN, userId);
+        if (receiveCount == 25) achieve(LEVEL_FOURTEEN, userId);
+    }
 
 
     private void achieve(DefaultAchievement level, Long userId) {
