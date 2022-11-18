@@ -76,6 +76,7 @@ public class LetterService {
         User replyLetterReceiver = letter.findReplyLetterReceiver(replySender);
         ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, replySender.getNickname(), replySender.getUserImageUrl(), replyLetterReceiver.getNickname(), replyLetterReceiver.getUserImageUrl(), request.getDecorations());
         letter.reply(replyLetter, replySender);
+        userRepository.increaseSendReplyLetterCount(replySender.getId());
     }
 
     public List<InboxLetterResponse> retrieveSentLetters(User sender) {
