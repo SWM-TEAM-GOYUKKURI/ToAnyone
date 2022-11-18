@@ -22,7 +22,7 @@
                   class="letter-write__decors__item-tab-wrapper">
           <v-window-item value="stickers">
             <div class="letter-write__decors__item-container">
-              <span style="font-size: 0.8em; margin: 0.25em 0;">※ 드래그&amp;드롭으로 스티커를 편지에 붙여보세요.</span>
+              <span class="vp-small-hide_0" style="font-size: 0.8em; margin: 0.25em 0;">※ 드래그&amp;드롭으로 스티커를 편지에 붙여보세요.</span>
               <!-- dummy -->
               <button v-for="key in ['1','2','3','4','5','6','7','8','9']"
                       :key="key"
@@ -375,6 +375,8 @@ $viewport-letter-write-small-width: 1400px;
 
   @media (max-width: $viewport-letter-write-small-width) {
     padding-bottom: 15rem;
+
+    .vp-small-hide_0 { display: none !important; }
 
     .side {
       position: fixed;
