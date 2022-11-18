@@ -23,24 +23,32 @@
           <v-window-item value="stickers">
             <div class="letter-write__decors__item-container">
               <!-- dummy -->
-              <div v-for="key in ['1','2','3','4','5','6','7','8','9']" :key="key" class="item" draggable="true">
+              <button v-for="key in ['1','2','3','4','5','6','7','8','9']"
+                      :key="key"
+                      :data-key="key"
+                      class="item"
+                      draggable="true"
+                      @dragstart="onItemDragStart">
                 <store-item-preview :item="{}"
                                     :itemKey="key"
                                     itemType="stickers" />
-              </div>
+              </button>
             </div>
           </v-window-item>
         </v-window>
       </div>
     </div>
 
-    <letter-area id="letter-write-area"
+    <letter-area ref="letter-area"
+                 id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
                  :letterReplyMode="replyMode"
                  :receiverNickname="replyMode ? replyModeData.senderName : undefined"
                  :letterSendStatus="letterSendStatus"
-                 @textareaInput="onTextareaInput" />
+                 :decorations="{ stickers: letterDecorationStickers }"
+                 @textareaInput="onTextareaInput"
+                 @drop.prevent="onItemDrop" />
 
     <v-fade-transition>
       <div v-show="!vpSmallShowDecors"
@@ -98,6 +106,7 @@ import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { isSuccessful } from "@/util/backend";
 import { LetterInboxItem } from "@/interfaces/backend";
 import { ItemType } from "@/util/item-loader";
+import { LetterStickerItem } from "@/interfaces/internal";
 
 @Options({
   components: {
@@ -121,6 +130,8 @@ export default class LetterWritePage extends Vue {
     gender: "random",
     job: "random",
   };
+
+  letterDecorationStickers: LetterStickerItem[] = [];
 
   vpSmallShowDecors = false;
   vpSmallShowOptions = false;
@@ -244,6 +255,25 @@ export default class LetterWritePage extends Vue {
       }
     }
   }
+
+  onItemDragStart(event: DragEvent): void {
+    console.log(event, [event.offsetX, event.offsetY]);
+    event.dataTransfer?.setData("text/plain", `${(event.target as HTMLElement).dataset.key},${event.offsetX},${event.offsetY}`);
+  }
+
+  onItemDrop(event: DragEvent): void {
+    const letterAreaElement = (this.$refs["letter-area"] as Vue).$el as HTMLElement;
+    const [key, offsetX, offsetY] = event.dataTransfer!.getData("text/plain").split(",");
+    const relativeX = event.clientX - letterAreaElement.offsetLeft - parseInt(offsetX);
+    const relativeY = event.clientY - letterAreaElement.offsetTop - parseInt(offsetY);
+
+    this.letterDecorationStickers.push({
+      x: relativeX,
+      y: relativeY,
+      key,
+    });
+    console.log("drop", event.composedPath().includes(letterAreaElement), [relativeX, relativeY], event, this.letterDecorationStickers);
+  }
 }
 </script>
 
@@ -312,6 +342,9 @@ $viewport-letter-write-small-width: 1400px;
         flex-wrap: wrap;
 
         .item {
+          user-select: all !important;
+          -webkit-user-drag: element !important;
+
           width: 96px;
           height: 96px;
 

@@ -1,5 +1,13 @@
 <template>
   <div class="letter-area">
+    <div v-if="decorations && decorations.stickers" class="letter-area__decorations">
+      <store-item-preview v-for="sticker in decorations.stickers"
+                          :key="sticker.key"
+                          :item="getStoreItem('stickers', sticker.key)"
+                          itemType="sticker"
+                          :itemKey="sticker.key" />
+    </div>
+
     <div class="letter-area__content-area">
       <div class="fromto">From. <profile-image :srcUrl="getPicsumUrl(realSenderImageId)" size="em" /> <strong>{{ realSenderNickname }}</strong></div>
       <div class="letter-area__content-area__text-area-wrapper">
@@ -33,7 +41,10 @@ import { Options, Vue } from "vue-class-component";
 import { Prop, PropSync, Watch } from "vue-property-decorator";
 import contenteditable from "vue-contenteditable";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
+import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { getPicsumUrl } from "@/util/path-transform";
+import { LetterStickerItem } from "@/interfaces/internal";
+import { getStoreItem } from "@/util/item-loader";
 
 export enum LetterSendStatus {
   NORMAL,
@@ -42,15 +53,23 @@ export enum LetterSendStatus {
   ERROR,
 }
 
+interface Decorations {
+  fontKey?: string,
+  paperKey?: string,
+  stickers?: LetterStickerItem[],
+}
+
 @Options({
   components: {
     contenteditable,
     ProfileImage,
+    StoreItemPreview,
   },
 })
 export default class LetterArea extends Vue {
   LetterSendStatus = LetterSendStatus;
   getPicsumUrl = getPicsumUrl;
+  getStoreItem = getStoreItem;
 
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
@@ -60,6 +79,7 @@ export default class LetterArea extends Vue {
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
   @Prop({ type: String, default: "" }) receiverProfileImageId!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
+  @Prop({ type: Object, default: {} }) decorations!: Decorations;
 
   letterTextElementHeight = 0;
   letterTextElementLineHeight = 0;

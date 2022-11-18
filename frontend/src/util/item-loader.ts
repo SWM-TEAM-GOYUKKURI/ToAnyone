@@ -34,6 +34,14 @@ export function getStoreItems(type: ItemType): StoreItemList<StoreItemBase> {
   return {};
 }
 
+export function getStoreItem(type: ItemType, key: string): StoreItemBase {
+  switch(type) {
+    case "stickers": return (Stickers as Record<string, StoreItemStickers>)[key];
+    case "fonts": return (Fonts as Record<string, StoreItemFonts>)[key];
+    case "papers": return (Papers as Record<string, StoreItemPapers>)[key];
+  }
+}
+
 export function getDefaultItems(type: ItemType): StoreItemList<StoreItemBase> {
   const items = getStoreItems(type);
   const returnValue: StoreItemList<StoreItemBase> = {};
