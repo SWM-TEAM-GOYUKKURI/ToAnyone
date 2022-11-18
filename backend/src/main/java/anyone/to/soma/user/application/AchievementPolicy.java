@@ -64,12 +64,18 @@ public class AchievementPolicy {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(condition = "#replyCreatedEvent.sendReplyCount==5")
-    public void achieveLevelFive(ReplyCreatedEvent replyCreatedEvent) {
+    @TransactionalEventListener(condition = "#replyCreatedEvent.sendReplyCount>0")
+    public void achieveReply(ReplyCreatedEvent replyCreatedEvent) {
         Long userId = replyCreatedEvent.getUserId();
         if (userRepository.existsById(userId) && replyLetterRepository.existsById(replyCreatedEvent.getReplyLetterId())) {
-            achieve(LEVEL_FIVE, userId);
+            achieveReply(replyCreatedEvent.getSendReplyCount(), userId);
         }
+    }
+
+    private void achieveReply(int replyCount, Long userId){
+        if (replyCount == 1) achieve(LEVEL_FOUR, userId);
+        if (replyCount == 3) achieve(LEVEL_FIVE, userId);
+        if (replyCount == 10) achieve(LEVEL_SIX, userId);
     }
 
 
