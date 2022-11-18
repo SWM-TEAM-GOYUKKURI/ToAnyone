@@ -68,13 +68,9 @@ public class LetterService {
     @Transactional
     public void writeReplyLetter(Long letterId, LetterRequest request, User replySender) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
+        letter.checkValidReader(replySender.getId());
 
         User replyLetterReceiver = letter.findReplyLetterReceiver(replySender);
-
-        if (!letter.getReceiver().getId().equals(replyLetterReceiver.getId())) {
-            throw new ApplicationException("잘못된 권한입니다.");
-        }
-
         ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, replySender.getNickname(), replySender.getUserImageUrl(), replyLetterReceiver.getNickname(), replyLetterReceiver.getUserImageUrl(), request.getDecorations());
         letter.reply(replyLetter, replySender);
         userRepository.increaseSendReplyLetterCount(replySender.getId());
