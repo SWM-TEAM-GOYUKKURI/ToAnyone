@@ -1,8 +1,10 @@
 package anyone.to.soma.user.application;
 
 import anyone.to.soma.letter.domain.dao.LetterRepository;
+import anyone.to.soma.letter.domain.dao.ReplyLetterRepository;
 import anyone.to.soma.letter.domain.event.LetterCreatedEvent;
 import anyone.to.soma.letter.domain.event.LetterReadEvent;
+import anyone.to.soma.letter.domain.event.ReplyCreatedEvent;
 import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
@@ -22,6 +24,7 @@ public class AchievementPolicy {
 
     private final UserRepository userRepository;
     private final AchievementRepository achievementRepository;
+    private final ReplyLetterRepository replyLetterRepository;
     private final LetterRepository letterRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -51,14 +54,20 @@ public class AchievementPolicy {
         }
     }
 
-    public void achieveLevelFour() {
-
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(condition = "#replyCreatedEvent.sendReplyCount==1")
+    public void achieveLevelFour(ReplyCreatedEvent replyCreatedEvent) {
+        Long userId = replyCreatedEvent.getUserId();
+        if (userRepository.existsById(userId) && replyLetterRepository.existsById(replyCreatedEvent.getReplyLetterId())) {
+            achieve(LEVEL_FOUR, userId);
+        }
     }
 
-    private void achieve(DefaultAchievement levelThree, Long userId) {
-        achievementRepository.save(new Achievement(levelThree.getLevel(), levelThree.getName(), levelThree.getTag(), userId));
-        userRepository.increaseUserPointWithAchievement(userId, levelThree.getPoint());
+
+
+    private void achieve(DefaultAchievement level, Long userId) {
+        achievementRepository.save(new Achievement(level.getLevel(), level.getName(), level.getTag(), userId));
+        userRepository.increaseUserPointWithAchievement(userId, level.getPoint());
     }
 
 
