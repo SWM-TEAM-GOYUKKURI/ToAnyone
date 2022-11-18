@@ -4,8 +4,9 @@
       <store-item-preview v-for="sticker in decorations.stickers"
                           :key="sticker.key"
                           :item="getStoreItem('stickers', sticker.key)"
-                          itemType="sticker"
-                          :itemKey="sticker.key" />
+                          itemType="stickers"
+                          :itemKey="sticker.key"
+                          :style="{ left: sticker.x + 'px', top: sticker.y + 'px' }" />
     </div>
 
     <div class="letter-area__content-area">
@@ -151,6 +152,14 @@ export default class LetterArea extends Vue {
     align-items: center;
 
     & > .profile-image { margin-right: 0.25em; }
+  }
+
+  &__decorations {
+    & > * {
+      position: absolute;
+      width: 96px;
+      height: 96px;
+    }
   }
 
   &__content-area {
