@@ -22,6 +22,7 @@
                   class="letter-write__decors__item-tab-wrapper">
           <v-window-item value="stickers">
             <div class="letter-write__decors__item-container">
+              <span style="font-size: 0.8em; margin: 0.25em 0;">※ 드래그&amp;드롭으로 스티커를 편지에 붙여보세요.</span>
               <!-- dummy -->
               <button v-for="key in ['1','2','3','4','5','6','7','8','9']"
                       :key="key"
