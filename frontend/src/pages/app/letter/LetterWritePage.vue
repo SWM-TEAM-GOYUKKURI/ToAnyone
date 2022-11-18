@@ -26,13 +26,12 @@
               <!-- dummy -->
               <button v-for="key in ['1','2','3','4','5','6','7','8','9']"
                       :key="key"
-                      :data-key="key"
-                      class="item"
-                      draggable="true"
-                      @dragstart="onItemDragStart">
+                      class="item">
                 <store-item-preview :item="{}"
                                     :itemKey="key"
-                                    itemType="stickers" />
+                                    itemType="stickers"
+                                    :data-key="key"
+                                    @dragstart.stop="onItemDragStart" />
               </button>
             </div>
           </v-window-item>
@@ -50,8 +49,8 @@
                  :decorations="{ stickers: letterDecorationStickers }"
                  @textareaInput="onTextareaInput"
                  @stickerClick="onLetterStickerClick"
-                 @dragover.prevent="() => {}"
-                 @drop.prevent="onItemDrop" />
+                 @dragover.prevent.stop="onItemDragOver"
+                 @drop.prevent.stop="onItemDrop" />
 
     <v-fade-transition>
       <div v-show="!vpSmallShowDecors"
@@ -260,8 +259,11 @@ export default class LetterWritePage extends Vue {
   }
 
   onItemDragStart(event: DragEvent): void {
-    console.log(event, [event.offsetX, event.offsetY]);
     event.dataTransfer?.setData("text/plain", `${(event.target as HTMLElement).dataset.key},${event.offsetX},${event.offsetY}`);
+  }
+
+  onItemDragOver(event: DragEvent): void {
+    // No action
   }
 
   onItemDrop(event: DragEvent): void {
@@ -275,7 +277,6 @@ export default class LetterWritePage extends Vue {
       y: relativeY,
       key,
     });
-    console.log("drop", event.composedPath().includes(letterAreaElement), [relativeX, relativeY], event, this.letterDecorationStickers);
   }
 
   onLetterStickerClick(index: number): void {
@@ -349,13 +350,14 @@ $viewport-letter-write-small-width: 1400px;
         flex-wrap: wrap;
 
         .item {
-          user-select: all !important;
-          -webkit-user-drag: element !important;
-
           width: 96px;
           height: 96px;
 
-          & img { width: 100%; height: 100%; }
+          & img {
+            -webkit-user-drag: element !important;
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
