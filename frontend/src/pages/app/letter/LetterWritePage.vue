@@ -49,6 +49,7 @@
                  :letterSendStatus="letterSendStatus"
                  :decorations="{ stickers: letterDecorationStickers }"
                  @textareaInput="onTextareaInput"
+                 @dragover.prevent="() => {}"
                  @drop.prevent="onItemDrop" />
 
     <v-fade-transition>

@@ -140,6 +140,7 @@ export default class LetterArea extends Vue {
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
   width: var(--letter-area-width);
   padding: 1em;
   font-size: 1.5em;
@@ -155,6 +156,8 @@ export default class LetterArea extends Vue {
   }
 
   &__decorations {
+    z-index: 1;
+
     & > * {
       position: absolute;
       width: 96px;
