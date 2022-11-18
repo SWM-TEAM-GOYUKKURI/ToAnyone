@@ -39,4 +39,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.point.point = u.point.point + :point WHERE u.id=:userId")
     void increaseUserPoint(@Param("userId") Long userId, @Param("point") Long point);
 
+    @Modifying
+    @Query("UPDATE User u SET u.point.point = u.point.point + :point, u.userAchievement.achievementCount = u.userAchievement.achievementCount + 1 WHERE u.id=:userId")
+    void increaseUserPointWithAchievement(@Param("userId") Long userId, @Param("point") Long point);
+
 }

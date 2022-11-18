@@ -7,6 +7,7 @@ import anyone.to.soma.user.domain.Achievement;
 import anyone.to.soma.user.domain.dao.AchievementRepository;
 import anyone.to.soma.user.domain.dao.UserRepository;
 import anyone.to.soma.user.domain.event.UserCreatedEvent;
+import anyone.to.soma.user.domain.type.DefaultAchievement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,9 +29,7 @@ public class AchievementPolicy {
     public void achieveLevelOne(UserCreatedEvent userCreatedEvent) {
         Long userId = userCreatedEvent.getUserId();
         if (userRepository.existsById(userId)) {
-            achievementRepository.save(new Achievement(LEVEL_ONE.getLevel(), LEVEL_ONE.getName(), LEVEL_ONE.getTag(), userId));
-            userRepository.increaseUserPoint(userId, LEVEL_ONE.getPoint());
-            userRepository.increaseAchievementCount(userId);
+            achieve(LEVEL_ONE, userId);
         }
     }
 
@@ -39,9 +38,7 @@ public class AchievementPolicy {
     public void achieveLevelTwo(LetterCreatedEvent letterCreatedEvent) {
         Long userId = letterCreatedEvent.getUserId();
         if (userRepository.existsById(userId) && letterRepository.countLetterBySenderId(userId) == 1) {
-            achievementRepository.save(new Achievement(LEVEL_TWO.getLevel(), LEVEL_TWO.getName(), LEVEL_TWO.getTag(), userId));
-            userRepository.increaseUserPoint(userId, LEVEL_TWO.getPoint());
-            userRepository.increaseAchievementCount(userId);
+            achieve(LEVEL_TWO, userId);
         }
     }
 
@@ -50,9 +47,19 @@ public class AchievementPolicy {
     public void achieveLevelThree(LetterReadEvent letterReadEvent) {
         Long userId = letterReadEvent.getUserId();
         if (userRepository.existsById(userId) && letterRepository.existsById(letterReadEvent.getId())) {
-            achievementRepository.save(new Achievement(LEVEL_THREE.getLevel(), LEVEL_THREE.getName(), LEVEL_THREE.getTag(), userId));
-            userRepository.increaseUserPoint(userId, LEVEL_THREE.getPoint());
-            userRepository.increaseAchievementCount(userId);
+            achieve(LEVEL_THREE, userId);
         }
     }
+
+    public void achieveLevelFour() {
+
+
+    }
+
+    private void achieve(DefaultAchievement levelThree, Long userId) {
+        achievementRepository.save(new Achievement(levelThree.getLevel(), levelThree.getName(), levelThree.getTag(), userId));
+        userRepository.increaseUserPointWithAchievement(userId, levelThree.getPoint());
+    }
+
+
 }
