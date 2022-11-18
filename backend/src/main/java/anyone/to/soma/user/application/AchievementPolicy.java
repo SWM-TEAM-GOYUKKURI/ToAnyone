@@ -76,7 +76,7 @@ public class AchievementPolicy {
         }
     }
 
-    private void achieveReply(int replyCount, Long userId) {
+    public void achieveReply(int replyCount, Long userId) {
         if (replyCount == 1) achieve(LEVEL_FOUR, userId);
         if (replyCount == 3) achieve(LEVEL_FIVE, userId);
         if (replyCount == 10) achieve(LEVEL_SIX, userId);
@@ -92,7 +92,7 @@ public class AchievementPolicy {
         }
     }
 
-    private void achieveUserItem(int itemCount, Long userId) {
+    public void achieveUserItem(int itemCount, Long userId) {
         if (itemCount == 1) achieve(LEVEL_SEVEN, userId);
         if (itemCount == 3) achieve(LEVEL_EIGHT, userId);
         if (itemCount == 10) achieve(LEVEL_NINE, userId);
@@ -109,7 +109,7 @@ public class AchievementPolicy {
         }
     }
 
-    private void achieveReceiveLetter(int receiveCount, Long userId) {
+    public void achieveReceiveLetter(int receiveCount, Long userId) {
         if (receiveCount == 1) achieve(LEVEL_ELEVEN, userId);
         if (receiveCount == 3) achieve(LEVEL_TWELVE, userId);
         if (receiveCount == 10) achieve(LEVEL_THIRTEEN, userId);
@@ -117,7 +117,7 @@ public class AchievementPolicy {
     }
 
 
-    private void achieve(DefaultAchievement level, Long userId) {
+    public void achieve(DefaultAchievement level, Long userId) {
         achievementRepository.save(new Achievement(level.getLevel(), level.getName(), level.getTag(), userId));
         userRepository.increaseUserPointWithAchievement(userId, level.getPoint());
     }
