@@ -90,6 +90,7 @@ public class LetterService {
 
         if (reader.getEmail().equals(letter.getReceiver().getEmail())) {
             letter.read();
+            letterRepository.save(letter);
             return;
         }
 
