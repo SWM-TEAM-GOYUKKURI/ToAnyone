@@ -3,7 +3,7 @@ package anyone.to.soma.letter.domain.event;
 public class ReplyCreatedEvent {
     private Long replyLetterId;
     private Long userId;
-    private Long sendReplyCount;
+    private int sendReplyCount;
 
     public ReplyCreatedEvent(Long replyLetterId, Long userId, int sendReplyCount) {
         this.replyLetterId = replyLetterId;
@@ -19,7 +19,7 @@ public class ReplyCreatedEvent {
         return userId;
     }
 
-    public Long getSendReplyCount() {
+    public int getSendReplyCount() {
         return sendReplyCount;
     }
 }
