@@ -59,7 +59,7 @@ public class AchievementPolicy {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(condition = "#replyCreatedEvent.sendReplyCount>0")
+    @TransactionalEventListener
     public void achieveReply(ReplyCreatedEvent replyCreatedEvent) {
         Long userId = replyCreatedEvent.getUserId();
         User user = userRepository.findById(userId).orElseThrow();
