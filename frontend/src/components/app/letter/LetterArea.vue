@@ -1,12 +1,13 @@
 <template>
   <div class="letter-area">
     <div v-if="decorations && decorations.stickers" class="letter-area__decorations">
-      <store-item-preview v-for="sticker in decorations.stickers"
-                          :key="sticker.key"
+      <store-item-preview v-for="(sticker, index) in decorations.stickers"
+                          :key="index"
                           :item="getStoreItem('stickers', sticker.key)"
                           itemType="stickers"
                           :itemKey="sticker.key"
-                          :style="{ left: sticker.x + 'px', top: sticker.y + 'px' }" />
+                          :style="{ left: sticker.x + 'px', top: sticker.y + 'px' }"
+                          @click="$emit('stickerClick', index)" />
     </div>
 
     <div class="letter-area__content-area">
@@ -159,6 +160,7 @@ export default class LetterArea extends Vue {
     z-index: 1;
 
     & > * {
+      cursor: pointer;
       position: absolute;
       width: 96px;
       height: 96px;

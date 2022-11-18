@@ -49,6 +49,7 @@
                  :letterSendStatus="letterSendStatus"
                  :decorations="{ stickers: letterDecorationStickers }"
                  @textareaInput="onTextareaInput"
+                 @stickerClick="onLetterStickerClick"
                  @dragover.prevent="() => {}"
                  @drop.prevent="onItemDrop" />
 
@@ -275,6 +276,10 @@ export default class LetterWritePage extends Vue {
       key,
     });
     console.log("drop", event.composedPath().includes(letterAreaElement), [relativeX, relativeY], event, this.letterDecorationStickers);
+  }
+
+  onLetterStickerClick(index: number): void {
+    this.letterDecorationStickers.splice(index, 1);
   }
 }
 </script>
