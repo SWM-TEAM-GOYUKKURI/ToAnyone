@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,9 +73,9 @@ public class LetterService {
 
         User replyLetterReceiver = letter.findReplyLetterReceiver(replySender);
         ReplyLetter replyLetter = new ReplyLetter(request.getContent(), LocalDate.now(), letter, replySender.getNickname(), replySender.getUserImageUrl(), replyLetterReceiver.getNickname(), replyLetterReceiver.getUserImageUrl(), request.getDecorations());
+        userRepository.increaseSendReplyLetterCount(replySender.getId());
         letter.reply(replyLetter, replySender);
         letterRepository.save(letter);
-        userRepository.increaseSendReplyLetterCount(replySender.getId());
     }
 
     public List<InboxLetterResponse> retrieveSentLetters(User sender) {
@@ -93,10 +94,10 @@ public class LetterService {
             return;
         }
 
-        List<ReplyLetter> replyLetters = letter.getReplyLetters();
-        replyLetters.stream()
+        List<Long> replyLetterIds = letter.getReplyLetters().stream()
                 .filter(replyLetter -> replyLetter.isReceiver(reader.getNickname()))
-                .forEach(ReplyLetter::read);
-        replyLetterRepository.saveAll(replyLetters);
+                .map(ReplyLetter::getId)
+                .collect(Collectors.toList());
+        replyLetterRepository.updateIsRead(replyLetterIds);
     }
 }
