@@ -55,7 +55,7 @@ public class InboxLetterResponse {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         User sender = letter.getSender();
         boolean replied = letter.getReplyLetters().size() > 0;
-        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(),readPolicy(letter, receiver), replied, letterDecorations);
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(), readPolicy(letter, receiver), replied, letterDecorations);
     }
 
 
