@@ -20,27 +20,42 @@
 
         <v-window v-model="decorItemType"
                   class="letter-write__decors__item-tab-wrapper">
-          <v-window-item value="stickers">
+          <v-window-item v-for="category in ['stickers', 'papers', 'fonts']"
+                         :key="category"
+                         :value="category">
             <div class="letter-write__decors__item-container">
-              <!-- dummy -->
-              <div v-for="key in ['1','2','3','4','5','6','7','8','9']" :key="key" class="item" draggable="true">
-                <store-item-preview :item="{}"
+              <span v-if="category === 'stickers'" class="vp-small-hide_0" style="font-size: 0.8em; margin: 0.25em 0 0.5em 0;">※ 드래그&amp;드롭으로 스티커를 편지에 붙여보세요.</span>
+              <span v-else class="vp-small-hide_0" style="font-size: 0.8em; margin: 0.25em 0 0.5em 0;">※ 항목을 클릭/터치하여 편지에 적용해보세요.</span>
+
+              <button v-for="(item, key) in getUserItems(category)"
+                      :key="key"
+                      class="item">
+                <store-item-preview :item="item"
                                     :itemKey="key"
-                                    itemType="stickers" />
-              </div>
+                                    :itemType="category"
+                                    :nameAsPreviewText="true"
+                                    :data-key="key"
+                                    @click="onDecorItemClick(category, key)"
+                                    @dragstart.stop="(event) => { if(category === 'stickers') onItemDragStart(event) }" />
+              </button>
             </div>
           </v-window-item>
         </v-window>
       </div>
     </div>
 
-    <letter-area id="letter-write-area"
+    <letter-area ref="letter-area"
+                 id="letter-write-area"
                  v-model:textContent="letterTextContent"
                  :letterWriteMode="true"
                  :letterReplyMode="replyMode"
                  :receiverNickname="replyMode ? replyModeData.senderName : undefined"
                  :letterSendStatus="letterSendStatus"
-                 @textareaInput="onTextareaInput" />
+                 :decorations="letterDecorations"
+                 @textareaInput="onTextareaInput"
+                 @stickerClick="onLetterStickerClick"
+                 @dragover.prevent.stop="onItemDragOver"
+                 @drop.prevent.stop="onItemDrop" />
 
     <v-fade-transition>
       <div v-show="!vpSmallShowDecors"
@@ -96,8 +111,8 @@ import { RouteLocationNormalized } from "vue-router";
 import LetterArea, { LetterSendStatus } from "@/components/app/letter/LetterArea.vue";
 import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { isSuccessful } from "@/util/backend";
-import { LetterInboxItem } from "@/interfaces/backend";
-import { ItemType } from "@/util/item-loader";
+import { DecorationCategory, LetterInboxItem } from "@/interfaces/backend";
+import { getDefaultItems, getStoreItem, ItemType, StoreItemBase, StoreItemList } from "@/util/item-loader";
 
 @Options({
   components: {
@@ -122,6 +137,10 @@ export default class LetterWritePage extends Vue {
     job: "random",
   };
 
+  letterDecorations: { stickers: Record<string, unknown>[], paperKey?: string, fontKey?: string } = {
+    stickers: [],
+  };
+
   vpSmallShowDecors = false;
   vpSmallShowOptions = false;
 
@@ -136,6 +155,20 @@ export default class LetterWritePage extends Vue {
 
   get sendButtonDisabled(): boolean {
     return this.letterSendStatus !== LetterSendStatus.NORMAL || !this.letterTextContent;
+  }
+
+  getUserItems(category: ItemType): StoreItemList<StoreItemBase> {
+    const userItems = this.$store.state.user.userItems.filter((x) => x.category === DecorationCategory[category]);
+    const userItemObj: StoreItemList<StoreItemBase> = {};
+
+    for(const item of userItems) {
+      userItemObj[item.itemId.toString()] = getStoreItem(category, item.itemId.toString());
+    }
+
+    return {
+      ...getDefaultItems(category),
+      ...userItemObj,
+    };
   }
 
   beforeCreate(): void {
@@ -244,6 +277,39 @@ export default class LetterWritePage extends Vue {
       }
     }
   }
+
+  onDecorItemClick(category: ItemType, itemKey: string) {
+    if(category === "papers") {
+      this.letterDecorations.paperKey = itemKey;
+    } else if(category === "fonts") {
+      this.letterDecorations.fontKey = itemKey;
+    }
+  }
+
+  onItemDragStart(event: DragEvent): void {
+    event.dataTransfer?.setData("text/plain", `${(event.target as HTMLElement).dataset.key},${event.offsetX},${event.offsetY}`);
+  }
+
+  onItemDragOver(event: DragEvent): void {
+    // No action
+  }
+
+  onItemDrop(event: DragEvent): void {
+    const letterAreaElement = (this.$refs["letter-area"] as Vue).$el as HTMLElement;
+    const [key, offsetX, offsetY] = event.dataTransfer!.getData("text/plain").split(",");
+    const relativeX = event.pageX - letterAreaElement.offsetLeft - parseInt(offsetX);
+    const relativeY = event.pageY - letterAreaElement.offsetTop - parseInt(offsetY);
+
+    this.letterDecorations.stickers.push({
+      x: relativeX,
+      y: relativeY,
+      key,
+    });
+  }
+
+  onLetterStickerClick(index: number): void {
+    this.letterDecorations.stickers.splice(index, 1);
+  }
 }
 </script>
 
@@ -252,7 +318,7 @@ $decor-area-width: 20vw;
 $letter-paper-area-width: 60vw;
 $letter-paper-area-padding: 1em;
 $contents-min-height: 80vh;
-$contents-side-width: calc((85vw - var(--letter-area-width)) / 2);
+$contents-side-width: calc((90vw - var(--letter-area-width)) / 2);
 $viewport-letter-write-small-width: 1400px;
 
 #letter-write-wrapper {
@@ -267,7 +333,7 @@ $viewport-letter-write-small-width: 1400px;
     top: calc(var(--app-navbar-height) + 2rem);
     overflow: auto;
     width: $contents-side-width;
-    max-width: 350px;
+    max-width: 400px;
     max-height: calc(100vh - var(--app-navbar-height) - 2rem);
     padding: 1em;
     background-color: rgba($color-secondary, 0.5);
@@ -314,8 +380,13 @@ $viewport-letter-write-small-width: 1400px;
         .item {
           width: 96px;
           height: 96px;
+          margin: 4px;
 
-          & img { width: 100%; height: 100%; }
+          & img {
+            -webkit-user-drag: element !important;
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
@@ -333,6 +404,8 @@ $viewport-letter-write-small-width: 1400px;
 
   @media (max-width: $viewport-letter-write-small-width) {
     padding-bottom: 15rem;
+
+    .vp-small-hide_0 { display: none !important; }
 
     .side {
       position: fixed;

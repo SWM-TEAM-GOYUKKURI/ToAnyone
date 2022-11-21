@@ -5,7 +5,7 @@
                 :storeItem="item"
                 :storeItemType="itemType"
                 :storeItemKey="key"
-                :bought="item.default || key in boughtItems"
+                :bought="item.default || boughtItems.includes(parseInt(key))"
                 @itemClick="onStoreItemClick(item, itemType, key)">
     </store-item>
   </div>
@@ -37,6 +37,8 @@ import { getStoreItems, ItemType, StoreItemBase, StoreItemList } from "@/util/it
 import InAppDialog from "@/components/InAppDialog.vue";
 import StoreItem from "@/components/app/store/StoreItem.vue";
 import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
+import { DecorationCategory, DecorationItemList } from "@/interfaces/backend";
+import { isSuccessful } from "@/util/backend";
 
 interface StoreItemDialogData {
   item: StoreItemBase,
@@ -52,7 +54,6 @@ interface StoreItemDialogData {
   },
 })
 export default class ItemStoreItemsView extends Vue {
-  boughtItems = [];
   showItemDialog = false;
   dialogData: StoreItemDialogData | null = null;
 
@@ -62,6 +63,10 @@ export default class ItemStoreItemsView extends Vue {
 
   get ITEMS(): StoreItemList<StoreItemBase> {
     return getStoreItems(this.itemType);
+  }
+
+  get boughtItems(): number[] {
+    return this.$store.state.user.userItems.map((x) => x.itemId);
   }
 
   getItemTypeName(itemType: ItemType): string {
@@ -77,9 +82,35 @@ export default class ItemStoreItemsView extends Vue {
     this.dialogData = { item, itemType, itemKey };
   }
 
-  onPurchaseButtonClick(): void {
-    // TODO: SHOULD BE "WAIT" for backend implementation
-    alert("아이템 구매는 추후 구현 예정입니다.");
+  async onPurchaseButtonClick() {
+    if(this.dialogData) {
+      const response = await this.$api.purchaseStoreItem({
+        category: DecorationCategory[this.dialogData.itemType],
+        itemId: parseInt(this.dialogData.itemKey),
+        price: this.dialogData.item.price,
+      });
+
+      if(isSuccessful(response.statusCode)) {
+        alert("아이템 구매 성공!");
+      } else {
+        if(response.error && response.errorBody) {
+          alert("아이템 구매 실패: " + response.errorBody.message);
+        } else {
+          alert("아이템 구매 실패: " + response.statusCode);
+        }
+
+        this.showItemDialog = false;
+        return;
+      }
+    }
+
+    // Update user info
+    const userInfoResponse = await this.$api.getUserInfo();
+    if(isSuccessful(userInfoResponse.statusCode) && userInfoResponse.data) { this.$store.commit("user/updateUserInfo", userInfoResponse.data); }
+
+    // Get items of user
+    const userItemsResponse = await this.$api.getUserItems();
+    if(isSuccessful(userItemsResponse.statusCode) && userItemsResponse.data) { this.$store.commit("user/updateUserItems", userItemsResponse.data); }
   }
 }
 </script>

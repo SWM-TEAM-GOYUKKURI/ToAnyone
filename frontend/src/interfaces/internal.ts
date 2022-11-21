@@ -29,3 +29,9 @@ export interface UserInfo extends UserInfoBasic {
   uniqueId: string,
   userImageUrl: string, // THIS WILL BE USED AS PICSUM PHOTO ID (number), DON'T TAKE CARE OF THE PROPERTY NAME
 }
+
+export interface LetterStickerItem {
+  x: number,
+  y: number,
+  key: string,
+}

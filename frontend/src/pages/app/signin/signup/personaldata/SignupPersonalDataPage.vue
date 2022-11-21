@@ -128,7 +128,12 @@ export default class SignupPersonalDataPage extends Vue {
               });
             }
 
-            this.$router.replace({ name: "main" });
+            let psyScore = 0;
+            const psyAnswers = requestData.psychologicalExams.map((x) => x.answerId);
+            for(const v of psyAnswers) { psyScore += v; }
+            this.$store.commit("auth/updateUserPsyScore", psyScore);
+
+            window.location.href = this.$router.resolve({ name: "signup-final" }).href;
           } else {
             // TEMP ALERT
             alert(`사용자 정보 업데이트 중 오류: ${response.statusCode}`);

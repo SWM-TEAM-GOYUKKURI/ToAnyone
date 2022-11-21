@@ -1,5 +1,5 @@
 import { Vue } from "vue-class-component";
-import { LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserAchievementInfoResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
+import { DecorationItemList, DecorationPurchaseRequest, DecorationPurchaseResponse, LetterInboxItemList, LetterItemFull, LetterWriteRequest, LoginGoogleResponse, UserAchievementInfoResponse, UserProfileUpdateRequest } from "@/interfaces/backend";
 import { BECallReturn, beDEL, beGET, bePOST, bePUT, filterUnreadLetters, isSuccessful } from "@/util/backend";
 import { UserInfo } from "@/interfaces/internal";
 
@@ -60,6 +60,14 @@ export default class APICaller {
 
   async updateLetterReadState(targetLetterId: number): Promise<BECallReturn<null>> {
     return await bePUT(`/letter/inbox/${targetLetterId}`, {}, { credentials: this.token });
+  }
+
+  async purchaseStoreItem(data: DecorationPurchaseRequest): Promise<BECallReturn<DecorationPurchaseResponse>> {
+    return await bePOST("/items", data, { credentials: this.token });
+  }
+
+  async getUserItems(): Promise<BECallReturn<DecorationItemList>> {
+    return await beGET("/user/me/items", null, { credentials: this.token });
   }
 
   async updateUnreadLetters(vueThis: Vue): Promise<boolean> {

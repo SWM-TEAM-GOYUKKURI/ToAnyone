@@ -1,46 +1,46 @@
 {
-    "forsythia": {
+    "2001": {
         "name": "개나리",
         "color": "#FFF7E8",
         "price": 1000,
         "default": true
     },
-    "lightblue": {
+    "2002": {
         "name": "연파랑",
         "color": "#E8F7FF",
         "price": 1000
     },
-    "pink": {
+    "2003": {
         "name": "분홍",
         "color": "#FFE8F7",
         "price": 1000
     },
-    "mint": {
+    "2004": {
         "name": "민트",
         "color": "#CCFFE6",
         "price": 1000
     },
-    "lightpurple": {
+    "2005": {
         "name": "연보라",
         "color": "#B1BBFF",
         "price": 1000
     },
-    "peach": {
+    "2006": {
         "name": "피치",
         "color": "#FFCCCC",
         "price": 1000
     },
-    "white": {
+    "2007": {
         "name": "화이트",
         "color": "#FFFFFF",
         "price": 1000
     },
-    "beige": {
+    "2008": {
         "name": "베이지",
         "color": "#E8D4B9",
         "price": 1000
     },
-    "lilac": {
+    "2009": {
         "name": "라일락",
         "color": "#D9CCFF",
         "price": 1000

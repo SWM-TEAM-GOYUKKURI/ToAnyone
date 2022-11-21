@@ -6,6 +6,7 @@ export interface AuthStoreState {
   isLoggedIn: boolean,
   token: string | null,
   userBasicInfo: UserInfoBasic | null,
+  userPsyScore: number | null,
 }
 
 const authStore: Module<AuthStoreState, RootStoreState> = {
@@ -14,6 +15,7 @@ const authStore: Module<AuthStoreState, RootStoreState> = {
     isLoggedIn: false,
     token: null,
     userBasicInfo: null,
+    userPsyScore: null,
   },
   getters: {
     isUserLoggedIn(state): boolean {
@@ -41,6 +43,7 @@ const authStore: Module<AuthStoreState, RootStoreState> = {
       state.userBasicInfo = null;
       state.token = null;
     },
+    updateUserPsyScore(state, payload: number) { state.userPsyScore = payload; },
   },
 };
 

@@ -1,16 +1,38 @@
 /* Decorations */
 export enum DecorationCategory {
-  FONT,
-  LETTER_PAPER,
-  STAMP
+  FONT = "FONT",
+  LETTER_PAPER = "LETTER_PAPER",
+  STAMP = "STAMP",
+
+  // Mapping for item-loader.ts/ItemType
+  fonts = "FONT",
+  papers = "LETTER_PAPER",
+  stickers = "STAMP",
 }
 
 export type DecorationCategoryList = DecorationCategory[];
 
+export interface DecorationPurchaseRequest {
+  category: DecorationCategory,
+  itemId: number, // .......
+  price: number,
+}
+
+export interface DecorationPurchaseResponse {
+  remainingPoint: number,
+}
+
+export interface DecorationItem {
+  category: DecorationCategory,
+  itemId: number,
+  userId: number,
+}
+
+export type DecorationItemList = DecorationItem[];
+
 /* Letter */
 export interface LetterWriteRequest {
   // Can be used both write and reply
-
   content: string,
   decorations: DecorationCategoryList,
 }

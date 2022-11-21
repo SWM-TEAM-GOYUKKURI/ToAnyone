@@ -7,6 +7,7 @@ import LogoutPage from "@/pages/app/signin/LogoutPage.vue";
 import SignupPersonalDataPage from "@/pages/app/signin/signup/personaldata/SignupPersonalDataPage.vue";
 import BasicPersonalDataView from "@/pages/app/signin/signup/personaldata/BasicPersonalDataView.vue";
 import MentalHealthSurveyView from "@/pages/app/signin/signup/personaldata/MentalHealthSurveyView.vue";
+import SignupFinalView from "@/pages/app/signin/signup/personaldata/SignupFinalView.vue";
 import ItemStorePage from "@/pages/app/store/ItemStorePage.vue";
 import ItemStoreItemsView from "@/pages/app/store/ItemStoreItemsView.vue";
 import ProfilePage from "@/pages/app/user/ProfilePage.vue";
@@ -174,6 +175,12 @@ const routes: Array<RouteRecordRaw> = [
         component: MentalHealthSurveyView,
       },
     ],
+  },
+  {
+    path: "/signup/done",
+    name: "signup-final",
+    component: SignupFinalView,
+    props: true,
   },
 ];
 

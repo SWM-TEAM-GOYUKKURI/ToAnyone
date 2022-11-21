@@ -28,12 +28,16 @@ export default class AppPagesWrapper extends Vue {
       this.$api.registerToken(this.$store.state.auth.token);
     }
 
+    // Update user info
     if(!this.$store.state.user.user) {
       const response = await this.$api.getUserInfo();
+      if(response.data) { this.$store.commit("user/updateUserInfo", response.data); }
+    }
 
-      if(response.data) {
-        this.$store.commit("user/updateUserInfo", response.data);
-      }
+    // Update user items
+    if(!this.$store.state.user.userItems || this.$store.state.user.userItems.length === 0) {
+      const userItemsResponse = await this.$api.getUserItems();
+      if(userItemsResponse.data) { this.$store.commit("user/updateUserItems", userItemsResponse.data); }
     }
 
     // Load unread letters and save it

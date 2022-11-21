@@ -1,5 +1,16 @@
 <template>
-  <div class="letter-area">
+  <div class="letter-area"
+       :style="decorInlineStyle">
+    <div v-if="decorations && decorations.stickers" class="letter-area__decorations">
+      <store-item-preview v-for="(sticker, index) in decorations.stickers"
+                          :key="index"
+                          :item="getStoreItem('stickers', sticker.key)"
+                          itemType="stickers"
+                          :itemKey="sticker.key"
+                          :style="{ left: sticker.x + 'px', top: sticker.y + 'px' }"
+                          @click="$emit('stickerClick', index)" />
+    </div>
+
     <div class="letter-area__content-area">
       <div class="fromto">From. <profile-image :srcUrl="getPicsumUrl(realSenderImageId)" size="em" /> <strong>{{ realSenderNickname }}</strong></div>
       <div class="letter-area__content-area__text-area-wrapper">
@@ -33,7 +44,10 @@ import { Options, Vue } from "vue-class-component";
 import { Prop, PropSync, Watch } from "vue-property-decorator";
 import contenteditable from "vue-contenteditable";
 import ProfileImage from "@/components/app/global/ProfileImage.vue";
+import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { getPicsumUrl } from "@/util/path-transform";
+import { LetterStickerItem } from "@/interfaces/internal";
+import { getStoreItem, StoreItemFonts, StoreItemPapers } from "@/util/item-loader";
 
 export enum LetterSendStatus {
   NORMAL,
@@ -42,15 +56,23 @@ export enum LetterSendStatus {
   ERROR,
 }
 
+interface Decorations {
+  fontKey?: string,
+  paperKey?: string,
+  stickers?: LetterStickerItem[],
+}
+
 @Options({
   components: {
     contenteditable,
     ProfileImage,
+    StoreItemPreview,
   },
 })
 export default class LetterArea extends Vue {
   LetterSendStatus = LetterSendStatus;
   getPicsumUrl = getPicsumUrl;
+  getStoreItem = getStoreItem;
 
   @Prop({ type: Boolean, default: false }) letterWriteMode!: boolean;
   @Prop({ type: Boolean, default: false }) letterReplyMode!: boolean;
@@ -60,6 +82,7 @@ export default class LetterArea extends Vue {
   @Prop({ type: String, default: "Anyone" }) receiverNickname!: string;
   @Prop({ type: String, default: "" }) receiverProfileImageId!: string;
   @PropSync("textContent", { type: String, default: "" }) letterTextContent!: string;
+  @Prop({ type: Object, default: {} }) decorations!: Decorations;
 
   letterTextElementHeight = 0;
   letterTextElementLineHeight = 0;
@@ -79,6 +102,20 @@ export default class LetterArea extends Vue {
 
   get letterTextElement(): HTMLDivElement {
     return (this.$refs.letterTextElement as Vue).$el as HTMLDivElement;
+  }
+
+  get decorInlineStyle(): Record<string, unknown> {
+    const obj: Record<string, unknown> = {};
+    if(this.decorations.fontKey) {
+      const fontItem = getStoreItem("fonts", this.decorations.fontKey) as StoreItemFonts;
+      if(!fontItem.default) import(`@/assets/items/fonts/${this.decorations.fontKey}.css`);
+      obj.fontFamily = `"${fontItem.fontFamilyName}", "MaruBuri", serif`;
+    }
+    if(this.decorations.paperKey) {
+      const paperItem = getStoreItem("papers", this.decorations.paperKey) as StoreItemPapers;
+      obj.backgroundColor = paperItem.color;
+    }
+    return obj;
   }
 
   mounted(): void {
@@ -119,6 +156,7 @@ export default class LetterArea extends Vue {
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
   width: var(--letter-area-width);
   padding: 1em;
   font-size: 1.5em;
@@ -131,6 +169,17 @@ export default class LetterArea extends Vue {
     align-items: center;
 
     & > .profile-image { margin-right: 0.25em; }
+  }
+
+  &__decorations {
+    z-index: 1;
+
+    & > * {
+      cursor: pointer;
+      position: absolute;
+      width: 96px;
+      height: 96px;
+    }
   }
 
   &__content-area {
@@ -172,7 +221,7 @@ export default class LetterArea extends Vue {
 
         .line {
           height: 2em; // font-size(1em) * line-height(2)
-          border-bottom: solid rgba($color-dark, 0.5) 2px;
+          border-bottom: solid rgba($color-dark, 0.25) 2px;
         }
       }
     }
