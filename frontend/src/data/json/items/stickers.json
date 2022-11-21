@@ -1,15 +1,18 @@
 {
     "1001": {
         "name": "하트",
-        "price": 200
+        "price": 200,
+        "default": true
     },
     "1002": {
         "name": "음표",
-        "price": 200
+        "price": 200,
+        "default": true
     },
     "1003": {
         "name": "별",
-        "price": 200
+        "price": 200,
+        "default": true
     },
     "1004": {
         "name": "Bye",
