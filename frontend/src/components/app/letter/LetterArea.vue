@@ -1,5 +1,6 @@
 <template>
-  <div class="letter-area">
+  <div class="letter-area"
+       :style="decorInlineStyle">
     <div v-if="decorations && decorations.stickers" class="letter-area__decorations">
       <store-item-preview v-for="(sticker, index) in decorations.stickers"
                           :key="index"
@@ -46,7 +47,7 @@ import ProfileImage from "@/components/app/global/ProfileImage.vue";
 import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { getPicsumUrl } from "@/util/path-transform";
 import { LetterStickerItem } from "@/interfaces/internal";
-import { getStoreItem } from "@/util/item-loader";
+import { getStoreItem, StoreItemFonts, StoreItemPapers } from "@/util/item-loader";
 
 export enum LetterSendStatus {
   NORMAL,
@@ -101,6 +102,20 @@ export default class LetterArea extends Vue {
 
   get letterTextElement(): HTMLDivElement {
     return (this.$refs.letterTextElement as Vue).$el as HTMLDivElement;
+  }
+
+  get decorInlineStyle(): Record<string, unknown> {
+    const obj: Record<string, unknown> = {};
+    if(this.decorations.fontKey) {
+      const fontItem = getStoreItem("fonts", this.decorations.fontKey) as StoreItemFonts;
+      if(!fontItem.default) import(`@/assets/items/fonts/${this.decorations.fontKey}.css`);
+      obj.fontFamily = `"${fontItem.fontFamilyName}", "MaruBuri", serif`;
+    }
+    if(this.decorations.paperKey) {
+      const paperItem = getStoreItem("papers", this.decorations.paperKey) as StoreItemPapers;
+      obj.backgroundColor = paperItem.color;
+    }
+    return obj;
   }
 
   mounted(): void {

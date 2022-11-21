@@ -35,6 +35,7 @@
                                     :itemType="category"
                                     :nameAsPreviewText="true"
                                     :data-key="key"
+                                    @click="onDecorItemClick(category, key)"
                                     @dragstart.stop="(event) => { if(category === 'stickers') onItemDragStart(event) }" />
               </button>
             </div>
@@ -50,7 +51,7 @@
                  :letterReplyMode="replyMode"
                  :receiverNickname="replyMode ? replyModeData.senderName : undefined"
                  :letterSendStatus="letterSendStatus"
-                 :decorations="{ stickers: letterDecorationStickers }"
+                 :decorations="letterDecorations"
                  @textareaInput="onTextareaInput"
                  @stickerClick="onLetterStickerClick"
                  @dragover.prevent.stop="onItemDragOver"
@@ -112,7 +113,6 @@ import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { isSuccessful } from "@/util/backend";
 import { DecorationCategory, LetterInboxItem } from "@/interfaces/backend";
 import { getDefaultItems, getStoreItem, ItemType, StoreItemBase, StoreItemList } from "@/util/item-loader";
-import { LetterStickerItem } from "@/interfaces/internal";
 
 @Options({
   components: {
@@ -137,7 +137,9 @@ export default class LetterWritePage extends Vue {
     job: "random",
   };
 
-  letterDecorationStickers: LetterStickerItem[] = [];
+  letterDecorations: { stickers: Record<string, unknown>[], paperKey?: string, fontKey?: string } = {
+    stickers: [],
+  };
 
   vpSmallShowDecors = false;
   vpSmallShowOptions = false;
@@ -276,6 +278,14 @@ export default class LetterWritePage extends Vue {
     }
   }
 
+  onDecorItemClick(category: ItemType, itemKey: string) {
+    if(category === "papers") {
+      this.letterDecorations.paperKey = itemKey;
+    } else if(category === "fonts") {
+      this.letterDecorations.fontKey = itemKey;
+    }
+  }
+
   onItemDragStart(event: DragEvent): void {
     event.dataTransfer?.setData("text/plain", `${(event.target as HTMLElement).dataset.key},${event.offsetX},${event.offsetY}`);
   }
@@ -290,7 +300,7 @@ export default class LetterWritePage extends Vue {
     const relativeX = event.pageX - letterAreaElement.offsetLeft - parseInt(offsetX);
     const relativeY = event.pageY - letterAreaElement.offsetTop - parseInt(offsetY);
 
-    this.letterDecorationStickers.push({
+    this.letterDecorations.stickers.push({
       x: relativeX,
       y: relativeY,
       key,
@@ -298,7 +308,7 @@ export default class LetterWritePage extends Vue {
   }
 
   onLetterStickerClick(index: number): void {
-    this.letterDecorationStickers.splice(index, 1);
+    this.letterDecorations.stickers.splice(index, 1);
   }
 }
 </script>
