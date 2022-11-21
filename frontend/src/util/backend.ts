@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import axios, { AxiosError, AxiosRequestHeaders } from "axios";
+import axios, { AxiosError } from "axios";
 import { LetterInboxItemList } from "@/interfaces/backend";
 
 const BE_URL: string = process.env.VUE_APP_BACKEND_URL;
@@ -8,6 +8,7 @@ const BE_URL: string = process.env.VUE_APP_BACKEND_URL;
 export interface BECallReturn<T> {
   data?: T,
   error: boolean,
+  errorBody?: Record<string, any>,
   statusCode: number,
 }
 
@@ -29,6 +30,7 @@ export async function beGET<T>(endpoint: string, data?: Record<string, any> | nu
     result.error = true;
 
     if(error instanceof AxiosError && error.response) {
+      result.errorBody = error.response.data;
       result.statusCode = error.response.status;
     }
   }
@@ -51,6 +53,7 @@ export async function bePOST<T>(endpoint: string, data: Record<string, any>, hea
     result.error = true;
 
     if(error instanceof AxiosError && error.response) {
+      result.errorBody = error.response.data;
       result.statusCode = error.response.status;
     }
   }
@@ -73,6 +76,7 @@ export async function bePUT<T>(endpoint: string, data: Record<string, any>, head
     result.error = true;
 
     if(error instanceof AxiosError && error.response) {
+      result.errorBody = error.response.data;
       result.statusCode = error.response.status;
     }
   }
@@ -95,6 +99,7 @@ export async function beDEL<T>(endpoint: string, data?: Record<string, any> | nu
     result.error = true;
 
     if(error instanceof AxiosError && error.response) {
+      result.errorBody = error.response.data;
       result.statusCode = error.response.status;
     }
   }

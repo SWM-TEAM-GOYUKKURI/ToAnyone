@@ -20,7 +20,7 @@ export default class StoreItemPreview extends Vue {
 
   async mounted() {
     if(this.itemType === "fonts" && !this.item.default) {
-      await import(`@/assets/fonts/${this.itemKey}.css`); // This automatically import CSS and put into <head>
+      await import(`@/assets/items/fonts/${this.itemKey}.css`); // This automatically import CSS and put into <head>
     }
   }
 }

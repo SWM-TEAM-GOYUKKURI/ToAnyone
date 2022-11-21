@@ -1,41 +1,41 @@
 {
-    "maruburi": {
+    "3001": {
         "name": "마루 부리",
         "price": 3000,
         "fontFamilyName": "MaruBuri",
         "default": true
     },
-    "ridibatang": {
+    "3002": {
         "name": "리디 바탕",
         "price": 3000,
         "fontFamilyName": "RIDIBatang"
     },
-    "notoserifkorean": {
+    "3003": {
         "name": "본명조",
         "price": 3000,
         "fontFamilyName": "NotoSerifKorean"
     },
-    "gangwonedu": {
+    "3004": {
         "name": "강원교육모두체",
         "price": 3000,
         "fontFamilyName": "GangwonEdu"
     },
-    "mapoflowerisland": {
+    "3005": {
         "name": "마포꽃섬",
         "price": 3000,
         "fontFamilyName": "MapoFlowerIsland"
     },
-    "jejumyeongjo": {
+    "3006": {
         "name": "제주명조",
         "price": 3000,
         "fontFamilyName": "Jeju Myeongjo"
     },
-    "cafe24prettynight": {
+    "3007": {
         "name": "카페24 고운밤",
         "price": 3000,
         "fontFamilyName": "Cafe24Oneprettynight"
     },
-    "iropkebatang": {
+    "3008": {
         "name": "이롭게바탕체",
         "price": 3000,
         "fontFamilyName": "Iropke Batang"

@@ -3,6 +3,11 @@ export enum DecorationCategory {
   FONT = "FONT",
   LETTER_PAPER = "LETTER_PAPER",
   STAMP = "STAMP",
+
+  // Mapping for item-loader.ts/ItemType
+  fonts = "FONT",
+  papers = "LETTER_PAPER",
+  stickers = "STAMP",
 }
 
 export type DecorationCategoryList = DecorationCategory[];
