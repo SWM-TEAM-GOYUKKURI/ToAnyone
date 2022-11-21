@@ -55,19 +55,32 @@ public class InboxLetterResponse {
         List<DecorationType> letterDecorations = letter.getLetterDecorations().stream().map(LetterDecoration::getDecorationType).collect(Collectors.toList());
         User sender = letter.getSender();
         boolean replied = letter.getReplyLetters().size() > 0;
-        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(),readPolicy(letter), replied, letterDecorations);
+        return new InboxLetterResponse(letter.getId(), contentPolicy(letter), letter.getSendDate(), receiver.getNickname(), receiver.getUserImageUrl(), sender.getNickname(), sender.getUserImageUrl(), readPolicy(letter, receiver), replied, letterDecorations);
     }
 
 
-    private static boolean readPolicy(Letter letter) {
+    private static boolean readPolicy(Letter letter, User reader) {
         List<ReplyLetter> replyLetters = letter.getReplyLetters();
-        if (replyLetters.isEmpty()) {
+        if (replyLetters.isEmpty() && letter.getReceiver().getEmail().equals(reader.getEmail())) {
             return letter.isRead();
         }
 
-        replyLetters.sort((a, b) -> b.getId().compareTo(a.getId()));
-        return replyLetters.get(0).isRead();
+        if (replyLetters.isEmpty() && letter.getSender().getEmail().equals(reader.getEmail())) {
+            return true;
+        }
 
+        replyLetters.sort((a, b) -> b.getId().compareTo(a.getId())); // 최신순 정렬
+
+        for (int i=0; i<replyLetters.size();i++){
+            ReplyLetter replyLetter = replyLetters.get(i);
+            if (replyLetter.isReceiver(reader.getNickname())){
+                return replyLetter.isReceiverRead();
+            }
+            if (replyLetter.isSender(reader.getNickname())){
+                return replyLetter.isSenderRead();
+            }
+        }
+        return true;
     }
 
     private static String contentPolicy(Letter letter) {

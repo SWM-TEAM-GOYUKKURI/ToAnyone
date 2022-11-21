@@ -15,6 +15,9 @@ public class UserAchievement {
     @Column(name = "send_letter_count")
     private int sendLetterCount = 0;
 
+    @Column(name = "send_reply_count")
+    private int sendReplyLetterCount = 0;
+
     public int getAchievementCountValue() {
         return achievementCount;
     }
@@ -23,12 +26,7 @@ public class UserAchievement {
         return sendLetterCount;
     }
 
-    public void increaseAchievementCount() {
-        this.achievementCount++;
+    public int getSendReplyLetterCount() {
+        return sendReplyLetterCount;
     }
-
-    public void increaseSendLetterCount() {
-        this.sendLetterCount++;
-    }
-
 }

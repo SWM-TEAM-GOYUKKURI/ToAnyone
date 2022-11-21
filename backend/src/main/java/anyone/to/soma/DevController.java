@@ -3,7 +3,7 @@ package anyone.to.soma;
 import anyone.to.soma.exception.repository.NoSuchRecordException;
 import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.Letter;
-import anyone.to.soma.letter.domain.LetterRepository;
+import anyone.to.soma.letter.domain.dao.LetterRepository;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.dao.UserRepository;

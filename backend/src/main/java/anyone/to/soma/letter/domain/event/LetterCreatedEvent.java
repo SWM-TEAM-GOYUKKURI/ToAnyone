@@ -2,34 +2,27 @@ package anyone.to.soma.letter.domain.event;
 
 public class LetterCreatedEvent {
 
-    private Long id;
+    private Long letterId;
 
-    private Long userId;
+    private Long senderId;
 
-    private int sentCount;
+    private Long receiverId;
 
-    private int receiveCount;
-
-    public LetterCreatedEvent(Long id, Long userId, int sentCount, int receiveCount) {
-        this.id = id;
-        this.userId = userId;
-        this.sentCount = sentCount;
-        this.receiveCount = receiveCount;
+    public LetterCreatedEvent(Long letterId, Long senderId, Long receiverId) {
+        this.letterId = letterId;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getLetterId() {
+        return letterId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getSenderId() {
+        return senderId;
     }
 
-    public int getSentCount() {
-        return sentCount;
-    }
-
-    public int getReceiveCount() {
-        return receiveCount;
+    public Long getReceiverId() {
+        return receiverId;
     }
 }

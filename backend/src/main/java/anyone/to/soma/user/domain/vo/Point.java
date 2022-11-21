@@ -30,4 +30,16 @@ public class Point {
             throw new ApplicationException("유효하지 않은 포인트 값입니다.");
         }
     }
+
+    public void minus(Long price) {
+        if(this.point - price < 0L) {
+            throw new ApplicationException("포인트가 부족합니다.");
+        }
+
+        this.point -= price;
+    }
+
+    public void increase(Long point) {
+        this.point += point;
+    }
 }

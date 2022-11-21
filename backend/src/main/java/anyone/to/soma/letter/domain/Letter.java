@@ -4,6 +4,7 @@ import anyone.to.soma.decoration.DecorationType;
 import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.letter.domain.event.LetterCreatedEvent;
 import anyone.to.soma.letter.domain.event.LetterReadEvent;
+import anyone.to.soma.letter.domain.event.ReplyCreatedEvent;
 import anyone.to.soma.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -71,8 +72,9 @@ public class Letter extends AbstractAggregateRoot<Letter> {
                 .forEach(this.letterDecorations::add);
     }
 
-    public void reply(ReplyLetter replyLetter) {
+    public void reply(ReplyLetter replyLetter, User replySender) {
         this.replyLetters.add(replyLetter);
+        this.registerEvent(new ReplyCreatedEvent(replyLetter.getId(), replySender.getId(), replySender.getUserAchievement().getSendReplyLetterCount()));
     }
 
     public void read() {
@@ -84,10 +86,9 @@ public class Letter extends AbstractAggregateRoot<Letter> {
         if (!sender.getId().equals(reader) && !receiver.getId().equals(reader)) {
             throw new ApplicationException("읽을 수 없는 사용자입니다.");
         }
-
     }
 
-    public User findReplyLetterSender(User user) {
+    public User findReplyLetterReceiver(User user) {
         if (this.sender.getId().equals(user.getId())) {
             return this.receiver;
         }
@@ -101,6 +102,6 @@ public class Letter extends AbstractAggregateRoot<Letter> {
 
     @PostPersist
     public void created() {
-        this.registerEvent(new LetterCreatedEvent(this.id, this.sender.getId(), this.sender.getUserAchievement().getSendLetterCountValue(), this.receiver.getReceiveCount()));
+        this.registerEvent(new LetterCreatedEvent(this.id, this.sender.getId(), this.receiver.getId()));
     }
 }

@@ -1,8 +1,7 @@
-package anyone.to.soma.letter.domain;
+package anyone.to.soma.letter.domain.dao;
 
 import anyone.to.soma.letter.domain.Letter;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +14,8 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     List<Letter> findLettersBySenderId(Long senderId);
 
     int countLetterBySenderId(Long senderId);
+
+    void deleteAllBySenderId(Long senderId);
+    void deleteAllByReceiverId(Long receiverId);
 
 }

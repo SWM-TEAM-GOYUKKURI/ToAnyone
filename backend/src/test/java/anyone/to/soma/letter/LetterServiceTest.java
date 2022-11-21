@@ -4,7 +4,7 @@ import anyone.to.soma.IntegrationTest;
 import anyone.to.soma.exception.ApplicationException;
 import anyone.to.soma.letter.application.LetterService;
 import anyone.to.soma.letter.domain.Letter;
-import anyone.to.soma.letter.domain.LetterRepository;
+import anyone.to.soma.letter.domain.dao.LetterRepository;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
