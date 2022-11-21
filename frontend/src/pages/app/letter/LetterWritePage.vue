@@ -20,18 +20,22 @@
 
         <v-window v-model="decorItemType"
                   class="letter-write__decors__item-tab-wrapper">
-          <v-window-item value="stickers">
+          <v-window-item v-for="category in ['stickers', 'papers', 'fonts']"
+                         :key="category"
+                         :value="category">
             <div class="letter-write__decors__item-container">
-              <span class="vp-small-hide_0" style="font-size: 0.8em; margin: 0.25em 0;">※ 드래그&amp;드롭으로 스티커를 편지에 붙여보세요.</span>
-              <!-- dummy -->
-              <button v-for="key in ['1','2','3','4','5','6','7','8','9']"
+              <span v-if="category === 'stickers'" class="vp-small-hide_0" style="font-size: 0.8em; margin: 0.25em 0 0.5em 0;">※ 드래그&amp;드롭으로 스티커를 편지에 붙여보세요.</span>
+              <span v-else class="vp-small-hide_0" style="font-size: 0.8em; margin: 0.25em 0 0.5em 0;">※ 항목을 클릭/터치하여 편지에 적용해보세요.</span>
+
+              <button v-for="(item, key) in getUserItems(category)"
                       :key="key"
                       class="item">
-                <store-item-preview :item="{}"
-                                    :itemKey="'100' + key"
-                                    itemType="stickers"
-                                    :data-key="'100' + key"
-                                    @dragstart.stop="onItemDragStart" />
+                <store-item-preview :item="item"
+                                    :itemKey="key"
+                                    :itemType="category"
+                                    :nameAsPreviewText="true"
+                                    :data-key="key"
+                                    @dragstart.stop="(event) => { if(category === 'stickers') onItemDragStart(event) }" />
               </button>
             </div>
           </v-window-item>
@@ -106,8 +110,8 @@ import { RouteLocationNormalized } from "vue-router";
 import LetterArea, { LetterSendStatus } from "@/components/app/letter/LetterArea.vue";
 import StoreItemPreview from "@/components/app/store/StoreItemPreview.vue";
 import { isSuccessful } from "@/util/backend";
-import { LetterInboxItem } from "@/interfaces/backend";
-import { ItemType } from "@/util/item-loader";
+import { DecorationCategory, LetterInboxItem } from "@/interfaces/backend";
+import { getDefaultItems, getStoreItem, ItemType, StoreItemBase, StoreItemList } from "@/util/item-loader";
 import { LetterStickerItem } from "@/interfaces/internal";
 
 @Options({
@@ -149,6 +153,20 @@ export default class LetterWritePage extends Vue {
 
   get sendButtonDisabled(): boolean {
     return this.letterSendStatus !== LetterSendStatus.NORMAL || !this.letterTextContent;
+  }
+
+  getUserItems(category: ItemType): StoreItemList<StoreItemBase> {
+    const userItems = this.$store.state.user.userItems.filter((x) => x.category === DecorationCategory[category]);
+    const userItemObj: StoreItemList<StoreItemBase> = {};
+
+    for(const item of userItems) {
+      userItemObj[item.itemId.toString()] = getStoreItem(category, item.itemId.toString());
+    }
+
+    return {
+      ...getDefaultItems(category),
+      ...userItemObj,
+    };
   }
 
   beforeCreate(): void {
@@ -352,6 +370,7 @@ $viewport-letter-write-small-width: 1400px;
         .item {
           width: 96px;
           height: 96px;
+          margin: 4px;
 
           & img {
             -webkit-user-drag: element !important;
