@@ -28,9 +28,9 @@
                       :key="key"
                       class="item">
                 <store-item-preview :item="{}"
-                                    :itemKey="key"
+                                    :itemKey="'100' + key"
                                     itemType="stickers"
-                                    :data-key="key"
+                                    :data-key="'100' + key"
                                     @dragstart.stop="onItemDragStart" />
               </button>
             </div>
