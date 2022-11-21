@@ -308,7 +308,7 @@ $decor-area-width: 20vw;
 $letter-paper-area-width: 60vw;
 $letter-paper-area-padding: 1em;
 $contents-min-height: 80vh;
-$contents-side-width: calc((85vw - var(--letter-area-width)) / 2);
+$contents-side-width: calc((90vw - var(--letter-area-width)) / 2);
 $viewport-letter-write-small-width: 1400px;
 
 #letter-write-wrapper {
@@ -323,7 +323,7 @@ $viewport-letter-write-small-width: 1400px;
     top: calc(var(--app-navbar-height) + 2rem);
     overflow: auto;
     width: $contents-side-width;
-    max-width: 350px;
+    max-width: 400px;
     max-height: calc(100vh - var(--app-navbar-height) - 2rem);
     padding: 1em;
     background-color: rgba($color-secondary, 0.5);
