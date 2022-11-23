@@ -231,7 +231,7 @@ export default class LetterWritePage extends Vue {
       if(!this.replyMode) {
         /* NORMAL WRITE MODE */
         const response = await this.$api.writeLetter({
-          content: this.letterTextContent,
+          content: this.filterContent(this.letterTextContent),
           decorations: [],
         });
 
@@ -248,7 +248,7 @@ export default class LetterWritePage extends Vue {
       } else if(this.replyMode && this.replyModeData) {
         /* REPLY MODE */
         const response = await this.$api.writeReplyLetter(this.replyModeData.id, {
-          content: this.letterTextContent,
+          content: this.filterContent(this.letterTextContent),
           decorations: [],
         });
 
@@ -309,6 +309,20 @@ export default class LetterWritePage extends Vue {
 
   onLetterStickerClick(index: number): void {
     this.letterDecorations.stickers.splice(index, 1);
+  }
+
+  filterContent(text: string): string {
+    const regexDial1 = /(0(\d+)?)[-.\s](\d+)[-.\s](\d+)/g; // "000-0000-0000" "000 0000 0000" "000.0000.0000"
+    const regexDial2 = /(0\d\d\d\d\d\d?\d\d\d\d?)/g; // "00000000000"
+    const regexDial3 = /(0(\d+)?)\)(\s+)?(\d+)[-.\s](\d+)/g; // "000) 0000 0000" "000) 0000-0000" "000) 0000.0000"
+    const regexMail = /([A-Za-z1-9_\-.]+)@([A-Za-z1-9_-]+)\.([A-Za-z1-9_-]+)/g; // "so_me-th.1ng@e-xa_mp1e.com"
+
+    text = text.replaceAll(regexDial1, "***");
+    text = text.replaceAll(regexDial2, "***");
+    text = text.replaceAll(regexDial3, "***");
+    text = text.replaceAll(regexMail, "***");
+
+    return text;
   }
 }
 </script>
