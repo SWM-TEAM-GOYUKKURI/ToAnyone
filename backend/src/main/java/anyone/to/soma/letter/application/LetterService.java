@@ -9,6 +9,8 @@ import anyone.to.soma.letter.domain.dao.ReplyLetterRepository;
 import anyone.to.soma.letter.domain.dto.InboxLetterResponse;
 import anyone.to.soma.letter.domain.dto.LetterRequest;
 import anyone.to.soma.letter.domain.dto.SingleLetterResponse;
+import anyone.to.soma.letter.infra.FilterApiClient;
+import anyone.to.soma.letter.infra.FilterDto;
 import anyone.to.soma.user.domain.User;
 import anyone.to.soma.user.domain.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class LetterService {
     private final ReplyLetterRepository replyLetterRepository;
     private final UserRepository userRepository;
 
+    private final FilterApiClient filterApiClient;
+
     @Transactional
     public SingleLetterResponse retrieveInboxSingleLetter(Long letterId, Long userId) {
         Letter letter = letterRepository.findById(letterId).orElseThrow(NoSuchRecordException::new);
@@ -45,7 +49,8 @@ public class LetterService {
 
     @Transactional
     public Long writeLetter(LetterRequest request, User sender) {
-        Letter letter = new Letter(request.getContent(), sender);
+        String content = filterApiClient.filter(new FilterDto(request.getContent())).getContent();
+        Letter letter = new Letter(content, sender);
         User randomReceiver = findRandomReceiver(sender);
         letter.attachDecorations(request.getDecorations());
         letter.send(randomReceiver);
