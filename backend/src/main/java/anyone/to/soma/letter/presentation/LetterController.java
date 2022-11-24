@@ -24,6 +24,7 @@ public class LetterController {
     @PostMapping("")
     @LoginRequired
     public ResponseEntity<Void> writeLetterToAnonymous(@RequestBody LetterRequest request, @LoginUser User user) {
+
         Long letterId = letterService.writeLetter(request, user);
         return ResponseEntity.created(URI.create("/letter/" + letterId)).build();
     }
